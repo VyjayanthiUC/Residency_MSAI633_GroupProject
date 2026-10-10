@@ -96,6 +96,18 @@ def pages() -> dict[str, Page]:
 
 # ---------- rendering ----------
 
+def section_id(path: list[str] | tuple[str, ...]) -> str:
+    """Element id of a page section, from its heading path (a chunk's heading_path, or a Markdown "## A › B" heading
+    split on " › "). The chat links each citation to /wiki/<doc_id>#<section_id>, so it opens the cited section here."""
+    slug = re.sub(r"[^a-z0-9]+", "-", " ".join(path).lower()).strip("-")
+    return "sec-" + slug if slug else ""
+
+
+def page_href(doc_id: str, path: list[str] | tuple[str, ...]) -> str:
+    sid = section_id(path)
+    return f"/wiki/{doc_id}" + (f"#{sid}" if sid else "")
+
+
 def render_block(heading: str, body: str) -> str:
     """Markdown subset used by the snapshot: Key: Value lines, pipe tables, paragraphs."""
     out, lines, i = [], body.splitlines(), 0
@@ -351,7 +363,8 @@ def page_body(p: Page) -> str:
             parts.append(f'<div class="lead">{content}</div>')
         else:
             open_attr = "" if heading.split(" › ")[0] in COLLAPSED else " open"
-            parts.append(f"<details{open_attr}><summary><h2>{e(heading)}</h2></summary>{content}</details>")
+            sid = section_id(heading.split(" › "))
+            parts.append(f'<details id="{sid}"{open_attr}><summary><h2>{e(heading)}</h2></summary>{content}</details>')
     if p.type in ("character", "character_upcoming"):
         talents, cons = abilities_of(p.title)
         if talents or cons:

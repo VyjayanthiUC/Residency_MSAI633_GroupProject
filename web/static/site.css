@@ -166,3 +166,11 @@ footer p { max-width: 95ch; margin-bottom: 0.5rem; }
   .panel:not([hidden]) { animation: rise .16s ease-out; }
   @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 }
+
+/* The section a chat citation points to (#99): marked until the next citation, so it stays findable while reading */
+.page details[id] { scroll-margin-top: 4.5rem; }
+.page details.cited { outline: 3px solid var(--rose); outline-offset: 4px; border-radius: 6px; background: var(--frost); }
+@media (prefers-reduced-motion: no-preference) {
+  .page details.cited { animation: cited 1.2s ease-out 1; }
+  @keyframes cited { from { outline-color: transparent; } }
+}
