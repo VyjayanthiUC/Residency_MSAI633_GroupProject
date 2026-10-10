@@ -49,7 +49,16 @@ FUSION_DEPTH = _env("FUSION_DEPTH", 30)
 # (evaluation/results/threshold_dev.json) — re-tune if RERANK_MODEL changes. 0 disables.
 REFUSE_BELOW = _env("REFUSE_BELOW", 0.52)
 
-# Generation (stage 9): any OpenAI-compatible API; the GLM_* / ZAI_API_KEY names are kept as a fallback
-LLM_BASE_URL = os.environ.get("LLM_BASE_URL") or os.environ.get("GLM_BASE_URL") or "https://openrouter.ai/api/v1"
-LLM_MODEL = os.environ.get("LLM_MODEL") or os.environ.get("GLM_MODEL") or "z-ai/glm-5.3-flash"
-LLM_API_KEY = os.environ.get("LLM_API_KEY") or os.environ.get("ZAI_API_KEY") or ""
+# Generation (stage 9): any OpenAI-compatible API, reached by one of two routes. The route is chosen as a whole, so a
+# .env that sets values from both never sends one route's model ID to the other (#92):
+#   LLM_*  OpenRouter by default; used whenever LLM_API_KEY is set (or no key is set at all)
+#   GLM_*  Z.ai directly; used when only ZAI_API_KEY is set
+LLM_ROUTE = "zai" if os.environ.get("ZAI_API_KEY") and not os.environ.get("LLM_API_KEY") else "llm"
+if LLM_ROUTE == "zai":
+    LLM_BASE_URL = os.environ.get("GLM_BASE_URL") or "https://api.z.ai/api/coding/paas/v4"
+    LLM_MODEL = os.environ.get("GLM_MODEL") or "glm-5.3-flash"
+    LLM_API_KEY = os.environ["ZAI_API_KEY"]
+else:
+    LLM_BASE_URL = os.environ.get("LLM_BASE_URL") or "https://openrouter.ai/api/v1"
+    LLM_MODEL = os.environ.get("LLM_MODEL") or "z-ai/glm-5.3-flash"
+    LLM_API_KEY = os.environ.get("LLM_API_KEY") or ""
