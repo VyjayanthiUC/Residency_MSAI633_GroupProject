@@ -1,0 +1,7 @@
+.env
+data/
+.files/
+.venv/
+__pycache__/
+.pytest_cache/
+.chainlit/translations/
