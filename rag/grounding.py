@@ -6,6 +6,13 @@ import re
 REFUSAL = "I don't have that information in the wiki snapshot."
 
 _CITE = re.compile(r"\[S(\d+)\]")
+# Some models write full-width brackets (【S2】) despite the [S2] example in the prompt
+_FULLWIDTH_CITE = re.compile(r"【\s*S(\d+)\s*】")
+
+
+def normalize_citations(answer: str) -> str:
+    """Rewrite 【Sn】 as [Sn], so every citation check below and the UI badges see one format. Apply once per answer."""
+    return _FULLWIDTH_CITE.sub(r"[S\1]", answer)
 
 # Questions about real money or accounts: the wiki can't and shouldn't answer these, refer to official support.
 # Game terms collide with naive keywords ("Charged Attack", shop "purchase", "take into account"), so each

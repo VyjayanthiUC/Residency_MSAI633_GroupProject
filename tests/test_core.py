@@ -3,7 +3,7 @@ from pathlib import Path
 from rag.contract import Chunk, load_chunks
 from rag import retrieval
 from rag.grounding import (REFUSAL, cited_indices, is_refusal, is_spend_question, long_quotes, needs_referral,
-                           recommends_spending, strip_citations, unsupported_numbers)
+                           normalize_citations, recommends_spending, strip_citations, unsupported_numbers)
 
 FIXTURE = Path(__file__).parent / "fixtures" / "chunks_sample.jsonl"
 
@@ -80,6 +80,16 @@ def test_spend_question_and_recommendation():
 
 def test_strip_citations():
     assert strip_citations("A [S1]. B [S2][S3].") == "A. B."
+
+
+def test_fullwidth_citations_count_as_citations():
+    # issue #70: the model sometimes writes 【S2】 instead of [S2]
+    answer = normalize_citations("Nod-Krai is a region 【S2】 【S4】. Lauma is Dendro【 S1 】.")
+    assert answer == "Nod-Krai is a region [S2] [S4]. Lauma is Dendro[S1]."
+    assert cited_indices(answer, 5) == [2, 4, 1]
+    assert strip_citations(answer) == "Nod-Krai is a region. Lauma is Dendro."
+    assert not is_refusal(normalize_citations("Lauma is Dendro【S1】. " + REFUSAL))
+    assert normalize_citations("A [S1]. 【note】") == "A [S1]. 【note】"
 
 
 def test_long_quotes():

@@ -19,8 +19,8 @@ from rag import config, index, retrieval
 from rag import generation as llm
 from rag.contract import Chunk
 from rag.grounding import (MAX_QUOTE_WORDS, REFERRAL_TEXT, REFUSAL, SPEND_PROMPT_NOTE, SPEND_TEXT, cited_indices,
-                       is_refusal, is_spend_question, long_quotes, needs_referral, recommends_spending,
-                       strip_citations, unsupported_numbers)
+                       is_refusal, is_spend_question, long_quotes, needs_referral, normalize_citations,
+                       recommends_spending, strip_citations, unsupported_numbers)
 
 DB_URL = init_db(config.THREADS_DB)
 K_POOL, K_FINAL = config.K_POOL, config.K_FINAL
@@ -143,7 +143,7 @@ async def on_message(message: cl.Message):
             async for tok in llm.stream_answer(history, question, final,
                                                SPEND_PROMPT_NOTE if is_spend_question(question) else ""):
                 await msg.stream_token(tok)
-            answer = msg.content
+            answer = normalize_citations(msg.content)
         except openai.APIError as e:
             msg.content = f"> ⚠️ The language model is unavailable right now ({type(e).__name__}). Please try again shortly."
             await msg.update()
