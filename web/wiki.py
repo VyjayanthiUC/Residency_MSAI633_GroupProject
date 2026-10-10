@@ -332,11 +332,11 @@ def home_body() -> str:
              f'<button type="button" class="bgtoggle" aria-pressed="false" hidden>Pause background</button>' if reel else "")
     return (f'<section class="hero"><div class="banner">{art}{video}<div class="bannertext">'
             f'<h1>Genshin Impact: Nod-Krai and Snezhnaya</h1><p class="counts">{e(counts)}</p>'
-            f'<label class="search"><span class="sr">Search pages</span><input type="search" id="q" placeholder="Search {len(all_pages)} pages: characters, weapons, versions…" autocomplete="off"></label>'
+            f'<label class="search"><span class="sr">Search pages</span><input type="search" id="q" placeholder="Search {len(all_pages)} pages: characters, weapons, versions…" autocomplete="off" enterkeyhint="go"></label>'
+            f'<p class="resultcount" id="results" role="status" aria-live="polite"></p>'
             f'</div>{credit}</div>'
             f'<nav class="jump" aria-label="Sections">{nav}</nav><div class="regions">{hero_regions}</div></section>'
-            + "".join(sections) + '<p class="empty" id="empty" hidden>No pages match your search.</p>'
-            '<p class="sr" id="results" role="status" aria-live="polite"></p>')
+            + "".join(sections) + '<p class="empty" id="empty" hidden>No pages match your search.</p>')
 
 
 def page_body(p: Page) -> str:

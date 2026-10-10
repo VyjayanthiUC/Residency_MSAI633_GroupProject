@@ -84,3 +84,14 @@ def test_home_background_video_is_muted_never_autoplays_from_html_and_can_be_pau
     assert reel and all(c["src"].startswith(IMAGE_HOST) and c["src"].endswith(".mp4/revision/latest") for c in reel)
     assert 'class="bgtoggle"' in home
     assert "<video" not in wiki.page_body(next(p for p in wiki.pages().values() if p.title == "Lauma"))
+
+
+def test_search_count_is_visible_under_the_box_and_hidden_really_hides():
+    from pathlib import Path
+
+    home = wiki.home_body()
+    box, count = home.index('id="q"'), home.index('id="results"')
+    assert box < count < home.index('class="regions"')           # count sits right under the search box (#98)
+    assert 'class="sr" id="results"' not in home                  # visible, not screen-reader only
+    css = (Path(wiki.__file__).parent / "static" / "site.css").read_text()
+    assert "[hidden] { display: none !important; }" in css      # .card's display:flex must not beat [hidden]

@@ -26,6 +26,7 @@ p { margin: 0 0 1rem; max-width: 70ch; }
 .skip:focus { top: 12px; }
 main:focus { outline: none; }
 button { font: inherit; }
+[hidden] { display: none !important; }   /* e.g. .card sets display: flex, which would otherwise override hidden (#98) */
 
 .bar { padding: 22px 0; }
 .brand { font-family: var(--display); font-weight: 800; font-size: 1.2rem; color: var(--ink); text-decoration: none; }
@@ -42,6 +43,11 @@ body:has(.hero) .brand { color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.5); }
 .banner { position: relative; overflow: hidden; border-radius: 24px; min-height: 440px; display: flex; flex-direction: column;
           justify-content: flex-end; padding: clamp(24px, 5vw, 56px); color: #fff; background: linear-gradient(135deg, #1d1840, #43264f 60%, #20304f); }
 .bannerimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+.resultcount { margin: 12px 0 0; min-height: 1.6em; font-weight: 700; color: #fff; }
+/* searching (#98): collapse the page so results sit right under the box */
+body.searching .hero > .banner { min-height: 0; padding-top: 96px; padding-bottom: 32px; }
+body.searching .hero .regions, body.searching .hero .jump, body.searching .bannercredit { display: none; }
+body.searching .hero { padding-bottom: 8px; }
 .bannervideo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .6s; }
 .bannervideo.on { opacity: 1; }
 .bgtoggle { position: absolute; z-index: 2; top: 20px; right: max(24px, calc(50vw - 556px)); font: inherit; font-size: 0.8rem; font-weight: 700; color: #fff;
