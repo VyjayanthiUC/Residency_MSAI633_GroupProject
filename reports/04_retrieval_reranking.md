@@ -18,9 +18,9 @@
 from the golden item. Chunk IDs differ between chunking strategies A and B, so IDs cannot be the gold label (`evaluation/golden.py`).
 Recall@k is the fraction of an item's evidence requirements met in the top k; multi-hop and comparative items have two requirements.
 
-**Setup.** Golden set 51 items, all human-verified; split seed 633, dev 31 / test 20. Of the 31 dev items, 23 have evidence and are
-scored for retrieval; the other 8 (6 unanswerable, 1 injection, 1 spend-advice) have nothing to retrieve and are used only for the
-refusal threshold. Index: A 1,345 + B 2,218 = 3,563 chunks, 0 orphans. Hardware: CPU only (AMD Ryzen Z2 Extreme), so latencies are
+**Setup.** Golden set 53 items, all human-verified; split seed 633, dev 32 / test 21. Of the 32 dev items, 23 have evidence and are
+scored for retrieval; the other 9 (6 unanswerable, 2 spend-advice, 1 injection) have nothing to retrieve. The 6 unanswerable items
+and the 23 answerable ones are used for the refusal threshold. Index: A 1,345 + B 2,218 = 3,563 chunks, 0 orphans. Hardware: CPU only (AMD Ryzen Z2 Extreme), so latencies are
 CPU latencies.
 
 ## 2. Results — six configurations, one change at a time
@@ -131,4 +131,5 @@ uv run python -m evaluation.retrieval_checks              # -> evaluation/result
 uv run python -m evaluation.run report --split dev        # -> evaluation/results/summary_dev.md (tables above, with CIs)
 ```
 
-Retrieval runs make no LLM calls. Measured on main `d10f264`.
+Retrieval runs make no LLM calls. Measured on main `d10f264` (51-item golden set). Main later added two synthesis items (`syn06` test,
+`syn07` dev); `syn07` is a spend-advice item without evidence, so every dev retrieval and threshold number above is unchanged.

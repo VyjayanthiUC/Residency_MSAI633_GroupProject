@@ -1,6 +1,6 @@
 # Evaluation summary — dev split
 
-Golden set: 51 items; split seed 633, dev 31 / test 20. Verified by a human: 51.
+Golden set: 53 items; split seed 633, dev 32 / test 21. Verified by a human: 53.
 
 ## Retrieval (mean [95% bootstrap CI])
 
