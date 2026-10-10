@@ -32,6 +32,8 @@ if config.CHROMA_DIR.exists():
 else:
     RETRIEVER = retrieval.Pipeline(strategy=config.CHUNK_STRATEGY, mode="bm25", rerank=False)
 CHUNKS = retrieval.bm25_for(RETRIEVER.strategy).chunks  # also builds the BM25 index at startup
+if RETRIEVER.mode != "bm25" or RETRIEVER.rerank:
+    RETRIEVER.retrieve("warmup")  # load the embedder and reranker now (~25s), not on the first user question
 REFUSE_BELOW = config.REFUSE_BELOW if RETRIEVER.rerank else 0.0
 POST_LABEL = "rerank" if RETRIEVER.rerank else "= pre"
 SNAPSHOT = max((c.crawled_at for c in CHUNKS if c.crawled_at), default="unknown")[:10] + " (UTC)"
