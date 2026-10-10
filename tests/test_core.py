@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from rag.contract import Chunk, load_chunks
 from rag import retrieval
 from rag.grounding import (REFUSAL, cited_indices, is_refusal, is_spend_question, long_quotes, needs_referral,
@@ -98,7 +100,6 @@ def test_long_quotes():
     assert long_quotes(f"Intro {copied} [S1].", src) == [copied]
     assert long_quotes(" ".join(f"w{i}" for i in range(0, 25)), src) == []  # exactly 25 is allowed
 
-
 def test_refusal_in_question_language():
     from rag.grounding import REFUSAL_ZH, refusal_for
     assert refusal_for("What element is Lauma?") == REFUSAL
@@ -114,3 +115,35 @@ def test_chitchat_whole_message_only():
     for m in ["hi, what element is Lauma?", "Thanks — and her C2?", "菈乌玛是什么元素", "help me with Lauma's talents",
               "我充值了没到账"]:
         assert not is_chitchat(m), m
+
+
+@pytest.mark.parametrize(
+    "word_count, should_detect",
+    [
+        (24,False),
+        (25,False),
+        (26,True),
+        (30,True),
+    ],
+)
+def test_quote_limit_boundaries(word_count, should_detect):
+    source = " ".join(f"word{i}" for i in range(40))
+    answer = " ".join(f"word{i}" for i in range(word_count))
+    matches = long_quotes(answer, [source])
+
+    assert bool(matches) == should_detect
+
+
+def test_quote_limit_case_insensitive():
+    source = " ".join(f"word{i}" for i in range(30))
+    answer = source.upper()
+
+    assert long_quotes(answer, [source])
+
+
+def test_quote_limit_with_citation():
+    source = " ".join(f"word{i}" for i in range(30))
+    words = source.split()
+    answer = " ".join(words[:15]) + " [S1] " + " ".join(words[15:])
+
+    assert long_quotes(answer, [source])
