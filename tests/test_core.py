@@ -147,3 +147,42 @@ def test_quote_limit_with_citation():
     answer = " ".join(words[:15]) + " [S1] " + " ".join(words[15:])
 
     assert long_quotes(answer, [source])
+
+
+@pytest.mark.parametrize(
+    "source, answer, expected",
+    [
+        (
+            "Cooldown is 12 seconds.",
+            "Cooldown is 12 seconds.",
+            [],
+        ),
+        (
+            "Cooldown is 12 seconds.",
+            "Cooldown is 15 seconds.",
+            ["15"],
+        ),
+        (
+            "Cooldown is 12.5 seconds.",
+            "Cooldown is 12.6 seconds.",
+            ["12.6"],
+        ),
+        (
+            "The rate is 50%.",
+            "The rate is 60%.",
+            ["60"],
+        ),
+        (
+            "The cost is 1,000 Mora.",
+            "The cost is 1000 Mora.",
+            [],
+        ),
+        (
+            "Cooldown is 12 seconds.",
+            "Cooldown is 15 seconds and remains 15 seconds.",
+            ["15"],
+        ),
+    ],
+)
+def test_number_check_cases(source, answer, expected):
+    assert unsupported_numbers(answer, [source]) == expected
