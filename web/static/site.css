@@ -74,6 +74,8 @@ body:has(.hero) .brand { color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.5); }
 body.searching .hero > .banner { min-height: 0; padding-top: 96px; padding-bottom: 32px; }
 body.searching .hero .regions, body.searching .hero .jump, body.searching .bannercredit { display: none; }
 body.searching .hero { padding-bottom: 8px; }
+body.searching .hero h1 { font-size: clamp(1.5rem, 3vw, 2.2rem); max-width: none; }   /* the display title alone is ~3 lines */
+body.searching .hero .counts { display: none; }
 .bannervideo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .6s; }
 .bannervideo.on { opacity: 1; }
 .bgtoggle { position: absolute; z-index: 6; top: 20px; right: max(24px, calc(50vw - 556px)); font: inherit; font-size: 0.8rem; font-weight: 700; color: #fff;
