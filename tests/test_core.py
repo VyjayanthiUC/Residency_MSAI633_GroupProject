@@ -4,6 +4,7 @@ from rag.contract import Chunk, load_chunks
 from rag import retrieval
 from rag.grounding import (REFUSAL, cited_indices, is_refusal, is_spend_question, long_quotes, needs_referral,
                            recommends_spending, strip_citations, unsupported_numbers)
+import pytest
 
 FIXTURE = Path(__file__).parent / "fixtures" / "chunks_sample.jsonl"
 
@@ -87,3 +88,32 @@ def test_long_quotes():
     copied = " ".join(f"w{i}" for i in range(5, 35))  # 30 words
     assert long_quotes(f"Intro {copied} [S1].", src) == [copied]
     assert long_quotes(" ".join(f"w{i}" for i in range(0, 25)), src) == []  # exactly 25 is allowed
+
+@pytest.mark.parametrize(
+    "word_count, should_detect",
+    [
+        (24,False),
+        (25,False),
+        (26,True),
+        (30,True),
+    ],
+)
+def test_quote_limit_boundaries(word_count, should_detect):
+    source = " ".join(f"word{i}" for i in range(40))
+    answer = " ".join(f"word{i}" for i in range(word_count))
+    matches = long_quotes(answer, [source])
+
+    assert bool(matches) == should_detect
+
+def test_quote_limit_case_insensitive():
+    source = " ".join(f"word{i}" for i in range(30))
+    answer = source.upper()
+
+    assert long_quotes(answer, [source])
+
+def test_quote_limit_with_citation():
+    source = " ".join(f"word{i}" for i in range(30))
+    words = source.split()
+    answer = " ".join(words[:15]) + " [S1] " + " ".join(words[15:])
+
+    assert long_quotes(answer, [source])
