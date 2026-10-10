@@ -1,4 +1,4 @@
-# Start the chat UI on http://127.0.0.1:8800 (Windows PowerShell equivalent of run.sh).
+# Start the landing page + chat on http://127.0.0.1:8800 (chat at /chat) (Windows PowerShell equivalent of run.sh).
 # Settings come from .env at the repo root (see .env.example).
 # Usage:  powershell -ExecutionPolicy Bypass -File .\run.ps1
 $ErrorActionPreference = 'Stop'
@@ -28,6 +28,5 @@ if (-not $env:CHAINLIT_AUTH_SECRET) {
 }
 $port = if ($env:PORT) { $env:PORT } else { '8800' }
 
-# Chainlit reads .chainlit\ and chainlit.md from the working directory, so run from chat\
-Set-Location chat
-uv run chainlit run app.py --host 127.0.0.1 --port $port --headless @args
+# One server (web\server.py): the landing page at / with the chat widget, and the full Chainlit chat at /chat
+uv run uvicorn web.server:app --host 127.0.0.1 --port $port @args

@@ -1,10 +1,11 @@
 from pathlib import Path
 
+import pytest
+
 from rag.contract import Chunk, load_chunks
 from rag import retrieval
 from rag.grounding import (REFUSAL, cited_indices, is_refusal, is_spend_question, long_quotes, needs_referral,
-                           recommends_spending, strip_citations, unsupported_numbers)
-import pytest
+                           normalize_citations, recommends_spending, strip_citations, unsupported_numbers)
 
 FIXTURE = Path(__file__).parent / "fixtures" / "chunks_sample.jsonl"
 
@@ -83,11 +84,38 @@ def test_strip_citations():
     assert strip_citations("A [S1]. B [S2][S3].") == "A. B."
 
 
+def test_fullwidth_citations_count_as_citations():
+    # issue #70: the model sometimes writes 【S2】 instead of [S2]
+    answer = normalize_citations("Nod-Krai is a region 【S2】 【S4】. Lauma is Dendro【 S1 】.")
+    assert answer == "Nod-Krai is a region [S2] [S4]. Lauma is Dendro[S1]."
+    assert cited_indices(answer, 5) == [2, 4, 1]
+    assert strip_citations(answer) == "Nod-Krai is a region. Lauma is Dendro."
+    assert not is_refusal(normalize_citations("Lauma is Dendro【S1】. " + REFUSAL))
+    assert normalize_citations("A [S1]. 【note】") == "A [S1]. 【note】"
+
+
 def test_long_quotes():
     src = [" ".join(f"w{i}" for i in range(40))]
     copied = " ".join(f"w{i}" for i in range(5, 35))  # 30 words
     assert long_quotes(f"Intro {copied} [S1].", src) == [copied]
     assert long_quotes(" ".join(f"w{i}" for i in range(0, 25)), src) == []  # exactly 25 is allowed
+
+def test_refusal_in_question_language():
+    from rag.grounding import REFUSAL_ZH, refusal_for
+    assert refusal_for("What element is Lauma?") == REFUSAL
+    assert refusal_for("菈乌玛是什么元素") == REFUSAL_ZH
+    assert is_refusal(REFUSAL_ZH)
+    assert not is_refusal("菈乌玛是草元素[S1]。" + REFUSAL_ZH)
+
+
+def test_chitchat_whole_message_only():
+    from rag.grounding import is_chitchat
+    for m in ["hi", "Hello!", "thanks", "thank you so much", "在么", "你好！", "谢谢~", "你能干嘛？", "who are you?"]:
+        assert is_chitchat(m), m
+    for m in ["hi, what element is Lauma?", "Thanks — and her C2?", "菈乌玛是什么元素", "help me with Lauma's talents",
+              "我充值了没到账"]:
+        assert not is_chitchat(m), m
+
 
 @pytest.mark.parametrize(
     "word_count, should_detect",
@@ -105,11 +133,13 @@ def test_quote_limit_boundaries(word_count, should_detect):
 
     assert bool(matches) == should_detect
 
+
 def test_quote_limit_case_insensitive():
     source = " ".join(f"word{i}" for i in range(30))
     answer = source.upper()
 
     assert long_quotes(answer, [source])
+
 
 def test_quote_limit_with_citation():
     source = " ".join(f"word{i}" for i in range(30))
