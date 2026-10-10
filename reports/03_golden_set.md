@@ -88,6 +88,14 @@ It may **not** (3) add a judgement that no page makes — "best team", "C2 is th
 refusal or `no_spend_advice` items (`syn05`, `syn07`); for `syn07` a good answer also corrects the false premise that the character
 is on the current banner.
 
+Team-building questions show the boundary best, because players ask them constantly and they split into three parts:
+
+| Player asks about | In the snapshot? | Expected behaviour | Items |
+|---|---|---|---|
+| **Team requirements** — what a reaction needs, which characters enable it, how many Hydro/Geo members a passive wants | yes, stated in mechanic pages and talent text | answer, listing the requirement and the characters that meet it, each with a citation | `syn03`, `syn04` |
+| **Team recommendations** — "best team", "who pairs well with Arlecchino" | no; a fan wiki documents mechanics, not rankings (that content lives on theorycrafting sites) | answer only the requirement layer and say the sources contain no ranking; naming a "best" team is a hallucination | rule recorded in the `syn03` note |
+| **Rotations** — skill order | no ("rotation" hits 1 page, "best team" 0) | refuse | `syn05` |
+
 ## 5. Human verification
 
 **Who and how.** Saweisra verified every item on 2026-10-10 (10:45–14:49 CDT). The tool showed, for each item, the question, the
