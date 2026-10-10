@@ -200,7 +200,8 @@ async def generation_eval(items: list[dict], max_calls: int, configs: list[str])
                 rows.append(await generate(name, it, budget))
         except BudgetExhausted:
             print(f"{name}: call budget exhausted after {len(rows)}/{len(items)} items — re-run later to continue")
-        except openai.APIError as e:  # e.g. the free tier's daily cap (HTTP 429); real bugs still raise
+        # e.g. a daily cap (HTTP 429) or repeated empty answers; nothing is cached, so a re-run retries. Real bugs raise
+        except (openai.APIError, llm.EmptyCompletion) as e:
             print(f"{name}: stopped after {len(rows)}/{len(items)} items: {type(e).__name__}: {str(e)[:200]}")
         out[name] = rows
         if rows:
