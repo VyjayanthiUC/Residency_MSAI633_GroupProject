@@ -1,7 +1,8 @@
 """MSAI633 RAG chatbot: Chainlit chat interface.
 
 Start with ./run.sh or run.ps1 from the repo root (port 8800). Retrieval is rag.retrieval.Pipeline configured from
-rag.config (default: hybrid + rerank over strategy B); without a Chroma index it falls back to BM25 over the chunk file.
+rag.config (default: hybrid + rerank over strategy B); if artifacts/chroma/ does not exist it falls back to BM25 over
+the chunk file.
 """
 from __future__ import annotations
 
@@ -14,7 +15,7 @@ import openai
 from chainlit.data.sql_alchemy import SQLAlchemyDataLayer
 
 from chat.persistence import history_from_thread, init_db
-from rag import config, retrieval
+from rag import config, index, retrieval
 from rag import generation as llm
 from rag.contract import Chunk
 from rag.grounding import (MAX_QUOTE_WORDS, REFERRAL_TEXT, REFUSAL, SPEND_PROMPT_NOTE, SPEND_TEXT, cited_indices,
@@ -26,6 +27,8 @@ K_POOL, K_FINAL = config.K_POOL, config.K_FINAL
 
 if config.CHROMA_DIR.exists():
     RETRIEVER = retrieval.from_config()
+    if RETRIEVER.mode != "bm25":
+        index.check_in_sync(RETRIEVER.strategy)
 else:
     RETRIEVER = retrieval.Pipeline(strategy=config.CHUNK_STRATEGY, mode="bm25", rerank=False)
 CHUNKS = retrieval.bm25_for(RETRIEVER.strategy).chunks  # also builds the BM25 index at startup

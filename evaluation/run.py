@@ -25,7 +25,7 @@ from pathlib import Path
 import openai
 
 from evaluation import golden
-from rag import config
+from rag import config, index
 from rag import generation as llm
 from rag.contract import Chunk
 from rag.grounding import (REFUSAL, SPEND_PROMPT_NOTE, cited_indices, is_refusal, is_spend_question, long_quotes, recommends_spending,
@@ -100,10 +100,12 @@ def retrieval_eval(items: list[dict]) -> dict:
     return out
 
 
-def _cache_path(name: str, item_id: str, chunks: list[Chunk], note: str) -> Path:
-    key = json.dumps([llm.MODEL, name, item_id, [c.chunk_id for c in chunks], note,
-                      hashlib.sha256((llm.ANSWER_PROMPT + llm.CLOSED_BOOK_PROMPT).encode()).hexdigest()[:12]])
+def _cache_path(name: str, it: dict, chunks: list[Chunk], note: str) -> Path:
+    """Keyed on everything that changes the LLM's input: endpoint, model, prompts, question, and the sources' text."""
+    key = json.dumps([config.LLM_BASE_URL, llm.MODEL, name, it["id"], it["question"], note,
+                      [(c.chunk_id, c.text) for c in chunks], llm.ANSWER_PROMPT, llm.CLOSED_BOOK_PROMPT])
     h = hashlib.sha256(key.encode()).hexdigest()[:16]
+    item_id = it["id"]
     return CACHE / re.sub(r"[^\w.-]", "_", llm.MODEL) / re.sub(r"[^\w.-]", "_", name) / f"{item_id}-{h}.json"
 
 
@@ -119,7 +121,7 @@ async def generate(name: str, it: dict, budget: list[int]) -> dict:
         if name.startswith("B3") and chunks and chunks[0].score_post < config.REFUSE_BELOW:
             chunks = []
     note = SPEND_PROMPT_NOTE if name != "B0 closed-book" and is_spend_question(it["question"]) else ""
-    path = _cache_path(name, it["id"], chunks, note)
+    path = _cache_path(name, it, chunks, note)
     if path.exists():
         rec = json.loads(path.read_text("utf-8"))
     else:
@@ -146,12 +148,21 @@ def _norm(s: str) -> str:
     return " ".join(re.sub(r"\s+%", "%", s).split())
 
 
+def key_in(key: str, text: str) -> bool:
+    """Answer-key match on token/number boundaries: "5" must not match "15", "0.6%" must not match "10.6%",
+    but "12" matches "12s" and "January 14" matches "January 14th"."""
+    k, t = _norm(key), _norm(text)
+    before = r"(?<![\d.])" if k[:1].isdigit() else r"(?<!\w)"
+    after = r"(?!\d|\.\d)" if k[-1:].isdigit() else r"(?!\w)"
+    return re.search(before + re.escape(k) + after, t) is not None
+
+
 def score(it: dict, rec: dict, rag: bool) -> dict:
     ans = rec["answer"]
     chunks = [Chunk(chunk_id=c["chunk_id"], url="", title=c["title"], text=c["text"]) for c in rec["chunks"]]
     refused = is_refusal(ans)
     beh = it["expected_behavior"]
-    keys_ok = all(_norm(k) in _norm(ans) for k in it["answer_keys"])
+    keys_ok = all(key_in(k, ans) for k in it["answer_keys"])
     cited = cited_indices(ans, len(chunks)) if rag else []
     if beh == "answer":
         passed = not refused and keys_ok
@@ -269,7 +280,7 @@ def save(name: str, split: str, data, merge: bool = False) -> Path:
 
 
 def guard_test(split: str, final: bool) -> None:
-    if split != "test":
+    if split not in ("test", "all"):  # "all" contains the test items too
         return
     if not final:
         raise SystemExit("The test split runs once, after the configuration is frozen: pass --final to confirm.")
@@ -287,6 +298,9 @@ def main():
     ap.add_argument("--configs", nargs="*", default=GENERATION_ORDER)
     a = ap.parse_args()
     items = golden.split_items(a.split)
+    if a.cmd in ("retrieval", "generation", "threshold"):
+        for strategy in {cfg["strategy"] for cfg in RETRIEVAL_CONFIGS.values()}:
+            index.check_in_sync(strategy)
     if a.cmd == "retrieval":
         guard_test(a.split, a.final)
         save("retrieval", a.split, retrieval_eval(items))
@@ -303,7 +317,7 @@ def main():
         if a.split == "test" and all(len(v) == len(items) for v in res.values()) and len(res) == len(a.configs):
             TEST_LOCK.write_text(json.dumps({"at": datetime.now(timezone.utc).isoformat(), "model": llm.MODEL}), "utf-8")
     else:
-        from eval.report import write_report
+        from evaluation.report import write_report
         write_report(a.split)
 
 

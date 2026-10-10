@@ -58,3 +58,29 @@ def test_dense_filter_and_rrf(store):
     x, y = hits[0][0], hits[1][0]
     fused = retrieval.rrf([(x, 1.0), (y, 0.5)], [(y, 0.9)])
     assert fused[0][0].chunk_id == y.chunk_id              # in both lists beats rank 1 in one
+
+
+def test_rechunk_into_same_strategy_is_rejected(store):
+    index.index_chunks(chunking.build("B"))
+    with pytest.raises(SystemExit):
+        index.cmd_rechunk("B", "B")
+    assert index.count({"strategy": "B"}) > 0                 # nothing was deleted
+
+
+def test_rebuild_removes_chunks_a_shrunken_page_no_longer_has(store):
+    chunks = chunking.build("B")
+    index.index_chunks(chunks)
+    chunking.write(chunks[:1], chunking.out_path("B"))       # the page now yields a single chunk
+    result = index.cmd_build("B")
+    assert result == {"chunks": 1, "stale_removed": len(chunks) - 1}
+    assert index.stored_ids("B") == {chunks[0].chunk_id}
+
+
+def test_check_in_sync_detects_unindexed_chunk_file(store):
+    chunks = chunking.build("B")
+    chunking.write(chunks, chunking.out_path("B"))
+    index.index_chunks(chunks[1:])
+    with pytest.raises(SystemExit):
+        index.check_in_sync("B")
+    index.cmd_build("B")
+    index.check_in_sync("B")

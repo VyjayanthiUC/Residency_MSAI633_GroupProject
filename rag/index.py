@@ -106,6 +106,26 @@ def delete_strategy(strategy: str) -> int:
     return n
 
 
+def stored_ids(strategy: str) -> set[str]:
+    return set(collection().get(where={"strategy": strategy}, include=[])["ids"])
+
+
+def remove_stale(strategy: str, keep: set[str]) -> int:
+    """Delete stored chunks of `strategy` that are not in `keep` (e.g. a page that now yields fewer chunks)."""
+    stale = list(stored_ids(strategy) - keep)
+    if stale:
+        collection().delete(ids=stale)
+    return len(stale)
+
+
+def check_in_sync(strategy: str) -> None:
+    """BM25 reads the chunk file and dense search reads Chroma; hybrid fusion is wrong if they disagree."""
+    file_ids = {c.chunk_id for c in load_strategy(strategy)}
+    if file_ids != stored_ids(strategy):
+        raise SystemExit(f"Chunk file and vector store disagree for strategy {strategy}: "
+                         f"run `uv run python -m rag.index build --strategy {strategy}`")
+
+
 def delete_doc(doc_id: str) -> int:
     n = count({"doc_id": doc_id})
     collection().delete(where={"doc_id": doc_id})
@@ -147,29 +167,44 @@ def load_strategy(strategy: str) -> list[Chunk]:
     return load_chunks(path)
 
 
-def cmd_build(strategy: str) -> None:
+def cmd_build(strategy: str) -> dict:
+    """Upsert the strategy's chunk file and delete its stored chunks that the file no longer contains."""
     chunks = load_strategy(strategy)
+    ids = {c.chunk_id for c in chunks}
     secs = index_chunks(chunks)
+    removed = remove_stale(strategy, ids)
+    rep = orphan_report({strategy: ids})
     stored = count({"strategy": strategy})
-    assert stored == len(chunks), f"stored {stored} != {len(chunks)} chunks"
-    write_manifest({f"strategy_{strategy}": {"chunks": len(chunks), "embed_seconds": round(secs, 1)}})
-    print(f"indexed strategy {strategy}: {len(chunks)} chunks in {secs:.1f}s on {device()} -> {CHROMA_DIR}")
+    if stored != len(chunks) or rep["orphan_doc_ids"]:
+        raise SystemExit(f"index out of sync after build: stored {stored} vs {len(chunks)} chunks; {rep}")
+    write_manifest({f"strategy_{strategy}": {"chunks": len(chunks), "stale_removed": removed, "embed_seconds": round(secs, 1)}})
+    print(f"indexed strategy {strategy}: {len(chunks)} chunks ({removed} stale removed) in {secs:.1f}s on {device()} -> {CHROMA_DIR}")
+    return {"chunks": len(chunks), "stale_removed": removed}
 
 
 def cmd_rechunk(old: str, new: str) -> dict:
     """Re-chunk without re-crawling: chunks come from saved docs.jsonl; stale strategy deleted; orphans proven absent."""
+    if old == new:
+        raise SystemExit("old and new strategy are the same: to re-index one strategy, use `build`")
     before = count({"strategy": old})
     new_chunks = chunking.build(new)                 # reads saved normalized docs only — no network
     chunking.write(new_chunks, chunking.out_path(new))
+    new_ids = {c.chunk_id for c in new_chunks}
     secs = index_chunks(new_chunks)
+    remove_stale(new, new_ids)
     deleted = delete_strategy(old)
     after_old = count({"strategy": old})
-    rep = orphan_report({new: {c.chunk_id for c in new_chunks}})
+    rep = orphan_report({new: new_ids})
     result = {"old": old, "new": new, "old_chunks_before": before, "deleted": deleted, "old_chunks_after": after_old,
               "new_chunks": len(new_chunks), "new_indexed": count({"strategy": new}), "embed_seconds": round(secs, 1),
               **rep}
-    assert after_old == 0, f"{after_old} '{old}' chunks still present"
-    assert rep["orphan_doc_ids"] == 0 and rep["orphan_chunk_ids"] == 0, f"orphans remain: {rep}"
+    problems = [msg for bad, msg in [
+        (after_old != 0, f"{after_old} '{old}' chunks still present"),
+        (result["new_indexed"] != len(new_chunks), f"indexed {result['new_indexed']} of {len(new_chunks)} new chunks"),
+        (rep["orphan_doc_ids"] or rep["orphan_chunk_ids"], f"orphans remain: {rep}"),
+    ] if bad]
+    if problems:
+        raise SystemExit("; ".join(problems))
     write_manifest({"last_rechunk": result})
     print(json.dumps(result, indent=2))
     return result
