@@ -1,3 +1,4 @@
+import pytest
 from pathlib import Path
 
 from rag.contract import Chunk, load_chunks
@@ -87,3 +88,41 @@ def test_long_quotes():
     copied = " ".join(f"w{i}" for i in range(5, 35))  # 30 words
     assert long_quotes(f"Intro {copied} [S1].", src) == [copied]
     assert long_quotes(" ".join(f"w{i}" for i in range(0, 25)), src) == []  # exactly 25 is allowed
+
+@pytest.mark.parametrize(
+    "source, answer, expected",
+    [
+        (
+            "Cooldown is 12 seconds.",
+            "Cooldown is 12 seconds.",
+            [],
+        ),
+        (
+            "Cooldown is 12 seconds.",
+            "Cooldown is 15 seconds.",
+            ["15"],
+        ),
+        (
+            "Cooldown is 12.5 seconds.",
+            "Cooldown is 12.6 seconds.",
+            ["12.6"],
+        ),
+        (
+            "The rate is 50%.",
+            "The rate is 60%.",
+            ["60"],
+        ),
+        (
+            "The cost is 1,000 Mora.",
+            "The cost is 1000 Mora.",
+            [],
+        ),
+        (
+            "Cooldown is 12 seconds.",
+            "Cooldown is 15 seconds and remains 15 seconds.",
+            ["15"],
+        ),
+    ],
+)
+def test_number_check_cases(source, answer, expected):
+    assert unsupported_numbers(answer, [source]) == expected
