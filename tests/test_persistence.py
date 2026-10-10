@@ -1,10 +1,6 @@
 import sqlite3
-import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-from persistence import history_from_thread, init_db
+from chat.persistence import history_from_thread, init_db
 
 
 def test_init_db_idempotent(tmp_path):
@@ -35,6 +31,6 @@ def test_history_from_thread_skips_welcome_and_strips_footer():
     ]}
     assert history_from_thread(thread) == [
         {"role": "user", "content": "Lauma skill lv10?"},
-        {"role": "assistant", "content": "218.88% S1"},
+        {"role": "assistant", "content": "218.88%"},  # old-turn S1 badge dropped
         {"role": "user", "content": "and C2?"},
     ]

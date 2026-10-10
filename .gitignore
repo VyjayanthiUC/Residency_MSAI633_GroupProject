@@ -10,11 +10,13 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 
-# Local indexes and caches (rebuild from data/)
+# Generated: chunks, vectors, PDFs, LLM cache, chat history (rebuild from data/ with the README commands)
+artifacts/
 *.sqlite
-chroma/
-qdrant_storage/
-*.faiss
+
+# Chainlit runtime files
+chat/.chainlit/translations/
+chat/.files/
 
 # Editors / OS
 .vscode/

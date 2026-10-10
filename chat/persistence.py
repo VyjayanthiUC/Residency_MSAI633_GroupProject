@@ -2,10 +2,11 @@
 
 Chainlit's chat-history sidebar requires both persistence and authentication to be enabled (see the Chat History docs).
 The schema is the Postgres version from the official docs, with types adapted for SQLite (UUID/JSONB/TEXT[] -> TEXT).
-The database lives at data/threads.sqlite (git-ignored); delete it to clear all history.
+The database lives at artifacts/threads.sqlite (git-ignored); delete it to clear all history.
 """
 from __future__ import annotations
 
+import re
 import sqlite3
 from pathlib import Path
 
@@ -109,5 +110,7 @@ def history_from_thread(thread: dict) -> list[dict]:
         if s.get("type") == "user_message":
             history.append({"role": "user", "content": s.get("output") or ""})
         elif s.get("type") == "assistant_message" and s.get("output") and history:  # skip the welcome message
-            history.append({"role": "assistant", "content": s["output"].split("\n\n---\n")[0]})
+            # displayed answers carry " S1" badges (brackets dropped by app.py); they refer to that turn's sources only
+            text = re.sub(r"\s+S\d+\b", "", s["output"].split("\n\n---\n")[0])
+            history.append({"role": "assistant", "content": text})
     return history
