@@ -103,7 +103,8 @@ def retrieval_eval(items: list[dict]) -> dict:
 def _cache_path(name: str, it: dict, chunks: list[Chunk], note: str) -> Path:
     """Keyed on everything that changes the LLM's input: endpoint, model, prompts, question, and the sources' text."""
     key = json.dumps([config.LLM_BASE_URL, llm.MODEL, name, it["id"], it["question"], note,
-                      [(c.chunk_id, c.text) for c in chunks], llm.ANSWER_PROMPT, llm.CLOSED_BOOK_PROMPT])
+                      [(c.chunk_id, c.text) for c in chunks], llm.ANSWER_PROMPT, llm.CLOSED_BOOK_PROMPT,
+                      llm.SOURCES_OPEN, llm.SOURCES_CLOSE, llm.SOURCES_REMINDER])
     h = hashlib.sha256(key.encode()).hexdigest()[:16]
     item_id = it["id"]
     return CACHE / re.sub(r"[^\w.-]", "_", llm.MODEL) / re.sub(r"[^\w.-]", "_", name) / f"{item_id}-{h}.json"
