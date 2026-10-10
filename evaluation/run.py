@@ -28,8 +28,8 @@ from evaluation import golden
 from rag import config, index
 from rag import generation as llm
 from rag.contract import Chunk
-from rag.grounding import (REFUSAL, SPEND_PROMPT_NOTE, cited_indices, is_refusal, is_spend_question, long_quotes, recommends_spending,
-                       unsupported_numbers)
+from rag.grounding import (REFUSAL, SPEND_PROMPT_NOTE, cited_indices, is_refusal, is_spend_question, long_quotes,
+                       normalize_citations, recommends_spending, unsupported_numbers)
 from rag.retrieval import Pipeline
 
 HERE = Path(__file__).parent
@@ -158,7 +158,7 @@ def key_in(key: str, text: str) -> bool:
 
 
 def score(it: dict, rec: dict, rag: bool) -> dict:
-    ans = rec["answer"]
+    ans = normalize_citations(rec["answer"])  # score what the chat UI shows
     chunks = [Chunk(chunk_id=c["chunk_id"], url="", title=c["title"], text=c["text"]) for c in rec["chunks"]]
     refused = is_refusal(ans)
     beh = it["expected_behavior"]
