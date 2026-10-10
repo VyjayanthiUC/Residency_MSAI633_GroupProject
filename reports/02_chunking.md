@@ -92,7 +92,8 @@ comparison (3,563 chunks, 0 orphans), was not modified.
 
 **Independently reproduced.** The author ran it on a CUDA machine; a second teammate re-ran every check in this report from a clean
 checkout of `main` on a CPU-only machine and got identical counts, token statistics, ID hash and re-chunk result (comment on #7).
-Embedding time differs by hardware: on CPU, A took 2,054 s and B 1,281 s, and the re-chunk run 1,137 s.
+Embedding time differs by hardware, not code: on CPU, embedding took about 34 min for A and 21 min for B (comment on #7); on CUDA,
+the whole re-chunk run embedded B in 50.8 s (`rechunk_A_to_B_2026-10-10.json`).
 
 ## 6. Limitations
 
