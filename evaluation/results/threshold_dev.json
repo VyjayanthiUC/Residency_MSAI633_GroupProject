@@ -1,0 +1,160 @@
+{
+ "model": "nvidia/nemotron-3-super-120b-a12b:free",
+ "split": "dev",
+ "created_at": "2026-10-10T20:27:42.093021+00:00",
+ "data": {
+  "chosen": {
+   "threshold": 0.5396,
+   "over_refusal": 0.043478260869565216,
+   "caught_unanswerable": 1.0,
+   "youden_j": 0.9565217391304348
+  },
+  "scores": [
+   {
+    "id": "unans04",
+    "answerable": false,
+    "top_rerank": 0.0033
+   },
+   {
+    "id": "unans08",
+    "answerable": false,
+    "top_rerank": 0.0387
+   },
+   {
+    "id": "unans03",
+    "answerable": false,
+    "top_rerank": 0.0426
+   },
+   {
+    "id": "unans07",
+    "answerable": true,
+    "top_rerank": 0.1005
+   },
+   {
+    "id": "syn05",
+    "answerable": false,
+    "top_rerank": 0.2314
+   },
+   {
+    "id": "unans06",
+    "answerable": false,
+    "top_rerank": 0.3097
+   },
+   {
+    "id": "unans02",
+    "answerable": false,
+    "top_rerank": 0.314
+   },
+   {
+    "id": "mh01",
+    "answerable": true,
+    "top_rerank": 0.7652
+   },
+   {
+    "id": "temp05",
+    "answerable": true,
+    "top_rerank": 0.77
+   },
+   {
+    "id": "cmp03",
+    "answerable": true,
+    "top_rerank": 0.8701
+   },
+   {
+    "id": "sh15",
+    "answerable": true,
+    "top_rerank": 0.8821
+   },
+   {
+    "id": "mh03",
+    "answerable": true,
+    "top_rerank": 0.8978
+   },
+   {
+    "id": "sh13",
+    "answerable": true,
+    "top_rerank": 0.9676
+   },
+   {
+    "id": "sh11",
+    "answerable": true,
+    "top_rerank": 0.9753
+   },
+   {
+    "id": "sh06",
+    "answerable": true,
+    "top_rerank": 0.9831
+   },
+   {
+    "id": "temp03",
+    "answerable": true,
+    "top_rerank": 0.9843
+   },
+   {
+    "id": "sh12",
+    "answerable": true,
+    "top_rerank": 0.9878
+   },
+   {
+    "id": "syn01",
+    "answerable": true,
+    "top_rerank": 0.9915
+   },
+   {
+    "id": "sh04",
+    "answerable": true,
+    "top_rerank": 0.993
+   },
+   {
+    "id": "sh03",
+    "answerable": true,
+    "top_rerank": 0.9932
+   },
+   {
+    "id": "sh07",
+    "answerable": true,
+    "top_rerank": 0.9937
+   },
+   {
+    "id": "mh04",
+    "answerable": true,
+    "top_rerank": 0.9952
+   },
+   {
+    "id": "temp04",
+    "answerable": true,
+    "top_rerank": 0.9961
+   },
+   {
+    "id": "syn03",
+    "answerable": true,
+    "top_rerank": 0.9975
+   },
+   {
+    "id": "sh16",
+    "answerable": true,
+    "top_rerank": 0.9977
+   },
+   {
+    "id": "cmp04",
+    "answerable": true,
+    "top_rerank": 0.9977
+   },
+   {
+    "id": "sh05",
+    "answerable": true,
+    "top_rerank": 0.9979
+   },
+   {
+    "id": "mh06",
+    "answerable": true,
+    "top_rerank": 0.9989
+   },
+   {
+    "id": "cmp02",
+    "answerable": true,
+    "top_rerank": 0.9991
+   }
+  ]
+ }
+}
