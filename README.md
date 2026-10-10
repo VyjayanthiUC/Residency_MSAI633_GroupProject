@@ -74,7 +74,9 @@ rag/          the pipeline — one module per stage, all settings in rag/config.
   grounding.py  citation parsing, refusal, number check, quote limit, spend-advice and referral guards
 ingest/       stages 1–2: crawler + extractor (see ingest/README.md for the output contract), PDF path
 evaluation/   golden set, frozen dev/test split, harness (run.py), report tables (report.py), results/
-chat/         Chainlit UI (app.py, persistence, chainlit config)
+chat/         Chainlit UI (app.py, persistence, chainlit config), mounted at /chat
+web/          site at / built only from data/genshin/normalized/md (wiki.py), with a chat pop-up that opens /chat;
+              server.py serves both on one port (FastAPI + mount_chainlit), templates/, static/
 tests/        pytest suite
 data/         committed corpus snapshot (CC BY-SA, see data/ATTRIBUTION.md)
 reports/      00 proposal … 07 ethics
@@ -96,6 +98,8 @@ uv run python -m rag.index build --strategy A         # embeddings -> local Chro
 uv run python -m rag.index build --strategy B
 uv run pytest -q
 ./run.sh                                              # Windows PowerShell: powershell -ExecutionPolicy Bypass -File run.ps1
+# -> http://127.0.0.1:8800       site (every wiki page in the snapshot) with the chat pop-up (bottom-right)
+# -> http://127.0.0.1:8800/chat  full chat UI with history
 ```
 
 To change a model, chunk size, `k` or threshold, set it in `.env` (all options are listed in `.env.example`).
