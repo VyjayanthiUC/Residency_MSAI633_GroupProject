@@ -172,8 +172,16 @@ document.querySelectorAll(WIKI_IMG).forEach(i => { if (i.complete && !i.naturalW
   };
   v.addEventListener("playing", () => { v.classList.add("on"); btn.hidden = false; fails = 0; });
   // Browsers may pause muted background video to save power (hidden tab, off screen): resume when it can play again.
-  const resume = () => { if (started && !paused && v.paused && !document.hidden) v.play().catch(() => {}); };
+  // The visitor didn't pause it (paused === false), so any other pause is the browser's: try again, a few times.
+  let retries = 0;
+  const resume = () => {
+    if (!started || paused || !v.paused || v.ended || retries > 8) return;
+    retries++;
+    v.play().catch(() => {});
+  };
   v.addEventListener("canplay", resume);
+  v.addEventListener("pause", () => setTimeout(resume, 400));
+  v.addEventListener("playing", () => { retries = 0; });
   document.addEventListener("visibilitychange", resume);
   new IntersectionObserver(es => es[0].isIntersecting && resume()).observe(v);
   v.addEventListener("ended", () => { i = (i + 1) % reel.length; load(); });
