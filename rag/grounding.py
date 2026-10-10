@@ -4,8 +4,41 @@ from __future__ import annotations
 import re
 
 REFUSAL = "I don't have that information in the wiki snapshot."
+REFUSAL_ZH = "维基快照里没有这方面的信息。"
+_CJK = re.compile(r"[㐀-鿿]")
+
+
+def is_chinese(text: str) -> bool:
+    return bool(_CJK.search(text))
+
+
+def refusal_for(question: str) -> str:
+    """The refusal in the question's language: a below-threshold refusal never reaches the LLM, so it can't translate."""
+    return REFUSAL_ZH if is_chinese(question) else REFUSAL
+
+
+# Whole-message greetings, thanks and "who are you": answered with a welcome, never sent to retrieval.
+# ASCII messages skip the LLM rewrite (which classifies the rest), so English small talk needs this check.
+_CHITCHAT = re.compile(
+    r"^\s*(?:(?:hi|hello|hey|yo|hiya|thanks|thank you|thx|ty|ok|okay|cool|bye|goodbye|good (?:morning|afternoon|evening|night)"
+    r"|are you there|who are you|what can you do|what do you do|help)(?:\s+(?:there|bot|so much|a lot))?"
+    r"|你好|您好|嗨|哈喽|在吗|在么|在不在|谢谢|多谢|感谢|好的|再见|拜拜|你是谁|你能干嘛|你能做什么|你会什么)"
+    r"\s*[!！.。?？~～,，]*\s*$",
+    re.I,
+)
+
+
+def is_chitchat(message: str) -> bool:
+    return bool(_CHITCHAT.match(message))
 
 _CITE = re.compile(r"\[S(\d+)\]")
+# Some models write full-width brackets (【S2】) despite the [S2] example in the prompt
+_FULLWIDTH_CITE = re.compile(r"【\s*S(\d+)\s*】")
+
+
+def normalize_citations(answer: str) -> str:
+    """Rewrite 【Sn】 as [Sn], so every citation check below and the UI badges see one format. Apply once per answer."""
+    return _FULLWIDTH_CITE.sub(r"[S\1]", answer)
 
 # Questions about real money or accounts: the wiki can't and shouldn't answer these, refer to official support.
 # Game terms collide with naive keywords ("Charged Attack", shop "purchase", "take into account"), so each
@@ -71,7 +104,9 @@ def is_refusal(answer: str) -> bool:
 
     A partial answer ("X is ... [S1]. I don't have that information ...") cites sources and is NOT a refusal.
     """
-    return REFUSAL.lower().rstrip(".") in answer.lower() and not _CITE.search(answer)
+    low = answer.lower()
+    said = REFUSAL.lower().rstrip(".") in low or REFUSAL_ZH.rstrip("。") in answer
+    return said and not _CITE.search(answer)
 
 
 def needs_referral(question: str) -> bool:
