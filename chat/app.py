@@ -158,7 +158,7 @@ async def on_message(message: cl.Message):
                                                SPEND_PROMPT_NOTE if is_spend_question(question) else ""):
                 await msg.stream_token(tok)
             answer = normalize_citations(msg.content)
-        except openai.APIError as e:
+        except (openai.APIError, llm.EmptyCompletion) as e:
             msg.content = f"> ⚠️ The language model is unavailable right now ({type(e).__name__}). Please try again shortly."
             await msg.update()
             return
