@@ -11,7 +11,7 @@ from openai import AsyncOpenAI
 
 from rag import config
 from rag.contract import Chunk
-from rag.grounding import REFUSAL
+from rag.grounding import REFUSAL, REFUSAL_ZH, is_chitchat, is_spend_question, needs_referral
 
 MODEL = config.LLM_MODEL
 
@@ -40,7 +40,11 @@ def client(max_retries: int = EVAL_RETRIES) -> AsyncOpenAI:
 REWRITE_PROMPT = """Rewrite the user's latest message into ONE standalone English search query for a Genshin Impact wiki.
 Resolve pronouns and follow-ups using the conversation (e.g. "her C2?" -> "Lauma constellation 2").
 Translate non-English questions into English. Keep character, talent, weapon and version names exactly.
+If the latest message is not a question about Genshin Impact (a greeting, thanks, small talk, or a question about you),
+output exactly CHITCHAT.
 Output only the query, nothing else."""
+
+CHITCHAT = "CHITCHAT"
 
 ANSWER_PROMPT = f"""You answer questions about Genshin Impact using ONLY the numbered wiki sources below.
 
@@ -54,6 +58,7 @@ Rules:
 - If the sources answer only part of the question, answer that part with citations and state which part is missing.
   Do not refuse a question that the sources partly answer.
 - Only if the sources contain nothing that answers any part of the question, reply with exactly: {REFUSAL}
+  (for a question asked in Chinese, reply with exactly: {REFUSAL_ZH})
 - Reply in the same language as the user's question. Keep it concise."""
 
 
@@ -66,6 +71,9 @@ def format_sources(chunks: list[Chunk]) -> str:
 
 
 async def rewrite_query(history: list[dict], question: str) -> str:
+    """A standalone English search query, or CHITCHAT when the message is not a question to search for."""
+    if is_chitchat(question):
+        return CHITCHAT
     # Nothing to resolve or translate: skip the call (it would cost half of each turn's rate-limited requests)
     if not history and question.isascii():
         return question
@@ -80,6 +88,9 @@ async def rewrite_query(history: list[dict], question: str) -> str:
         ],
     )
     q = (resp.choices[0].message.content or "").strip().strip('"')
+    if q.upper().rstrip(".") == CHITCHAT:
+        # Money and account questions are off-topic for the wiki but must still reach the referral/spend safeguards
+        return question if needs_referral(question) or is_spend_question(question) else CHITCHAT
     return q or question
 
 
