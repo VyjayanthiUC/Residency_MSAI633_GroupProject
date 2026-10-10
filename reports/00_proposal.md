@@ -9,7 +9,7 @@
 
 **Hypothesis.** On a scraped, table-heavy game-wiki corpus, a pipeline that combines *structure-aware chunking*, *hybrid (BM25 + dense) retrieval*, and *cross-encoder reranking* (B3) will achieve significantly higher answer correctness and correct-refusal rate than a dense-only retriever over naive fixed-size chunks (B2), measured on a human-verified golden set with a 95% bootstrap confidence interval or McNemar's test. This matters because most published RAG evaluations use general-domain corpora such as Wikipedia; far fewer test retrieval on table-heavy, frequently versioned domain content, where exact numbers and effective dates decide whether an answer is correct and where a wrong answer can cost users real money.
 
-**Supporting sources.**
+**Supporting Sources**
 
 1. Lewis et al. (2020) introduced retrieval-augmented generation and showed that conditioning a generator on retrieved passages improves factual accuracy on knowledge-intensive tasks compared with parametric-only models. This motivates our B0 (closed-book) vs. retrieval comparison.
 2. Karpukhin et al. (2020) showed that dense passage retrieval outperforms BM25 on open-domain QA — the basis for our dense retriever and for including dense retrieval in the hybrid.
@@ -18,7 +18,7 @@
 5. Es et al. (2024) proposed RAGAS, separating retrieval quality from answer faithfulness in RAG evaluation — the framing behind reporting retrieval metrics and grounded-answer metrics separately.
 6. Reimers and Gurevych (2019) introduced Sentence-BERT, showing that siamese sentence-embedding networks make semantic similarity search over large collections both accurate and fast — the foundation of the bi-encoder embedding models (such as bge-m3) used in our dense retriever.
 
-**Opposing sources.**
+**Opposing Sources**
 
 1. Thakur et al. (2021), the BEIR benchmark, found that BM25 remains a strong baseline and that dense retrievers often fail to beat it out of domain. Our corpus (game-specific names and terms) is exactly such a domain, so dense retrieval may *not* help — we test this directly with B1 (BM25 only) vs. B2.
 2. Liu et al. (2024), "Lost in the Middle," found that LLMs use information at the start and end of long contexts far better than information in the middle. More retrieved context is not automatically better, which is why we cap generation context at the top 5 reranked chunks and measure over-refusal.
@@ -30,9 +30,9 @@
 
 | Member | GitHub | Role | Owns |
 |---|---|---|---|
-| Gudla, Shyamala Keerthi | @ShyamalaKeerthi | Product Manager | Scope, schedule, issue board, presentation |
+| Gudla, Shyamala Keerthi | @ShyamalaKeerthi | Product Manager | Define Project Scope, managing timelines, chatbot testing, validate functionality and response accuracy, final project presentation |
 | Kamath, Vyjayanthi (VJ) | @VyjayanthiUC | Lead Analyst | Repository admin, golden set review, final performance report |
-| Konkayala, Deep | _[handle]_ | AI Engineer / Architect | Embedding, retrieval, reranking |
+| Konkayala, Deep | @deepkse | AI Engineer / Architect | Embedding, retrieval, reranking |
 | Daniel, Ibukun | @ibkcode | Software Engineer | Chunking (strategies A and B), Chroma vector store, re-chunk migration and orphan check, CI tests |
 | Ban, Sohyun | @Eva103 | QA & Evaluation Engineer | Chatbot testing, citation/refusal validation, error analysis |
 | Akpe, Oyin | @oyinakpe2-firstgrandprince | _[role]_ | _[stages]_ |
