@@ -1,0 +1,17 @@
+{
+  "old": "A",
+  "new": "B",
+  "old_chunks_before": 1345,
+  "deleted": 1345,
+  "old_chunks_after": 0,
+  "new_chunks": 2218,
+  "new_indexed": 2218,
+  "embed_seconds": 50.8,
+  "total": 2218,
+  "by_strategy": {
+    "B": 2218
+  },
+  "orphan_doc_ids": 0,
+  "orphan_chunk_ids": 0,
+  "examples": []
+}
