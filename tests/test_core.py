@@ -38,6 +38,26 @@ def test_unsupported_numbers_ignores_citations_and_ids():
     assert unsupported_numbers("It costs 160 Primogems.", src) == ["160"]
 
 
+def test_unsupported_numbers_canonical_form():
+    # duplicates are judged after dropping separators, so the same wrong value is reported once
+    assert unsupported_numbers("It costs 1,500 Mora, yes 1,500 or 1500.", ["It costs 1,000 Mora."]) == ["1,500"]
+    # trailing decimal zeros don't change the value, on either side
+    assert unsupported_numbers("Cooldown is 12.50s.", ["Cooldown is 12.5s."]) == []
+    assert unsupported_numbers("Cooldown is 12.5s.", ["Cooldown is 12.50s."]) == []
+    assert unsupported_numbers("It lasts 20s.", ["It lasts 20.0s."]) == []
+    # a prefix of a longer source number is still unsupported
+    assert unsupported_numbers("Cooldown is 12s.", ["Cooldown is 12.5s."]) == ["12"]
+    assert unsupported_numbers("It costs 100 Mora.", ["It costs 1000 Mora."]) == ["100"]
+
+
+def test_long_quotes_ignore_apostrophe_style_and_fullwidth_citations():
+    src = ("After Lauma uses her Elemental Skill or her Elemental Burst, she will gain Threads of Life for 20s, and "
+           "nearby party members' Lunar-Bloom reactions will heal the active character's HP by a large amount.")
+    assert long_quotes(src.replace("'", "’"), [src])  # models write ’ where the wiki has '
+    assert long_quotes(src, [src.replace("'", "’")])
+    assert long_quotes(src.replace("20s,", "20s 【S1】,"), [src])
+
+
 def test_bm25_pipeline_shapes_and_order(monkeypatch):
     monkeypatch.setattr(retrieval, "bm25_for", lambda strategy: retrieval.BM25(load_chunks(FIXTURE)))
     pool, final = retrieval.Pipeline(mode="bm25", rerank=False).retrieve("Lauma elemental skill press DMG", 20, 5)
