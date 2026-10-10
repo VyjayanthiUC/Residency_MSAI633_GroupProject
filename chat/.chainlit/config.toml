@@ -193,5 +193,12 @@ default_avatar_file_url = ""
 #     url = "https://github.com/Chainlit/chainlit/issues"
 #     target = "_blank" (default)  # Optional: "_self", "_parent", "_top".
 
+[[UI.header_links]]
+    name = "Home"
+    display_name = "FanBot home"
+    icon_url = "/static/about.svg"
+    url = "/"
+    target = "_top"
+
 [meta]
 generated_by = "2.12.0"
