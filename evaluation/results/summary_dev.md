@@ -34,17 +34,17 @@ Top rerank score threshold 0.5396: catches 100% of unanswerable dev items before
 
 | Config | n | Pass rate | Correct (answerable) | Correct refusal (unanswerable) | Over-refusal (answerable) | Citation valid | Unsupported numbers / answer | Spend advice given | p50 latency (s) | Tokens / query |
 |---|---|---|---|---|---|---|---|---|---|---|
-| B0 closed-book | 32 | 0.375 [0.22, 0.56] | 0.130 [0.00, 0.26] | 1.000 [1.00, 1.00] | 0.696 [0.52, 0.87] | n/a | nan | n/a | 2.01 | 156 |
-| B3 hybrid/B+rerank | 32 | 0.812 [0.66, 0.94] | 0.739 [0.57, 0.91] | 1.000 [1.00, 1.00] | 0.043 [0.00, 0.13] | 0.864 [0.73, 1.00] | 0.03 | 0 | 1.73 | 1697 |
-| B2 dense/A | 32 | 0.781 [0.62, 0.91] | 0.739 [0.57, 0.91] | 0.833 [0.50, 1.00] | 0.043 [0.00, 0.13] | 0.818 [0.64, 0.95] | 0.03 | 0 | 1.58 | 2310 |
-| B1 bm25/A | 32 | 0.719 [0.56, 0.88] | 0.696 [0.52, 0.87] | 0.667 [0.33, 1.00] | 0.043 [0.00, 0.13] | 0.727 [0.55, 0.91] | 0.09 | 0 | 1.75 | 2401 |
-| +struct dense/B | 32 | 0.719 [0.56, 0.88] | 0.739 [0.57, 0.91] | 0.500 [0.17, 0.83] | 0.043 [0.00, 0.13] | 0.727 [0.55, 0.91] | 0.03 | 0 | 1.69 | 1622 |
-| +hybrid hybrid/B | 32 | 0.750 [0.59, 0.88] | 0.739 [0.57, 0.91] | 0.667 [0.33, 1.00] | 0.043 [0.00, 0.13] | 0.727 [0.55, 0.91] | 0.03 | 0 | 1.55 | 1609 |
+| B0 closed-book | 32 | 0.375 [0.22, 0.53] | 0.174 [0.04, 0.35] | 1.000 [1.00, 1.00] | 0.565 [0.35, 0.78] | n/a | nan | n/a | 1.81 | 147 |
+| B3 hybrid/B+rerank | 32 | 0.844 [0.72, 0.97] | 0.783 [0.61, 0.91] | 1.000 [1.00, 1.00] | 0.043 [0.00, 0.13] | 0.773 [0.59, 0.95] | 0.03 | 0 | 1.65 | 1710 |
+| B2 dense/A | 32 | 0.812 [0.66, 0.94] | 0.739 [0.57, 0.91] | 1.000 [1.00, 1.00] | 0.043 [0.00, 0.13] | 0.864 [0.73, 1.00] | 0.03 | 0 | 1.60 | 2336 |
+| B1 bm25/A | 32 | 0.750 [0.59, 0.88] | 0.739 [0.57, 0.91] | 0.667 [0.33, 1.00] | 0.043 [0.00, 0.13] | 0.727 [0.55, 0.91] | 0.03 | 0 | 1.66 | 2417 |
+| +struct dense/B | 32 | 0.750 [0.59, 0.88] | 0.739 [0.57, 0.91] | 0.667 [0.33, 1.00] | 0.043 [0.00, 0.13] | 0.727 [0.55, 0.91] | 0.03 | 0 | 1.55 | 1643 |
+| +hybrid hybrid/B | 32 | 0.781 [0.62, 0.91] | 0.696 [0.52, 0.87] | 1.000 [1.00, 1.00] | 0.043 [0.00, 0.13] | 0.636 [0.45, 0.82] | 0.03 | 0 | 1.48 | 1628 |
 
 | McNemar (exact, per-item pass/fail) | n | A fail → B pass | A pass → B fail | p |
 |---|---|---|---|---|
-| B2 dense/A → B3 hybrid/B+rerank | 32 | 2 | 1 | 1.000 |
-| B0 closed-book → B3 hybrid/B+rerank | 32 | 14 | 0 | 0.000 |
+| B2 dense/A → B3 hybrid/B+rerank | 32 | 1 | 0 | 1.000 |
+| B0 closed-book → B3 hybrid/B+rerank | 32 | 16 | 1 | 0.000 |
 | B1 bm25/A → B3 hybrid/B+rerank | 32 | 3 | 0 | 0.250 |
 
 **On the items B0 (closed-book) got wrong:**
@@ -52,19 +52,18 @@ Top rerank score threshold 0.5396: catches 100% of unanswerable dev items before
 | Config | n | Pass rate |
 |---|---|---|
 | B0 closed-book | 20 | 0.000 [0.00, 0.00] |
-| B3 hybrid/B+rerank | 20 | 0.700 [0.50, 0.90] |
-| B2 dense/A | 20 | 0.750 [0.55, 0.90] |
-| B1 bm25/A | 20 | 0.700 [0.50, 0.90] |
-| +struct dense/B | 20 | 0.750 [0.55, 0.90] |
+| B3 hybrid/B+rerank | 20 | 0.800 [0.60, 0.95] |
+| B2 dense/A | 20 | 0.800 [0.60, 0.95] |
+| B1 bm25/A | 20 | 0.800 [0.60, 0.95] |
+| +struct dense/B | 20 | 0.800 [0.60, 0.95] |
 | +hybrid hybrid/B | 20 | 0.750 [0.55, 0.90] |
 
 ## B3 failures (for error analysis)
 
 | Item | Category | Expected | Got (truncated) | Failure label (fill in) |
 |---|---|---|---|---|
-| sh06 | single_hop | It is a 5-star Claymore. | A Teaspoon of Transcendence is a 5-star claymore. [S1][S3] | |
-| mh01 | multi_hop | Version 7.0, officially titled "Everwinter Without Mercy." | The rerun ran during Version 7.0 [S1][S3]. The sources only label it as "Version 7.0" and don't provide any special title/name for the version beyond that. | |
-| mh04 | multi_hop | Nightweaver's Looking Glass, with 542 base ATK at level 90. | Nightweaver's Looking Glass runs alongside Lauma's "Moonsong of the Groves" Wish [S1][S2]. Its base ATK at level 90 isn't in the wiki snapshot. | |
-| mh06 | multi_hop | Illuga, released February 03, 2026. | Demonhunter's Dusk is the 4th Ascension Passive of Illuga [S1][S2]. It enhances Nightingale's Song: with 1/2/3 Hydro or Geo characters in the party, DMG increas | |
-| cmp04 | comparative | Tartaglia, released November 11, 2020, well before Wanderer's December 07, 2022 release. | Tartaglia was released earlier. His first banner, Farewell of Snezhnaya, ran from November 11 to December 1, 2020 in Version 1.1 [S5]. The Wanderer is a playabl | |
+| sh06 | single_hop | It is a 5-star Claymore. | It is a 5-star claymore [S1][S3]. | |
+| mh01 | multi_hop | Version 7.0, officially titled "Everwinter Without Mercy." | The rerun ran in Version 7.0 [S1][S3]. The wiki snapshot doesn't give a special version title beyond "Version 7.0." | |
+| mh04 | multi_hop | Nightweaver's Looking Glass, with 542 base ATK at level 90. | Nightweaver's Looking Glass runs alongside Moonsong of the Groves [S1][S2]. The wiki snapshot doesn't include its base ATK at level 90. | |
+| mh06 | multi_hop | Illuga, released February 03, 2026. | Demonhunter's Dusk is Illuga's 4th Ascension Passive [S1][S2]. However, the wiki snapshot does not contain Illuga's release date, so I can't answer that part. | |
 | unans07 | adversarial | There is no Pyro-Dendro Resonance; each Elemental Resonance (except Protective Canopy) requires two or more characters of the same element. | I don't have that information in the wiki snapshot. | |
