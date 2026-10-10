@@ -11,11 +11,13 @@ Every factual claim cites the page it came from, and when the corpus does not su
 
 | Member | GitHub | Role |
 |---|---|---|
-| | @VyjayanthiUC | |
-| | @ibkcode | |
-| | @ShyamalaKeerthi | |
-| | @oyinakpe2-firstgrandprince | |
-| Li, Yanwei | @Saweisra | |
+| Gudla, Shyamala Keerthi | @ShyamalaKeerthi | Product Manager |
+| Kamath, Vyjayanthi (VJ) | @VyjayanthiUC | Lead Analyst |
+| Konkayala, Deep | @deepkse | AI Engineer / Architect |
+| Daniel, Ibukun | @ibkcode | AI Engineer |
+| Ban, Sohyun | @Eva103 | QA & Evaluation Engineer |
+| Akpe, Oyin | @oyinakpe2-firstgrandprince | Project Manager |
+| Li, Yanwei | @Saweisra | Data & Evaluation Engineer |
 
 ## Pipeline
 
