@@ -139,6 +139,11 @@ def stars(info: dict) -> str:
     return f'<span class="stars"><span aria-hidden="true">{"★" * n}</span><span class="sr">{n}-star</span></span>' if n else ""
 
 
+def ask_name(p: Page) -> str:
+    """What the Ask buttons call a page: "Version 7.0" rather than "7.0", so retrieval can match it (review on #90)."""
+    return f"Version {p.title.removeprefix('Version/')}" if p.type == "version" else p.title
+
+
 def img(p: Page, size: str, cls: str, lazy: bool = True) -> str:
     """Decorative picture from the wiki's image server (alt="" because the title next to it names the same thing).
     No referrer is sent, and site.js hides the picture if it fails to load."""
@@ -166,7 +171,7 @@ def card(p: Page, version_titles: dict[str, str]) -> str:
     return (f'<li class="card" data-search="{e((p.title + " " + " ".join(meta)).lower())}"{style}>'
             f'{img(p, "thumb", "thumb")}{stars(i)}<h3><a href="/wiki/{e(p.slug)}">{e(title)}</a></h3>'
             f'<span class="meta">{meta_html}</span>'
-            f'<button type="button" class="ask" data-q="Tell me about {e(title)}.">Ask about {e(title)}</button></li>')
+            f'<button type="button" class="ask" data-q="Tell me about {e(ask_name(p))}.">Ask about {e(title)}</button></li>')
 
 
 # --- compact formats (team feedback: too many flat cards) ---
@@ -252,7 +257,7 @@ def table_section(t: str, label: str, group: list[Page], titles: dict[str, str])
         rest = "".join(f'<td data-sort="{e(k or v)}">{rating(int(k)) if h == "Rarity" and k else e(v)}</td>'
                        for (v, k), (h, _) in zip(cs[1:], head[1:]))
         trs.append(f'<tr data-search="{e(" ".join(v for v, _ in cs).lower())}">{first}{rest}'
-                   f'<td><button type="button" class="ask" data-q="Tell me about {e(p.title.removeprefix("Version/"))}." '
+                   f'<td><button type="button" class="ask" data-q="Tell me about {e(ask_name(p))}." '
                    f'aria-label="Ask about {e(name)}">Ask</button></td></tr>')
     page_attr = f' data-page-size="{PAGE_SIZE[t]}"' if t in PAGE_SIZE else ""   # site.js adds the page buttons
     return (f'<section class="block" id="{t}"><h2>{e(label)} <span class="count">{len(group)}</span></h2>'
@@ -363,7 +368,7 @@ def page_body(p: Page) -> str:
               if p.url else "")
     head = (f'<p class="crumbs"><a href="/">Home</a> › {e(dict(SECTIONS).get(p.type, p.type))}</p>'
             f'<h1>{e(title)}</h1><div class="pageactions">'
-            f'<button type="button" class="ask btn" data-q="Tell me about {e(title)}.">Ask about {e(title)}</button>{source}</div>')
+            f'<button type="button" class="ask btn" data-q="Tell me about {e(ask_name(p))}.">Ask about {e(title)}</button>{source}</div>')
     banner = img(p, "banner", "bannerimg", lazy=False)
     if banner:   # characters (wish art) and versions (splash screen) get a full-width banner header
         top = f'<div class="banner pagebanner">{banner}<div class="bannertext">{head}</div></div>'

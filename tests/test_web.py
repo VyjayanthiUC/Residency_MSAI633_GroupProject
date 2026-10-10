@@ -95,3 +95,10 @@ def test_search_count_is_visible_under_the_box_and_hidden_really_hides():
     assert 'class="sr" id="results"' not in home                  # visible, not screen-reader only
     css = (Path(wiki.__file__).parent / "static" / "site.css").read_text()
     assert "[hidden] { display: none !important; }" in css      # .card's display:flex must not beat [hidden]
+
+
+def test_version_ask_buttons_name_the_version():
+    home = wiki.home_body()
+    assert 'data-q="Tell me about Version 7.0."' in home and 'data-q="Tell me about 7.0."' not in home
+    v = next(p for p in wiki.pages().values() if p.title == "Version/7.0")
+    assert 'data-q="Tell me about Version 7.0."' in wiki.page_body(v)
