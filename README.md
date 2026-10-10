@@ -89,7 +89,7 @@ present (CUDA build of torch on Windows/Linux); CPU works, just slower. First ru
 `BAAI/bge-reranker-v2-m3` (~2.3 GB each) to the Hugging Face cache.
 
 ```bash
-cp .env.example .env                                  # add LLM_API_KEY (OpenRouter key; free models by default)
+cp .env.example .env                                  # add LLM_API_KEY (OpenRouter key; default model z-ai/glm-5.3-flash needs a few dollars of credit)
 uv sync
 uv run python -m rag.chunking                         # docs.jsonl -> artifacts/chunks_A.jsonl, chunks_B.jsonl
 uv run python -m rag.index build --strategy A         # embeddings -> local Chroma (artifacts/chroma/)

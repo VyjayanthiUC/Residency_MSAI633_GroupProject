@@ -51,5 +51,5 @@ REFUSE_BELOW = _env("REFUSE_BELOW", 0.52)
 
 # Generation (stage 9): any OpenAI-compatible API; the GLM_* / ZAI_API_KEY names are kept as a fallback
 LLM_BASE_URL = os.environ.get("LLM_BASE_URL") or os.environ.get("GLM_BASE_URL") or "https://openrouter.ai/api/v1"
-LLM_MODEL = os.environ.get("LLM_MODEL") or os.environ.get("GLM_MODEL") or "nvidia/nemotron-3-super-120b-a12b:free"
+LLM_MODEL = os.environ.get("LLM_MODEL") or os.environ.get("GLM_MODEL") or "z-ai/glm-5.3-flash"
 LLM_API_KEY = os.environ.get("LLM_API_KEY") or os.environ.get("ZAI_API_KEY") or ""
