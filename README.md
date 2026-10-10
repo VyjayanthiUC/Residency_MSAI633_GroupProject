@@ -5,7 +5,7 @@ Team project for MSAI 633 (Ethics in Artificial Intelligence), Fall 2026 residen
 We are building a chatbot that answers real user questions using **only** content scraped from one public website.
 Every factual claim cites the page it came from, and when the corpus does not support an answer, the chatbot says so instead of guessing.
 
-> **Status:** project kickoff. Domain, corpus plan, and stack are defined in the Day 1 proposal (`reports/00_proposal.md`).
+> **Status:** end-to-end pipeline running (hybrid retrieval + reranker, cited generation, two ethics safeguards); evaluation in progress. Proposal: `reports/00_proposal.md`.
 
 ## Team
 
@@ -61,9 +61,59 @@ scrape → extraction → chunking → embedding → vector database
 - **Use the shared corpus snapshot** in `data/` instead of re-crawling the live site. Don't hand-edit it; a new crawl goes in as a new snapshot via PR.
 - **Track work in Issues** — each pipeline stage and each report has an owner.
 
+## Repository layout
+
+```
+rag/          the pipeline — one module per stage, all settings in rag/config.py
+  config.py     paths, models, chunk sizes, k, fusion depth, refusal threshold (each overridable in .env)
+  contract.py   Chunk dataclass + Retriever protocol: the interface between pipeline and UI
+  chunking.py   stage 3: strategies A (fixed 512/64) and B (structure-aware), deterministic chunk IDs
+  index.py      stages 4–6: embeddings, Chroma store, delete path, re-chunk + orphan check
+  retrieval.py  stages 7–8: BM25 / dense / hybrid RRF, cross-encoder reranker (Pipeline)
+  generation.py stage 9: query rewrite + cited answers over any OpenAI-compatible LLM
+  grounding.py  citation parsing, refusal, number check, quote limit, spend-advice and referral guards
+ingest/       stages 1–2: crawler + extractor (see ingest/README.md for the output contract), PDF path
+evaluation/   golden set, frozen dev/test split, harness (run.py), report tables (report.py), results/
+chat/         Chainlit UI (app.py, persistence, chainlit config)
+tests/        pytest suite
+data/         committed corpus snapshot (CC BY-SA, see data/ATTRIBUTION.md)
+reports/      00 proposal … 07 ethics
+artifacts/    generated, git-ignored: chunks, vectors, PDFs, LLM cache, chat history
+```
+
 ## Setup
 
-_To be added with the first code commit: environment, dependencies, and the commands that reproduce every reported number._
+One [uv](https://docs.astral.sh/uv/) project at the repo root (Python 3.12); `uv sync` installs the packages in editable
+mode, so every command runs from the repo root. An NVIDIA GPU is used automatically for embedding and reranking when
+present (CUDA build of torch on Windows/Linux); CPU works, just slower. First runs download `BAAI/bge-m3` and
+`BAAI/bge-reranker-v2-m3` (~2.3 GB each) to the Hugging Face cache.
+
+```bash
+cp .env.example .env                                  # add LLM_API_KEY (OpenRouter key; free models by default)
+uv sync
+uv run python -m rag.chunking                         # docs.jsonl -> artifacts/chunks_A.jsonl, chunks_B.jsonl
+uv run python -m rag.index build --strategy A         # embeddings -> local Chroma (artifacts/chroma/)
+uv run python -m rag.index build --strategy B
+uv run pytest -q
+./run.sh                                              # Windows PowerShell: powershell -ExecutionPolicy Bypass -File run.ps1
+```
+
+To change a model, chunk size, `k` or threshold, set it in `.env` (all options are listed in `.env.example`).
+
+Reproducing the reported numbers (results land in `evaluation/results/`):
+
+| Command | Produces |
+|---|---|
+| `uv run python -m evaluation.golden validate` | checks every golden-set needle against the corpus and both chunkings |
+| `uv run python -m evaluation.run retrieval --split dev` | Recall@5/@20, MRR, nDCG@10, latency for B1, B2, the ablation and B3 |
+| `uv run python -m evaluation.run threshold --split dev` | rerank refusal threshold (dev only) |
+| `uv run python -m evaluation.run generation --split dev --max-calls 40` | B3, B2, B0, B1 answers (cached; resumable under rate limits) |
+| `uv run python -m evaluation.run report --split dev` | `summary_dev.md` with 95% bootstrap CIs and McNemar |
+| `uv run python -m ingest.pdfs` | rendered-PDF extraction vs HTML extraction |
+| `CHROMA_DIR=artifacts/chroma_rechunk_demo uv run python -m rag.index rechunk --old A --new B` | re-chunk without re-crawl, stale deletion, orphan check (on a copy of the index) |
+| `... --split test --final` | the single held-out test run, after the configuration is frozen |
+
+The corpus snapshot is CC BY-SA; see [`data/ATTRIBUTION.md`](data/ATTRIBUTION.md).
 
 ## AI usage
 
@@ -71,4 +121,6 @@ AI tools are allowed and documented here at every milestone: which tool, what it
 
 | Date | Tool | Used for | Artifact | Human check |
 |---|---|---|---|---|
-| | | | | |
+| 2026-10-10 | Claude Code (Claude Opus 5.5) | Code review of proposal, chat UI and data snapshot; bug fixes (referral false positives, partial-answer refusal, stale citations in history); spend-advice guard; quote-limit check | `rag/grounding.py`, `chat/app.py`, `rag/generation.py`, tests | Deep Konkayala reviewed the diffs and ran the app; teammate PR review pending |
+| 2026-10-10 | Claude Code (Claude Opus 5.5) | Implemented chunking A/B, bge-m3 + Chroma index, re-chunk/orphan check, hybrid retrieval + reranker, PDF path, evaluation harness | `rag/`, `ingest/pdfs.py`, `evaluation/run.py`, `evaluation/report.py` | Deep Konkayala; unit tests (27) pass; teammate PR review pending |
+| 2026-10-10 | Claude Code (Claude Opus 5.5) | **Drafted** all 46 golden-set items from corpus pages (question, gold answer, evidence needles, quote) | `evaluation/golden.jsonl` | **Not yet verified** — each item needs a teammate to check it against the live page and set `verified_by` |
