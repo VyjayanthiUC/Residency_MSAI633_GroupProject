@@ -99,6 +99,23 @@ def test_long_quotes():
     assert long_quotes(" ".join(f"w{i}" for i in range(0, 25)), src) == []  # exactly 25 is allowed
 
 
+def test_refusal_in_question_language():
+    from rag.grounding import REFUSAL_ZH, refusal_for
+    assert refusal_for("What element is Lauma?") == REFUSAL
+    assert refusal_for("菈乌玛是什么元素") == REFUSAL_ZH
+    assert is_refusal(REFUSAL_ZH)
+    assert not is_refusal("菈乌玛是草元素[S1]。" + REFUSAL_ZH)
+
+
+def test_chitchat_whole_message_only():
+    from rag.grounding import is_chitchat
+    for m in ["hi", "Hello!", "thanks", "thank you so much", "在么", "你好！", "谢谢~", "你能干嘛？", "who are you?"]:
+        assert is_chitchat(m), m
+    for m in ["hi, what element is Lauma?", "Thanks — and her C2?", "菈乌玛是什么元素", "help me with Lauma's talents",
+              "我充值了没到账"]:
+        assert not is_chitchat(m), m
+
+
 def test_sources_are_fenced_and_rules_restated_after_them():
     # #33: an instruction planted in a source must not be the last thing the model reads
     from rag.generation import SOURCES_REMINDER, _answer_messages
