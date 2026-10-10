@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Start the chat UI on http://127.0.0.1:8800. Settings come from .env at the repo root (see .env.example).
+# Start the landing page + chat on http://127.0.0.1:8800 (chat at /chat). Settings come from .env at the repo root (see .env.example).
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -20,6 +20,5 @@ if [[ -z "${CHAINLIT_AUTH_SECRET:-}" ]]; then
   export CHAINLIT_AUTH_SECRET
 fi
 
-# Chainlit reads .chainlit/ and chainlit.md from the working directory, so run from chat/
-cd chat
-exec uv run chainlit run app.py --host 127.0.0.1 --port "${PORT:-8800}" --headless "$@"
+# One server (web/server.py): the landing page at / with the chat widget, and the full Chainlit chat at /chat
+exec uv run uvicorn web.server:app --host 127.0.0.1 --port "${PORT:-8800}" "$@"
