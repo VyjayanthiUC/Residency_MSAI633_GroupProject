@@ -119,28 +119,57 @@
   document.addEventListener("keydown", ev => { if (ev.key === "Escape" && !panel.hidden) open(false); });
 
   // Type a question into the chat's message box and send it (same origin, so the page can reach into the iframe).
+  // If an answer is still streaming, the chat's send button is missing or disabled: wait for it before typing, so the
+  // question is actually sent (review on #90).
+  let pending = null;
   function send(question) {
-    let tries = 0;
-    const timer = setInterval(() => {
+    if (pending) clearInterval(pending);
+    let tries = 0, told = false;
+    const ready = doc => {
+      const submit = doc.querySelector("#chat-submit");
+      return submit && !doc.querySelector("#stop-button");
+    };
+    pending = setInterval(() => {
       const doc = frame && frame.contentDocument;
-      const box = doc && doc.querySelector("#chat-input");
-      if (!box && ++tries < 80) return;
-      clearInterval(timer);
-      if (!box) { navigator.clipboard?.writeText(question); say("Question copied. Paste it into the chat."); return; }
-      box.focus();
-      if (box.isContentEditable) {
-        box.textContent = question;
-        box.dispatchEvent(new InputEvent("input", { bubbles: true }));
-      } else {
-        const setter = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(box), "value").set;
-        setter.call(box, question);
-        box.dispatchEvent(new Event("input", { bubbles: true }));
+      let box = doc && doc.querySelector("#chat-input");
+      tries++;
+      if (!box) {
+        if (tries < 80) return;                                    // chat never loaded (~12 s)
+        clearInterval(pending); pending = null;
+        navigator.clipboard?.writeText(question); say("Question copied. Paste it into the chat."); return;
       }
-      setTimeout(() => {
+      if (!ready(doc)) {
+        if (!told && tries > 6) { told = true; say("Waiting for the current answer to finish…"); }
+        if (tries < 1200) return;                                  // give up after ~3 minutes
+        clearInterval(pending); pending = null;
+        navigator.clipboard?.writeText(question); say("Question copied. Paste it into the chat when the answer finishes."); return;
+      }
+      clearInterval(pending); pending = null;
+      const type = el => {
+        el.focus();
+        if (el.isContentEditable) {
+          el.textContent = question;
+          el.dispatchEvent(new InputEvent("input", { bubbles: true }));
+        } else {
+          const setter = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(el), "value").set;
+          setter.call(el, question);
+          el.dispatchEvent(new Event("input", { bubbles: true }));
+        }
+      };
+      type(box);
+      let waits = 0;                                               // the button enables once the text is in
+      const click = setInterval(() => {
+        // On a fresh pop-up Chainlit mounts the message box a second time once its session connects, and the new box
+        // is empty: type the question again into whichever box is there now.
+        const now = doc.querySelector("#chat-input");
+        if (now && (now !== box || !(now.value ?? now.textContent))) { box = now; type(box); }
         const submit = doc.querySelector("#chat-submit");
-        if (submit && !submit.disabled) submit.click();
-        else box.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", code: "Enter", bubbles: true }));
-      }, 120);
+        if (submit && !submit.disabled && (box.value ?? box.textContent)) { clearInterval(click); submit.click(); }
+        else if (++waits > 40) {
+          clearInterval(click);
+          box.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", code: "Enter", bubbles: true }));
+        }
+      }, 100);
     }, 150);
   }
   document.addEventListener("click", ev => {
@@ -169,15 +198,21 @@
     clearCite();
     const id = decodeURIComponent((hash || "").slice(1));
     const exact = id && document.getElementById(id);
-    const hits = exact ? [exact] : id ? [...main.querySelectorAll(`details[id^="${CSS.escape(id)}-"]`)] : [];
+    // No section in the link: the chunk is the page's opening text. That is the lead paragraph, or on pages without one
+    // (characters) the text the snapshot's Markdown puts at the end of the Infobox section.
+    const opening = () => { const lead = main.querySelector(".page > .lead") || document.getElementById("sec-infobox");
+                            return lead ? [lead] : []; };
+    const hits = exact ? [exact] : id ? [...main.querySelectorAll(`details[id^="${CSS.escape(id)}-"]`)]
+      : label ? opening() : [];
     if (!hits.length) { window.scrollTo(0, 0); return; }
     hits.forEach(el => {
-      if (el.tagName !== "DETAILS") return;
-      el.open = true; el.classList.add("cited");
+      if (el.tagName === "DETAILS") el.open = true;
+      el.classList.add("cited");
       if (label) {
         const tag = document.createElement("span");
         tag.className = "citetag"; tag.textContent = `Cited as ${label}`;
-        el.querySelector("summary")?.append(tag);
+        const summary = el.querySelector(":scope > summary");
+        summary ? summary.append(tag) : el.prepend(tag);   // right end of a section heading; top right of the lead
       }
     });
     document.body.classList.add("cite-open");
@@ -259,27 +294,33 @@ function dropBrokenImages() {   // images that failed before this script ran, or
   document.querySelectorAll(WIKI_IMG).forEach(i => { if (i.complete && !i.naturalWidth) i.remove(); });
 }
 
-// Home banner background video: plays the newest characters' gameplay clips in turn, muted. With reduced motion it
-// waits until the pointer passes over the banner (or the button is pressed); the button also pauses it; if a clip
-// fails the key art image shows.
+// Home banner background video: plays the newest characters' gameplay clips in turn, muted. "Pause background" stops
+// it and fades back to the key art image; if no clip loads, the key art stays.
 function initBanner() {
   const v = document.querySelector(".bannervideo"), btn = document.querySelector(".bgtoggle");
   if (!v) return;
   const reel = JSON.parse(v.dataset.reel || "[]"), credit = document.querySelector(".bannercredit");
   const still = credit && { text: credit.textContent, href: credit.getAttribute("href") };
   if (!reel.length) return;
-  // Reduced motion: don't start it; offer a "Play background" button instead.
-  let i = 0, fails = 0, paused = matchMedia("(prefers-reduced-motion: reduce)").matches, started = false;
+  let i = 0, fails = 0, paused = false, started = false;   // team decision: plays for everyone; Pause shows the key art
   const load = () => {
     const c = reel[i];
     v.src = c.src;
     if (credit) { credit.textContent = `Gameplay: ${c.name}`; credit.href = c.href; }
     v.play().catch(() => {});
   };
-  v.addEventListener("playing", () => { v.classList.add("on"); btn.hidden = false; fails = 0; });
+  v.addEventListener("playing", () => { if (paused) { v.pause(); return; } v.classList.add("on"); btn.hidden = false; fails = 0; });
   // Browsers may pause muted background video to save power (hidden tab, off screen): resume when it can play again.
-  const resume = () => { if (started && !paused && v.paused && !document.hidden) v.play().catch(() => {}); };
+  // The visitor didn't pause it (paused === false), so any other pause is the browser's: try again, a few times.
+  let retries = 0;
+  const resume = () => {
+    if (!started || paused || !v.paused || v.ended || retries > 8) return;
+    retries++;
+    v.play().catch(() => {});
+  };
   v.addEventListener("canplay", resume);
+  v.addEventListener("pause", () => setTimeout(resume, 400));
+  v.addEventListener("playing", () => { retries = 0; });
   document.addEventListener("visibilitychange", resume);
   new IntersectionObserver(es => es[0].isIntersecting && resume()).observe(v);
   v.addEventListener("ended", () => { i = (i + 1) % reel.length; load(); });
@@ -292,19 +333,17 @@ function initBanner() {
     i = (i + 1) % reel.length; load();
   });
   const label = () => { btn.setAttribute("aria-pressed", String(paused)); btn.textContent = paused ? "Play background" : "Pause background"; };
+  const showCredit = () => {
+    if (!credit) return;
+    if (paused && still) { credit.textContent = still.text; credit.href = still.href; }
+    else { credit.textContent = `Gameplay: ${reel[i].name}`; credit.href = reel[i].href; }
+  };
   btn.addEventListener("click", () => {
     paused = !paused;
     if (!paused && !started) { started = true; load(); }
-    else paused ? v.pause() : v.play().catch(() => {});
-    btn.setAttribute("aria-pressed", String(paused));
-    btn.textContent = paused ? "Play background" : "Pause background";
+    else if (paused) { v.pause(); v.classList.remove("on"); }       // fade the video out: the key art shows again
+    else { retries = 0; v.play().catch(() => {}); }               // "playing" fades it back in
+    label(); showCredit();
   });
-  if (paused) {
-    // Reduced motion: start when the visitor moves the pointer over (or tabs into) the banner, or presses the button.
-    label(); btn.hidden = false;
-    const banner = v.closest(".banner");
-    const start = () => { if (started) return; started = true; paused = false; label(); load(); };
-    banner.addEventListener("pointerenter", start, { once: true });
-    banner.addEventListener("focusin", start, { once: true });
-  } else { started = true; load(); }
+  started = true; load();
 }

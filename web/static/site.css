@@ -61,7 +61,8 @@ button { font: inherit; }
 html, body { overflow-x: clip; }
 .hero > .banner { width: 100vw; margin-left: calc(50% - 50vw); min-height: 100vh; min-height: 100svh; border-radius: 0;
                   padding: 120px max(24px, calc(50vw - 556px)) 72px; margin-bottom: 28px; }
-body:has(.hero) .bar { position: absolute; z-index: 5; top: 0; left: 0; right: 0; padding: 22px max(24px, calc(50vw - 556px)); }
+body:has(.hero) .bar { position: absolute; z-index: 5; top: 0; left: 0; right: 0; padding: 22px max(24px, calc(50vw - 556px)); pointer-events: none; }
+body:has(.hero) .bar a { pointer-events: auto; }  /* the bar overlays the banner: let clicks reach the banner's buttons */
 body:has(.hero) .brand { color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.5); }
 /* banner: game key art behind white text; a dark gradient keeps the text readable (and stays if the image fails) */
 .banner { position: relative; overflow: hidden; border-radius: 24px; min-height: 440px; display: flex; flex-direction: column;
@@ -69,7 +70,7 @@ body:has(.hero) .brand { color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,.5); }
 .bannerimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
 .bannervideo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .6s; }
 .bannervideo.on { opacity: 1; }
-.bgtoggle { position: absolute; z-index: 2; top: 20px; right: max(24px, calc(50vw - 556px)); font: inherit; font-size: 0.8rem; font-weight: 700; color: #fff;
+.bgtoggle { position: absolute; z-index: 6; top: 20px; right: max(24px, calc(50vw - 556px)); font: inherit; font-size: 0.8rem; font-weight: 700; color: #fff;
             background: rgba(9,11,28,.6); border: 1px solid rgba(255,255,255,.35); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
 .bgtoggle:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 .banner::after { content: ""; position: absolute; inset: 0; pointer-events: none;
@@ -208,17 +209,19 @@ footer p { max-width: 95ch; margin-bottom: 0.5rem; }
    One state, body.cite-open, decides everything: the cited section gets a gold edge and a glow that fades out to the
    right, every other section dims. Click elsewhere on the page or press Esc to clear it. */
 .page details[id] { scroll-margin-top: 5rem; transition: opacity .35s var(--ease), filter .35s var(--ease); }
-.page details.cited { position: relative; padding-left: 18px; border-top-color: transparent;
+.page .lead.cited { padding: 12px 18px 2px; }
+.page details.cited, .page .lead.cited { position: relative; padding-left: 18px; border-top-color: transparent;
                       background: linear-gradient(90deg, var(--frost), transparent 75%) no-repeat;
                       box-shadow: inset 3px 0 0 var(--hi); }
 .page details.cited > summary h2 { color: var(--hi); }
+.lead > .citetag { float: right; margin: 0 0 6px 12px; }
 .citetag { margin-left: auto; font-size: 0.8rem; font-weight: 700; color: var(--on-accent); background: var(--accent);
            border-radius: 999px; padding: 1px 10px; white-space: nowrap; }
-body.cite-open .page > details:not(.cited), body.cite-open .page > .lead { opacity: .42; filter: saturate(.6); }
+body.cite-open .page > details:not(.cited), body.cite-open .page > .lead:not(.cited) { opacity: .42; filter: saturate(.6); }
 @media (prefers-reduced-motion: no-preference) {
   main.swapped { animation: scrin .5s var(--ease); }
   @keyframes scrin { from { opacity: 0; transform: scale(1.03); filter: blur(8px); } }
-  .page details.cited { animation: sweep .9s var(--ease); background-size: 100% 100%; }
+  .page details.cited, .page .lead.cited { animation: sweep .9s var(--ease); background-size: 100% 100%; }
   @keyframes sweep { from { background-size: 0% 100%; box-shadow: inset 0 0 0 var(--hi); } }
 }
 

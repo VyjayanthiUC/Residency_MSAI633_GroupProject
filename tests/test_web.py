@@ -129,3 +129,10 @@ def test_talent_tables_are_rebuilt_from_the_raw_crawl_and_keep_the_flattened_tex
     assert "Snow Swan Variation" in flat and "51.86" in body
     assert not re.search(r"<(script|img|video|a\s[^>]*fandom|iframe)", body.split('<details class="asbot">')[0].split("Talents and constellations")[-1])
     assert "onclick" not in body and "javascript:" not in body
+
+
+def test_version_ask_buttons_name_the_version():
+    home = wiki.home_body()
+    assert 'data-q="Tell me about Version 7.0."' in home and 'data-q="Tell me about 7.0."' not in home
+    v = next(p for p in wiki.pages().values() if p.title == "Version/7.0")
+    assert 'data-q="Tell me about Version 7.0."' in wiki.page_body(v)
