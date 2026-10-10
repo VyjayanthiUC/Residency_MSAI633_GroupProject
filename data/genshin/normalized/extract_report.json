@@ -1,0 +1,26 @@
+{
+ "docs": 337,
+ "duplicates_dropped": [],
+ "blocks_by_kind": {
+  "infobox": 337,
+  "text": 3891,
+  "table": 854
+ },
+ "docs_with_table": 337,
+ "effective_date": {
+  "page": 68,
+  "inherited": 260,
+  "missing": [
+   "Mitya",
+   "Valeriy",
+   "Bloom",
+   "Elemental Reaction",
+   "Lunar Reaction",
+   "Lunar-Charged",
+   "Team Bonus",
+   "Wish",
+   "Stellar Jubilee Passive"
+  ]
+ },
+ "total_chars": 2517370
+}

@@ -1,0 +1,22 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Local indexes and caches (rebuild from data/)
+*.sqlite
+chroma/
+qdrant_storage/
+*.faiss
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store

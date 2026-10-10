@@ -57,7 +57,8 @@ scrape → extraction → chunking → embedding → vector database
 - **Every PR needs one teammate's approval** before merging.
 - **Commit messages** are short and present-tense: `feat: add hybrid retrieval fusion`, `fix: dedupe near-duplicate PDFs`. No `wip` or `updates`.
 - **Commit under your own account.** Make sure `git config user.email` matches an email on your GitHub account, or your commits will not be credited to you.
-- **Never commit secrets or scraped data.** `.env` and raw/processed data stay local and are git-ignored.
+- **Never commit secrets.** `.env` and any API keys are git-ignored from the first commit.
+- **Use the shared corpus snapshot** in `data/` instead of re-crawling the live site. Don't hand-edit it; a new crawl goes in as a new snapshot via PR.
 - **Track work in Issues** — each pipeline stage and each report has an owner.
 
 ## Setup
