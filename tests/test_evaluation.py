@@ -38,3 +38,100 @@ def test_splits_with_test_items_need_final(split):
     with pytest.raises(SystemExit):
         run.guard_test(split, final=False)
     run.guard_test("dev", final=False)
+
+@pytest.mark.parametrize(
+    "ranks, expected_recall5, expected_mrr",
+    [
+        ([1], 1.0, 1.0),
+        ([3], 1.0, 1/3),
+        ([8], 0.0, 1/8),
+    ],
+)
+def test_retrieval_metrics_manual_cases(
+    ranks, expected_recall5, expected_mrr
+):
+    assert run.recall_at(ranks,5)==pytest.approx(expected_recall5)
+    assert run.mrr(ranks)==pytest.approx(expected_mrr)
+
+@pytest.mark.parametrize(
+    "correct_rank, expected",
+    [
+        (1,1.0),
+        (3,0.5),
+        (8,1/3.169925001442312),
+    ],
+)
+def test_ndcg_manual_cases(correct_rank, expected):
+    chunks=[
+        Chunk(
+            chunk_id=f"chunk_{i}",
+            url="https://example.com",
+            title="Test",
+            text="correct evidence" if i==correct_rank else "irrelevant",
+        )
+        for i in range(1,11)
+    ]
+
+    item={
+        "evidence":[
+            [
+                {
+                    "title":"Test",
+                    "needles":["correct evidence"]
+                }
+            ]
+        ]
+    }
+    assert run.ndcg_at(chunks, item, k=10) == pytest.approx(expected)
+
+# Bootstrap CI validation
+def test_bootstrap_ci_constant_values():
+    values=[1.0,1.0,1.0,1.0]
+    
+    low,high=run.bootstrap_ci(values,n=1000,seed=633)
+
+    assert low==pytest.approx(1.0)
+    assert high==pytest.approx(1.0)
+
+def test_bootstrap_ci_reproducible():
+    values=[0.0,1.0,0.0,1.0,1.0]
+
+    result1=run.bootstrap_ci(values,n=1000,seed=633)
+    result2=run.bootstrap_ci(values,n=1000,seed=633)
+    assert result1==result2
+
+# McNemar validation
+def test_mcnemar_identical_results():
+    a=[
+        {"id":"1","passed":True},
+        {"id":"2","passed":False},
+        {"id":"3","passed":True},
+    ]
+    b=[
+        {"id":"1","passed":True},
+        {"id":"2","passed":False},
+        {"id":"3","passed":True},
+    ]
+    result=run.mcnemar(a,b)
+
+    assert result["n_items"]==3
+    assert result["a_fail_b_pass"]==0
+    assert result["a_pass_b_fail"]==0
+    assert result["p_value"]==pytest.approx(1.0)
+
+def test_mcnemar_discordant_results():
+    a=[
+        {"id":str(i),"passed":False}
+        for i in range(1,7)
+    ]
+    b=[
+        {"id":str(i),"passed":True}
+        for i in range(1,7)
+    ]
+
+    result=run.mcnemar(a,b)
+
+    assert result["n_items"]==6
+    assert result["a_fail_b_pass"]==6
+    assert result["a_pass_b_fail"]==0
+    assert result["p_value"]==pytest.approx(0.03125)
