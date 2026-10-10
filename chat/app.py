@@ -18,9 +18,9 @@ from chat.persistence import history_from_thread, init_db
 from rag import config, index, retrieval
 from rag import generation as llm
 from rag.contract import Chunk
-from rag.grounding import (MAX_QUOTE_WORDS, REFERRAL_TEXT, REFUSAL, SPEND_PROMPT_NOTE, SPEND_TEXT, cited_indices,
+from rag.grounding import (MAX_QUOTE_WORDS, REFERRAL_TEXT, SPEND_PROMPT_NOTE, SPEND_TEXT, cited_indices, is_chinese,
                        is_refusal, is_spend_question, long_quotes, needs_referral, normalize_citations,
-                       recommends_spending, strip_citations, unsupported_numbers)
+                       recommends_spending, refusal_for, strip_citations, unsupported_numbers)
 
 DB_URL = init_db(config.THREADS_DB)
 K_POOL, K_FINAL = config.K_POOL, config.K_FINAL
@@ -97,6 +97,9 @@ async def retrieve(history: list[dict], question: str) -> tuple[str, list[Chunk]
             except openai.APIError:
                 query = question  # rewrite is an optimization; retrieve with the raw question
             s.output = query
+        if query == llm.CHITCHAT:
+            trace.output = "Small talk → no retrieval, replying with the welcome message."
+            return query, []
         async with cl.Step(name=f"Candidate pool ({RETRIEVER.score_label}, top {K_POOL})", type="retrieval") as s:
             pool, final = await asyncio.to_thread(RETRIEVER.retrieve, query, K_POOL, K_FINAL)
             s.output = trace_table(pool, {c.chunk_id for c in final}) if pool else "No matching passages."
@@ -111,15 +114,22 @@ async def retrieve(history: list[dict], question: str) -> tuple[str, list[Chunk]
     return query, final
 
 
+def welcome(chinese: bool = False) -> str:
+    if chinese:
+        return (f"我可以回答原神**挪德卡莱**和**至冬**相关的问题：角色、天赋、命之座、武器、版本。\n\n"
+                f"答案只来自 **{SNAPSHOT}** 的维基快照（{len(CHUNKS)} 个段落），可能已经过时；每条结论都附出处，"
+                "涉及数字时请先点开出处核对。\n\n可以这样问：\n- 菈乌玛是什么元素？\n- 阿蕾奇诺的生日是哪天？")
+    return ("Ask me about Genshin Impact's **Nod-Krai** and **Snezhnaya** content — characters, talents, "
+            "constellations, weapons, versions.\n\n"
+            f"Answers come only from a wiki snapshot taken **{SNAPSHOT}** ({len(CHUNKS)} passages) and may be outdated. "
+            "Every claim links to its source — check the source before relying on a number.\n\n"
+            "Try:\n- What element is Lauma?\n- When is Arlecchino's birthday?")
+
+
 @cl.on_chat_start
 async def start():
     cl.user_session.set("history", [])
-    await cl.Message(content=(
-        "Ask me about Genshin Impact's **Nod-Krai** and **Snezhnaya** content — characters, talents, "
-        "constellations, weapons, versions.\n\n"
-        f"Answers come only from a wiki snapshot taken **{SNAPSHOT}** ({len(CHUNKS)} passages) and may be outdated. "
-        "Every claim links to its source — check the source before relying on a number."
-    )).send()
+    await cl.Message(content=welcome()).send()
 
 
 @cl.on_chat_resume
@@ -133,24 +143,29 @@ async def on_message(message: cl.Message):
     history: list[dict] = cl.user_session.get("history")
     question = message.content
     query, final = await retrieve(history, question)
+    if query == llm.CHITCHAT:
+        await cl.Message(content=welcome(is_chinese(question))).send()
+        return
 
     # Send an empty placeholder first: implicitly created streamed messages lack createdAt and vanish on replay
     msg = cl.Message(content="")
     await msg.send()
-    answer = REFUSAL
+    refusal = refusal_for(question)
+    answer = refusal
     if final:
         try:
             async for tok in llm.stream_answer(history, question, final,
                                                SPEND_PROMPT_NOTE if is_spend_question(question) else ""):
                 await msg.stream_token(tok)
             answer = normalize_citations(msg.content)
-        except openai.APIError as e:
+        except (openai.APIError, llm.EmptyCompletion) as e:
             msg.content = f"> ⚠️ The language model is unavailable right now ({type(e).__name__}). Please try again shortly."
             await msg.update()
             return
 
     if is_refusal(answer):
-        msg.content = f"> ⚠️ **{REFUSAL}**\n>\n> Searched the snapshot for: `{query}`"
+        searched = "检索词" if is_chinese(question) else "Searched the snapshot for"
+        msg.content = f"> ⚠️ **{refusal}**\n>\n> {searched}: `{query}`"
         notes = [f"💸 {SPEND_TEXT}"] if is_spend_question(question) else []
     else:
         used = cited_indices(answer, len(final))

@@ -4,6 +4,32 @@ from __future__ import annotations
 import re
 
 REFUSAL = "I don't have that information in the wiki snapshot."
+REFUSAL_ZH = "维基快照里没有这方面的信息。"
+_CJK = re.compile(r"[㐀-鿿]")
+
+
+def is_chinese(text: str) -> bool:
+    return bool(_CJK.search(text))
+
+
+def refusal_for(question: str) -> str:
+    """The refusal in the question's language: a below-threshold refusal never reaches the LLM, so it can't translate."""
+    return REFUSAL_ZH if is_chinese(question) else REFUSAL
+
+
+# Whole-message greetings, thanks and "who are you": answered with a welcome, never sent to retrieval.
+# ASCII messages skip the LLM rewrite (which classifies the rest), so English small talk needs this check.
+_CHITCHAT = re.compile(
+    r"^\s*(?:(?:hi|hello|hey|yo|hiya|thanks|thank you|thx|ty|ok|okay|cool|bye|goodbye|good (?:morning|afternoon|evening|night)"
+    r"|are you there|who are you|what can you do|what do you do|help)(?:\s+(?:there|bot|so much|a lot))?"
+    r"|你好|您好|嗨|哈喽|在吗|在么|在不在|谢谢|多谢|感谢|好的|再见|拜拜|你是谁|你能干嘛|你能做什么|你会什么)"
+    r"\s*[!！.。?？~～,，]*\s*$",
+    re.I,
+)
+
+
+def is_chitchat(message: str) -> bool:
+    return bool(_CHITCHAT.match(message))
 
 _CITE = re.compile(r"\[S(\d+)\]")
 # Some models write full-width brackets (【S2】) despite the [S2] example in the prompt
@@ -78,7 +104,9 @@ def is_refusal(answer: str) -> bool:
 
     A partial answer ("X is ... [S1]. I don't have that information ...") cites sources and is NOT a refusal.
     """
-    return REFUSAL.lower().rstrip(".") in answer.lower() and not _CITE.search(answer)
+    low = answer.lower()
+    said = REFUSAL.lower().rstrip(".") in low or REFUSAL_ZH.rstrip("。") in answer
+    return said and not _CITE.search(answer)
 
 
 def needs_referral(question: str) -> bool:
@@ -94,24 +122,34 @@ def recommends_spending(answer: str) -> bool:
 
 
 _NUMBER = re.compile(r"(?<![\w.])\d+(?:,\d{3})*(?:\.\d+)?")
+_TRAILING_ZEROS = re.compile(r"(\.\d*?)0+(?!\d)")  # "12.50" -> "12.5", "12.0" -> "12."
+
+
+def _canonical_number(n: str) -> str:
+    n = n.replace(",", "")
+    return n.rstrip("0").rstrip(".") if "." in n else n
 
 
 def unsupported_numbers(answer: str, sources: list[str]) -> list[str]:
     """Numbers in the answer that do not appear verbatim in the cited sources (deduplicated in order).
 
-    "Verbatim" means whole-number boundaries: if the source says 218.88, an answer saying 218.8 is not found. Thousands separators are stripped on both sides before comparing.
+    "Verbatim" means whole-number boundaries: if the source says 218.88, an answer saying 218.8 is not found. Thousands
+    separators and trailing decimal zeros are dropped on both sides before comparing (1,500 = 1500, 12.50 = 12.5).
     """
     text = _CITE.sub(" ", answer)
-    pool = " ".join(sources).replace(",", "")
-    bad = []
+    pool = _TRAILING_ZEROS.sub(r"\1", " ".join(sources).replace(",", ""))
+    bad, seen = [], set()
     for m in _NUMBER.finditer(text):
-        n = m.group(0).replace(",", "")
-        if n not in bad and not re.search(rf"(?<![\d.]){re.escape(n)}(?![\d]|\.\d)", pool):
+        n = _canonical_number(m.group(0))
+        if n not in seen and not re.search(rf"(?<![\d.]){re.escape(n)}(?![\d]|\.\d)", pool):
             bad.append(m.group(0))
+        seen.add(n)
     return bad
 
 
-_WORD = re.compile(r"[\w'’]+")
+_WORD = re.compile(r"[\w']+")
+# Models write typographic apostrophes where the wiki has ASCII ones; unfolded, "character’s" breaks a copied run
+_APOSTROPHES = str.maketrans({"’": "'", "‘": "'", "ʼ": "'"})
 MAX_QUOTE_WORDS = 25
 
 
@@ -120,9 +158,9 @@ def long_quotes(answer: str, sources: list[str], limit: int = MAX_QUOTE_WORDS) -
     n = limit + 1
     src_grams = set()
     for s in sources:
-        w = [x.lower() for x in _WORD.findall(s)]
+        w = [x.lower() for x in _WORD.findall(s.translate(_APOSTROPHES))]
         src_grams.update(tuple(w[i:i + n]) for i in range(len(w) - n + 1))
-    words = _WORD.findall(strip_citations(answer))
+    words = _WORD.findall(strip_citations(normalize_citations(answer)).translate(_APOSTROPHES))
     low = [x.lower() for x in words]
     hits, i = [], 0
     while i <= len(low) - n:

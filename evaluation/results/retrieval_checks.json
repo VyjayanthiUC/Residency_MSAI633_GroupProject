@@ -1,0 +1,358 @@
+{
+ "created_at": "2026-10-10T20:41:00.787204+00:00",
+ "filter": [
+  {
+   "query": "What is Nightweaver's Looking Glass's base ATK at level 90?",
+   "mode": "bm25",
+   "page_types": null,
+   "pool": 20,
+   "types_in_pool": [
+    "constellation",
+    "event_wish",
+    "mechanic",
+    "weapon"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "What is Nightweaver's Looking Glass's base ATK at level 90?",
+   "mode": "bm25",
+   "page_types": [
+    "weapon"
+   ],
+   "pool": 20,
+   "types_in_pool": [
+    "weapon"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "What is Nightweaver's Looking Glass's base ATK at level 90?",
+   "mode": "dense",
+   "page_types": null,
+   "pool": 20,
+   "types_in_pool": [
+    "character",
+    "mechanic",
+    "talent",
+    "weapon"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "What is Nightweaver's Looking Glass's base ATK at level 90?",
+   "mode": "dense",
+   "page_types": [
+    "weapon"
+   ],
+   "pool": 20,
+   "types_in_pool": [
+    "weapon"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "What is Nightweaver's Looking Glass's base ATK at level 90?",
+   "mode": "hybrid+rerank",
+   "page_types": null,
+   "pool": 20,
+   "types_in_pool": [
+    "constellation",
+    "event_wish",
+    "mechanic",
+    "talent",
+    "weapon"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "What is Nightweaver's Looking Glass's base ATK at level 90?",
+   "mode": "hybrid+rerank",
+   "page_types": [
+    "weapon"
+   ],
+   "pool": 20,
+   "types_in_pool": [
+    "weapon"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "Lauma constellation 2",
+   "mode": "bm25",
+   "page_types": null,
+   "pool": 20,
+   "types_in_pool": [
+    "character",
+    "constellation",
+    "mechanic",
+    "talent"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "Lauma constellation 2",
+   "mode": "bm25",
+   "page_types": [
+    "character"
+   ],
+   "pool": 20,
+   "types_in_pool": [
+    "character"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "Lauma constellation 2",
+   "mode": "dense",
+   "page_types": null,
+   "pool": 20,
+   "types_in_pool": [
+    "character",
+    "constellation",
+    "talent"
+   ],
+   "violations": 0,
+   "target_rank_top5": null
+  },
+  {
+   "query": "Lauma constellation 2",
+   "mode": "dense",
+   "page_types": [
+    "character"
+   ],
+   "pool": 20,
+   "types_in_pool": [
+    "character"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "Lauma constellation 2",
+   "mode": "hybrid+rerank",
+   "page_types": null,
+   "pool": 20,
+   "types_in_pool": [
+    "character",
+    "constellation",
+    "mechanic",
+    "talent"
+   ],
+   "violations": 0,
+   "target_rank_top5": 2
+  },
+  {
+   "query": "Lauma constellation 2",
+   "mode": "hybrid+rerank",
+   "page_types": [
+    "character"
+   ],
+   "pool": 20,
+   "types_in_pool": [
+    "character"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "What does Lunar-Bloom do?",
+   "mode": "bm25",
+   "page_types": null,
+   "pool": 20,
+   "types_in_pool": [
+    "constellation",
+    "mechanic",
+    "talent",
+    "weapon"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "What does Lunar-Bloom do?",
+   "mode": "bm25",
+   "page_types": [
+    "mechanic"
+   ],
+   "pool": 20,
+   "types_in_pool": [
+    "mechanic"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "What does Lunar-Bloom do?",
+   "mode": "dense",
+   "page_types": null,
+   "pool": 20,
+   "types_in_pool": [
+    "character",
+    "mechanic",
+    "talent"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "What does Lunar-Bloom do?",
+   "mode": "dense",
+   "page_types": [
+    "mechanic"
+   ],
+   "pool": 20,
+   "types_in_pool": [
+    "mechanic"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "What does Lunar-Bloom do?",
+   "mode": "hybrid+rerank",
+   "page_types": null,
+   "pool": 20,
+   "types_in_pool": [
+    "character",
+    "constellation",
+    "mechanic",
+    "talent",
+    "weapon"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  },
+  {
+   "query": "What does Lunar-Bloom do?",
+   "mode": "hybrid+rerank",
+   "page_types": [
+    "mechanic"
+   ],
+   "pool": 20,
+   "types_in_pool": [
+    "mechanic"
+   ],
+   "violations": 0,
+   "target_rank_top5": 1
+  }
+ ],
+ "lauma_c2": [
+  {
+   "query": "Lauma constellation 2",
+   "strategy": "A",
+   "mode": "dense",
+   "rank_pre_rerank": 3,
+   "rank_final": 3,
+   "top_score": 0.5164,
+   "latency_s": 0.17
+  },
+  {
+   "query": "Lauma constellation 2",
+   "strategy": "A",
+   "mode": "hybrid",
+   "rank_pre_rerank": 1,
+   "rank_final": 1,
+   "top_score": 0.0318,
+   "latency_s": 0.21
+  },
+  {
+   "query": "Lauma constellation 2",
+   "strategy": "A",
+   "mode": "hybrid+rerank",
+   "rank_pre_rerank": 1,
+   "rank_final": 1,
+   "top_score": 0.9327,
+   "latency_s": 17.62
+  },
+  {
+   "query": "Lauma constellation 2",
+   "strategy": "B",
+   "mode": "dense",
+   "rank_pre_rerank": 1,
+   "rank_final": 1,
+   "top_score": 0.6278,
+   "latency_s": 0.16
+  },
+  {
+   "query": "Lauma constellation 2",
+   "strategy": "B",
+   "mode": "hybrid",
+   "rank_pre_rerank": 1,
+   "rank_final": 1,
+   "top_score": 0.032,
+   "latency_s": 0.1
+  },
+  {
+   "query": "Lauma constellation 2",
+   "strategy": "B",
+   "mode": "hybrid+rerank",
+   "rank_pre_rerank": 1,
+   "rank_final": 1,
+   "top_score": 0.9639,
+   "latency_s": 11.66
+  },
+  {
+   "query": "What does Lauma's 2nd constellation do?",
+   "strategy": "A",
+   "mode": "dense",
+   "rank_pre_rerank": 1,
+   "rank_final": 1,
+   "top_score": 0.5032,
+   "latency_s": 0.2
+  },
+  {
+   "query": "What does Lauma's 2nd constellation do?",
+   "strategy": "A",
+   "mode": "hybrid",
+   "rank_pre_rerank": 2,
+   "rank_final": 2,
+   "top_score": 0.0323,
+   "latency_s": 0.11
+  },
+  {
+   "query": "What does Lauma's 2nd constellation do?",
+   "strategy": "A",
+   "mode": "hybrid+rerank",
+   "rank_pre_rerank": 2,
+   "rank_final": 2,
+   "top_score": 0.5549,
+   "latency_s": 18.81
+  },
+  {
+   "query": "What does Lauma's 2nd constellation do?",
+   "strategy": "B",
+   "mode": "dense",
+   "rank_pre_rerank": 1,
+   "rank_final": 1,
+   "top_score": 0.6141,
+   "latency_s": 0.18
+  },
+  {
+   "query": "What does Lauma's 2nd constellation do?",
+   "strategy": "B",
+   "mode": "hybrid",
+   "rank_pre_rerank": 2,
+   "rank_final": 2,
+   "top_score": 0.0306,
+   "latency_s": 0.13
+  },
+  {
+   "query": "What does Lauma's 2nd constellation do?",
+   "strategy": "B",
+   "mode": "hybrid+rerank",
+   "rank_pre_rerank": 2,
+   "rank_final": 1,
+   "top_score": 0.5311,
+   "latency_s": 15.57
+  }
+ ]
+}
