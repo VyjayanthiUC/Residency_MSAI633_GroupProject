@@ -5,7 +5,10 @@ When streaming, the answer is in delta.content; reasoning (if any) goes to a sep
 """
 from __future__ import annotations
 
+import json
+import re
 from collections.abc import AsyncIterator
+from functools import lru_cache
 
 from openai import AsyncOpenAI
 
@@ -47,12 +50,53 @@ EMPTY_RETRIES = 2
 
 REWRITE_PROMPT = """Rewrite the user's latest message into ONE standalone English search query for a Genshin Impact wiki.
 Resolve pronouns and follow-ups using the conversation (e.g. "her C2?" -> "Lauma constellation 2").
-Translate non-English questions into English. Keep character, talent, weapon and version names exactly.
+Translate non-English questions into English. Keep character, talent, weapon and version names exactly; when official
+English names are listed below the message, use them instead of translating those terms yourself.
+Keep the user's intent: do not add words they did not express (e.g. "recommendations", "best", "guide", "tier").
 If the latest message is not a question about Genshin Impact (a greeting, thanks, small talk, or a question about you),
 output exactly CHITCHAT.
-Output only the query, nothing else."""
+Do not answer the question. Output only the query, nothing else."""
 
 CHITCHAT = "CHITCHAT"
+# Room for the model's hidden reasoning (measured up to ~630 tokens): at 200 the reasoning used the whole budget, the
+# reply was empty, and every Chinese question or follow-up was searched untranslated (#77)
+REWRITE_MAX_TOKENS = 2000
+
+_CJK_NAME = re.compile(r"[㐀-鿿·・]+")
+
+
+@lru_cache(maxsize=1)
+def zh_glossary() -> dict[str, str]:
+    """Official Chinese name -> English name, from the "Other Languages" tables in the snapshot.
+
+    Newer game terms (月感电 = Lunar-Charged) are unknown to the model, which otherwise guesses ("Electro-Charged").
+    A page can have one table per term ("Other Languages > Verdant Dew"); each table's English row names its term.
+    """
+    names: dict[str, str] = {}
+    with open(config.DOCS_PATH, encoding="utf-8") as f:
+        for line in f:
+            doc = json.loads(line)
+            for b in doc["blocks"]:
+                if b["heading_path"][1:2] != ["Other Languages"] or not b.get("table"):
+                    continue
+                rows = [r for r in b["table"]["rows"] if len(r) > 1]
+                english = next((r[1].strip() for r in rows if r[0] == "English" and r[1].strip()), doc["title"])
+                for row in rows:
+                    if row[0].startswith("Chinese") and (m := _CJK_NAME.match(row[1].strip())) and len(m.group(0)) > 1:
+                        names.setdefault(m.group(0), english)
+    return names
+
+
+def glossary_hints(text: str) -> list[tuple[str, str]]:
+    """(Chinese name, English title) for names in `text`, longest first, without overlaps (月感电 wins over 感电)."""
+    hits, taken = [], [False] * len(text)
+    for zh in sorted(zh_glossary(), key=len, reverse=True):
+        for m in re.finditer(re.escape(zh), text):
+            if not any(taken[m.start():m.end()]):
+                taken[m.start():m.end()] = [True] * len(zh)
+                hits.append((zh, zh_glossary()[zh]))
+                break
+    return hits
 
 ANSWER_PROMPT = f"""You answer questions about Genshin Impact using ONLY the numbered wiki sources below.
 
@@ -86,13 +130,15 @@ async def rewrite_query(history: list[dict], question: str) -> str:
     if not history and question.isascii():
         return question
     convo = "\n".join(f"{m['role']}: {m['content']}" for m in history[-6:])
+    hints = glossary_hints(question)
+    names = ("\n\nOfficial English names: " + "; ".join(f"{zh} = {en}" for zh, en in hints)) if hints else ""
     resp = await client(CHAT_RETRIES).chat.completions.create(
         model=MODEL,
-        max_tokens=200,
+        max_tokens=REWRITE_MAX_TOKENS,
         **EXTRA,
         messages=[
             {"role": "system", "content": REWRITE_PROMPT},
-            {"role": "user", "content": f"Conversation so far:\n{convo or '(none)'}\n\nLatest message: {question}"},
+            {"role": "user", "content": f"Conversation so far:\n{convo or '(none)'}\n\nLatest message: {question}{names}"},
         ],
     )
     q = (resp.choices[0].message.content or "").strip().strip('"')
