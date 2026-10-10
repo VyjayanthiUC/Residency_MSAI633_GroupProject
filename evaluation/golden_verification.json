@@ -1,0 +1,242 @@
+{
+ "who": "Saweisra",
+ "method": "interactive Q&A in Claude Code (AskUserQuestion), evidence shown from snapshot",
+ "items": {
+  "mh02": {
+   "verdict": "issue",
+   "fix": "rewrite",
+   "note": "question gives away 'Luna I'; rewrite to ask which version + full title; answer_keys add 'Luna I'",
+   "at": "2026-10-10T10:45:20-05:00"
+  },
+  "sh05": {
+   "verdict": "ok",
+   "fix": "answer_keys",
+   "note": "answer_keys -> ['42','510']",
+   "at": "2026-10-10T10:45:20-05:00"
+  },
+  "sh07": {
+   "verdict": "ok",
+   "fix": "answer_keys",
+   "note": "answer_keys -> ['44','542']",
+   "at": "2026-10-10T10:45:20-05:00"
+  },
+  "cmp03": {
+   "verdict": "ok",
+   "note": "kept as-is (parallel facts, not a true comparison)",
+   "at": "2026-10-10T10:45:20-05:00"
+  },
+  "cmp05": {
+   "verdict": "ok",
+   "fix": "answer_keys",
+   "note": "answer_keys add 80 and 20%",
+   "at": "2026-10-10T11:37:53-05:00"
+  },
+  "temp03": {
+   "verdict": "issue",
+   "fix": "rewrite",
+   "note": "drop \"(2026)\" — two runs in 2026; keep \"third run\"",
+   "at": "2026-10-10T11:37:53-05:00"
+  },
+  "unans01": {
+   "verdict": "ok",
+   "note": "Mitya page is upcoming-only (element + constellation name), no skill data",
+   "at": "2026-10-10T11:37:53-05:00"
+  },
+  "unans02": {
+   "verdict": "ok",
+   "note": "Valeriy page is upcoming-only, no burst data",
+   "at": "2026-10-10T11:37:53-05:00"
+  },
+  "unans03": {
+   "verdict": "ok",
+   "note": "constellation name known, effects absent — partial-knowledge refusal",
+   "at": "2026-10-10T11:39:35-05:00"
+  },
+  "unans09": {
+   "verdict": "ok",
+   "note": "no Mitya Event Wish page; version pages mention him only in bug notes",
+   "at": "2026-10-10T11:39:35-05:00"
+  },
+  "adv02": {
+   "verdict": "ok",
+   "at": "2026-10-10T11:39:35-05:00"
+  },
+  "adv03": {
+   "verdict": "issue",
+   "fix": "replace",
+   "note": "near-duplicate of adv02; replace with closed-book trap: Diluc Elemental Burst (Diluc has no page in snapshot, only one voice-over mention) -> expected refuse",
+   "at": "2026-10-10T11:39:35-05:00"
+  },
+  "sh01": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:53:59-05:00"
+  },
+  "sh02": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:53:59-05:00"
+  },
+  "sh03": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:53:59-05:00"
+  },
+  "sh04": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:53:59-05:00"
+  },
+  "sh06": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:54:35-05:00"
+  },
+  "sh08": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:54:35-05:00"
+  },
+  "sh09": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:54:35-05:00"
+  },
+  "sh10": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:54:35-05:00"
+  },
+  "sh11": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:55:24-05:00"
+  },
+  "sh12": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:55:24-05:00"
+  },
+  "sh13": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:55:24-05:00"
+  },
+  "sh14": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:55:24-05:00"
+  },
+  "sh15": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:56:37-05:00"
+  },
+  "sh16": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:56:37-05:00"
+  },
+  "mh01": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:56:37-05:00"
+  },
+  "mh03": {
+   "verdict": "ok",
+   "note": "shares evidence with sh01/sh11",
+   "at": "2026-10-10T13:56:37-05:00"
+  },
+  "mh04": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:58:37-05:00"
+  },
+  "mh05": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:58:37-05:00"
+  },
+  "mh06": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:58:37-05:00"
+  },
+  "mh07": {
+   "verdict": "ok",
+   "at": "2026-10-10T13:58:37-05:00"
+  },
+  "cmp01": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:00:16-05:00"
+  },
+  "cmp02": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:00:16-05:00"
+  },
+  "temp01": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:00:16-05:00"
+  },
+  "cmp04": {
+   "verdict": "ok",
+   "note": "both Snezhnaya Harbingers, in scope (selection reason region=Snezhnaya); also useful as closed-book contrast for B0",
+   "at": "2026-10-10T14:04:29-05:00"
+  },
+  "temp02": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:04:29-05:00"
+  },
+  "temp04": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:04:29-05:00"
+  },
+  "temp05": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:04:29-05:00"
+  },
+  "unans04": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:05:24-05:00"
+  },
+  "unans05": {
+   "verdict": "ok",
+   "note": "fabricated near-name of Golden Frostbound Oath",
+   "at": "2026-10-10T14:05:24-05:00"
+  },
+  "unans06": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:05:24-05:00"
+  },
+  "unans07": {
+   "verdict": "issue",
+   "fix": "recategorize",
+   "note": "Team Bonus page documents Elemental Resonance (same-element rule) -> answerable false-premise item; moved to adversarial / answer",
+   "at": "2026-10-10T14:38:15-05:00"
+  },
+  "unans08": {
+   "verdict": "ok",
+   "note": "latest version page in snapshot is 7.1; extrapolating a date counts as wrong",
+   "at": "2026-10-10T14:08:41-05:00"
+  },
+  "adv01": {
+   "verdict": "ok",
+   "note": "fabricated near-name of Ineffa",
+   "at": "2026-10-10T14:08:41-05:00"
+  },
+  "adv04": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:08:41-05:00"
+  },
+  "syn01": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:38:15-05:00"
+  },
+  "syn02": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:38:15-05:00"
+  },
+  "syn03": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:38:15-05:00"
+  },
+  "syn04": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:38:15-05:00"
+  },
+  "syn05": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:38:15-05:00"
+  },
+  "syn06": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:49:38-05:00"
+  },
+  "syn07": {
+   "verdict": "ok",
+   "at": "2026-10-10T14:49:38-05:00"
+  }
+ }
+}
