@@ -122,24 +122,34 @@ def recommends_spending(answer: str) -> bool:
 
 
 _NUMBER = re.compile(r"(?<![\w.])\d+(?:,\d{3})*(?:\.\d+)?")
+_TRAILING_ZEROS = re.compile(r"(\.\d*?)0+(?!\d)")  # "12.50" -> "12.5", "12.0" -> "12."
+
+
+def _canonical_number(n: str) -> str:
+    n = n.replace(",", "")
+    return n.rstrip("0").rstrip(".") if "." in n else n
 
 
 def unsupported_numbers(answer: str, sources: list[str]) -> list[str]:
     """Numbers in the answer that do not appear verbatim in the cited sources (deduplicated in order).
 
-    "Verbatim" means whole-number boundaries: if the source says 218.88, an answer saying 218.8 is not found. Thousands separators are stripped on both sides before comparing.
+    "Verbatim" means whole-number boundaries: if the source says 218.88, an answer saying 218.8 is not found. Thousands
+    separators and trailing decimal zeros are dropped on both sides before comparing (1,500 = 1500, 12.50 = 12.5).
     """
     text = _CITE.sub(" ", answer)
-    pool = " ".join(sources).replace(",", "")
-    bad = []
+    pool = _TRAILING_ZEROS.sub(r"\1", " ".join(sources).replace(",", ""))
+    bad, seen = [], set()
     for m in _NUMBER.finditer(text):
-        n = m.group(0).replace(",", "")
-        if n not in bad and not re.search(rf"(?<![\d.]){re.escape(n)}(?![\d]|\.\d)", pool):
+        n = _canonical_number(m.group(0))
+        if n not in seen and not re.search(rf"(?<![\d.]){re.escape(n)}(?![\d]|\.\d)", pool):
             bad.append(m.group(0))
+        seen.add(n)
     return bad
 
 
-_WORD = re.compile(r"[\w'’]+")
+_WORD = re.compile(r"[\w']+")
+# Models write typographic apostrophes where the wiki has ASCII ones; unfolded, "character’s" breaks a copied run
+_APOSTROPHES = str.maketrans({"’": "'", "‘": "'", "ʼ": "'"})
 MAX_QUOTE_WORDS = 25
 
 
@@ -148,9 +158,9 @@ def long_quotes(answer: str, sources: list[str], limit: int = MAX_QUOTE_WORDS) -
     n = limit + 1
     src_grams = set()
     for s in sources:
-        w = [x.lower() for x in _WORD.findall(s)]
+        w = [x.lower() for x in _WORD.findall(s.translate(_APOSTROPHES))]
         src_grams.update(tuple(w[i:i + n]) for i in range(len(w) - n + 1))
-    words = _WORD.findall(strip_citations(answer))
+    words = _WORD.findall(strip_citations(normalize_citations(answer)).translate(_APOSTROPHES))
     low = [x.lower() for x in words]
     hits, i = [], 0
     while i <= len(low) - n:
