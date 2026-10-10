@@ -154,23 +154,22 @@ const WIKI_IMG = "img.thumb, img.mini, img.regionimg, img.pageimg, img.bannerimg
 document.addEventListener("error", (ev) => { if (ev.target.matches?.(WIKI_IMG)) ev.target.remove(); }, true);
 document.querySelectorAll(WIKI_IMG).forEach(i => { if (i.complete && !i.naturalWidth) i.remove(); });  // failed before this script ran
 
-// Home banner background video: plays the newest characters' gameplay clips in turn, muted. With reduced motion it
-// waits for the "Play background" button; the button also pauses it; if a clip fails the key art image shows.
+// Home banner background video: plays the newest characters' gameplay clips in turn, muted. "Pause background" stops
+// it and fades back to the key art image; if no clip loads, the key art stays.
 (() => {
   const v = document.querySelector(".bannervideo"), btn = document.querySelector(".bgtoggle");
   if (!v) return;
   const reel = JSON.parse(v.dataset.reel || "[]"), credit = document.querySelector(".bannercredit");
   const still = credit && { text: credit.textContent, href: credit.getAttribute("href") };
   if (!reel.length) return;
-  // Reduced motion: don't start it; offer a "Play background" button instead.
-  let i = 0, fails = 0, paused = matchMedia("(prefers-reduced-motion: reduce)").matches, started = false;
+  let i = 0, fails = 0, paused = false, started = false;   // team decision: plays for everyone; Pause shows the key art
   const load = () => {
     const c = reel[i];
     v.src = c.src;
     if (credit) { credit.textContent = `Gameplay: ${c.name}`; credit.href = c.href; }
     v.play().catch(() => {});
   };
-  v.addEventListener("playing", () => { v.classList.add("on"); btn.hidden = false; fails = 0; });
+  v.addEventListener("playing", () => { if (paused) { v.pause(); return; } v.classList.add("on"); btn.hidden = false; fails = 0; });
   // Browsers may pause muted background video to save power (hidden tab, off screen): resume when it can play again.
   // The visitor didn't pause it (paused === false), so any other pause is the browser's: try again, a few times.
   let retries = 0;
@@ -194,13 +193,17 @@ document.querySelectorAll(WIKI_IMG).forEach(i => { if (i.complete && !i.naturalW
     i = (i + 1) % reel.length; load();
   });
   const label = () => { btn.setAttribute("aria-pressed", String(paused)); btn.textContent = paused ? "Play background" : "Pause background"; };
+  const showCredit = () => {
+    if (!credit) return;
+    if (paused && still) { credit.textContent = still.text; credit.href = still.href; }
+    else { credit.textContent = `Gameplay: ${reel[i].name}`; credit.href = reel[i].href; }
+  };
   btn.addEventListener("click", () => {
     paused = !paused;
     if (!paused && !started) { started = true; load(); }
-    else paused ? v.pause() : v.play().catch(() => {});
-    btn.setAttribute("aria-pressed", String(paused));
-    btn.textContent = paused ? "Play background" : "Pause background";
+    else if (paused) { v.pause(); v.classList.remove("on"); }       // fade the video out: the key art shows again
+    else { retries = 0; v.play().catch(() => {}); }               // "playing" fades it back in
+    label(); showCredit();
   });
-  if (paused) { label(); btn.hidden = false; }   // reduced motion: only the "Play background" button starts it (review on #90)
-  else { started = true; load(); }
+  started = true; load();
 })();
