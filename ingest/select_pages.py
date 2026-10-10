@@ -94,7 +94,7 @@ for t, x in pages.items():
         ext[ib] += 1
         add(t, "lore_" + ib.split()[0].lower(), "ext:" + field(x, "region"))
 
-with open(OUT, "w") as f:
+with open(OUT, "w", encoding="utf-8") as f:
     f.write("title\tpage_type\treason\tbytes\n")
     for t, (p, r) in sorted(sel.items(), key=lambda kv: (kv[1][0], kv[0])):
         f.write(f"{t}\t{p}\t{r}\t{len(pages[t])}\n")

@@ -48,8 +48,11 @@ def load_robots():
         text = urllib.request.urlopen(req, timeout=15).read().decode("utf-8")
         source = "live"
     except urllib.error.HTTPError as e:
-        text = ROBOTS_SNAPSHOT.read_text()
+        text = ROBOTS_SNAPSHOT.read_text(encoding="utf-8")
         source = f"snapshot (live fetch returned HTTP {e.code})"
+    except (urllib.error.URLError, TimeoutError) as e:  # offline: DNS failure, refused connection, timeout
+        text = ROBOTS_SNAPSHOT.read_text(encoding="utf-8")
+        source = f"snapshot (live fetch failed: {getattr(e, 'reason', e)})"
     rp.parse(text.splitlines())
     log(f"robots.txt loaded from {source}")
     return rp, source
@@ -73,12 +76,12 @@ def main():
 
     RAW.mkdir(parents=True, exist_ok=True)
     # QUOTE_NONE: some constellation titles contain literal double quotes ("I Must See…"); the default dialect would strip them as CSV quoting
-    rows = list(csv.DictReader(SELECTION.open(), delimiter="\t", quoting=csv.QUOTE_NONE))
+    rows = list(csv.DictReader(SELECTION.open(encoding="utf-8", newline=""), delimiter="\t", quoting=csv.QUOTE_NONE))
     if args.tiers == "core":
         rows = [r for r in rows if r["page_type"] not in LORE_TYPES]
     done = set()
     if MANIFEST.exists():
-        done = {json.loads(l)["title"] for l in MANIFEST.open() if l.strip()}
+        done = {json.loads(l)["title"] for l in MANIFEST.open(encoding="utf-8") if l.strip()}
     todo = [r for r in rows if r["title"] not in done]
     if args.limit:
         todo = todo[: args.limit]
@@ -87,7 +90,7 @@ def main():
     rp, robots_source = load_robots()
     last = 0.0
     ok = fail = 0
-    with MANIFEST.open("a") as mf:
+    with MANIFEST.open("a", encoding="utf-8") as mf:
         for i, r in enumerate(todo, 1):
             url = api_url(r["title"])
             if not rp.can_fetch(USER_AGENT, url):
@@ -109,7 +112,6 @@ def main():
                 log(f"({i}/{len(todo)}) ERROR {r['title']}: {e}")
                 continue
             sha = hashlib.sha256(body).hexdigest()
-            (RAW / f"{sha}.json").write_bytes(body)
             api_error = None
             if status == 200:
                 try:
@@ -123,7 +125,8 @@ def main():
             if status != 200 or api_error:
                 fail += 1
                 log(f"({i}/{len(todo)}) FAIL {status} {api_error} {r['title']}")
-                continue  # failures are not written to the manifest, so a resumed run retries them
+                continue  # failures are not written to the manifest or raw/, so a resumed run retries them
+            (RAW / f"{sha}.json").write_bytes(body)  # only successful responses are stored
             mf.write(json.dumps(rec, ensure_ascii=False) + "\n")
             mf.flush()
             ok += 1

@@ -275,7 +275,7 @@ def doc_id(title):
 
 def main():
     (OUT / "md").mkdir(parents=True, exist_ok=True)
-    manifest = [json.loads(l) for l in (DATA / "manifest.jsonl").open() if l.strip()]
+    manifest = [json.loads(l) for l in (DATA / "manifest.jsonl").open(encoding="utf-8") if l.strip()]
     docs, seen, dups = [], {}, []
     for rec in manifest:
         payload = json.loads((DATA / "raw" / f"{rec['sha256']}.json").read_bytes())["parse"]
@@ -300,11 +300,12 @@ def main():
             continue
         seen[chash] = rec["title"]
         infobox = next((dict(b["pairs"]) for b in blocks if b["kind"] == "infobox"), {})
+        page_date = find_date(blocks)
         docs.append({
             "doc_id": doc_id(rec["title"]), "title": rec["title"], "page_type": rec["page_type"],
             "source_url": rec["source_url"], "crawled_at": rec["fetched_at"], "revid": payload.get("revid"),
             "raw_sha256": rec["sha256"], "content_hash": chash,
-            "effective_date": find_date(blocks), "effective_date_source": "page" if find_date(blocks) else None,
+            "effective_date": page_date, "effective_date_source": "page" if page_date else None,
             "character": infobox.get("Character"),
             "blocks": blocks,
         })
@@ -334,7 +335,7 @@ def main():
             d["effective_date"] = version_dates[ver]
             d["effective_date_source"] = f"inherited:version {ver}"
 
-    with (OUT / "docs.jsonl").open("w") as f:
+    with (OUT / "docs.jsonl").open("w", encoding="utf-8") as f:
         for d in docs:
             f.write(json.dumps(d, ensure_ascii=False) + "\n")
             md = [f"# {d['title']}", f"<!-- {d['source_url']} | type={d['page_type']} | effective={d['effective_date']} -->"]
@@ -345,7 +346,7 @@ def main():
                     md.append(f"\n## {hp}")
                     last = hp
                 md.append(b["text"])
-            (OUT / "md" / f"{d['doc_id']}.md").write_text("\n\n".join(md) + "\n")
+            (OUT / "md" / f"{d['doc_id']}.md").write_text("\n\n".join(md) + "\n", encoding="utf-8")
 
     kinds = {}
     for d in docs:
@@ -361,7 +362,7 @@ def main():
         },
         "total_chars": sum(len("\n\n".join(b["text"] for b in d["blocks"])) for d in docs),
     }
-    (OUT / "extract_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1))
+    (OUT / "extract_report.json").write_text(json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps({k: (v if k != "effective_date" else {**v, "missing": len(v["missing"])}) for k, v in report.items()
                       if k != "duplicates_dropped"}, ensure_ascii=False), "| dups:", len(dups))
 
