@@ -28,10 +28,12 @@
 
 | Member | GitHub | Role | Owns |
 |---|---|---|---|
-| _[name]_ | @VyjayanthiUC | _[role]_ | _[stages]_ |
-| _[name]_ | @ibkcode | _[role]_ | _[stages]_ |
-| _[name]_ | @ShyamalaKeerthi | _[role]_ | _[stages]_ |
-| _[name]_ | @oyinakpe2-firstgrandprince | _[role]_ | _[stages]_ |
+| Gudla, Shyamala Keerthi | @ShyamalaKeerthi | Product Manager | Scope, schedule, issue board, presentation |
+| Kamath, Vyjayanthi (VJ) | @VyjayanthiUC | Lead Analyst | Repository admin, golden set review, final performance report |
+| Konkayala, Deep | _[handle]_ | AI Engineer / Architect | Embedding, retrieval, reranking |
+| Daniel, Ibukun | @ibkcode | _[role]_ | _[stages]_ |
+| Ban, Sohyun | _[handle]_ | _[role]_ | _[stages]_ |
+| Akpe, Oyin | @oyinakpe2-firstgrandprince | _[role]_ | _[stages]_ |
 | Li, Yanwei | @Saweisra | Data & Evaluation Engineer | Crawl, extraction, golden set, evaluation harness |
 
 Every member commits under their own GitHub account across more than one pipeline stage; ownership is tracked in GitHub Issues.
@@ -214,7 +216,7 @@ Two safeguards will be running in code by Saturday evening: the **number check**
 
 **https://github.com/VyjayanthiUC/Residency_MSAI633_GroupProject**
 
-- Public repository created with all five team members as collaborators; project README committed (pipeline, schedule, team workflow, AI-usage log).
+- Public repository created with team members as collaborators; project README committed (pipeline, schedule, team workflow, AI-usage log).
 - `main` branch protection: required pull request with ≥1 approving review, no force pushes — to be enabled by the repository owner (admin) on Friday evening.
 - Issues tab enabled; issues will be opened for each pipeline stage and report, plus the golden set, the evaluation harness, and the ethics safeguards, each assigned an owner.
 - Initial scaffolding (one module per pipeline stage, report templates `reports/00`–`07`, `.gitignore` excluding `.env` and scraped data) will be merged through the first reviewed pull request.
