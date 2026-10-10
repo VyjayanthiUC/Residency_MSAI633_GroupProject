@@ -84,3 +84,11 @@ def test_home_background_video_is_muted_never_autoplays_from_html_and_can_be_pau
     assert reel and all(c["src"].startswith(IMAGE_HOST) and c["src"].endswith(".mp4/revision/latest") for c in reel)
     assert 'class="bgtoggle"' in home
     assert "<video" not in wiki.page_body(next(p for p in wiki.pages().values() if p.title == "Lauma"))
+
+
+
+def test_version_ask_buttons_name_the_version():
+    home = wiki.home_body()
+    assert 'data-q="Tell me about Version 7.0."' in home and 'data-q="Tell me about 7.0."' not in home
+    v = next(p for p in wiki.pages().values() if p.title == "Version/7.0")
+    assert 'data-q="Tell me about Version 7.0."' in wiki.page_body(v)

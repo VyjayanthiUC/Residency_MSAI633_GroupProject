@@ -95,14 +95,32 @@
   document.addEventListener("keydown", ev => { if (ev.key === "Escape" && !panel.hidden) open(false); });
 
   // Type a question into the chat's message box and send it (same origin, so the page can reach into the iframe).
+  // If an answer is still streaming, the chat's send button is missing or disabled: wait for it before typing, so the
+  // question is actually sent (review on #90).
+  let pending = null;
   function send(question) {
-    let tries = 0;
-    const timer = setInterval(() => {
+    if (pending) clearInterval(pending);
+    let tries = 0, told = false;
+    const ready = doc => {
+      const submit = doc.querySelector("#chat-submit");
+      return submit && !doc.querySelector("#stop-button");
+    };
+    pending = setInterval(() => {
       const doc = frame && frame.contentDocument;
       const box = doc && doc.querySelector("#chat-input");
-      if (!box && ++tries < 80) return;
-      clearInterval(timer);
-      if (!box) { navigator.clipboard?.writeText(question); say("Question copied. Paste it into the chat."); return; }
+      tries++;
+      if (!box) {
+        if (tries < 80) return;                                    // chat never loaded (~12 s)
+        clearInterval(pending); pending = null;
+        navigator.clipboard?.writeText(question); say("Question copied. Paste it into the chat."); return;
+      }
+      if (!ready(doc)) {
+        if (!told && tries > 6) { told = true; say("Waiting for the current answer to finish…"); }
+        if (tries < 1200) return;                                  // give up after ~3 minutes
+        clearInterval(pending); pending = null;
+        navigator.clipboard?.writeText(question); say("Question copied. Paste it into the chat when the answer finishes."); return;
+      }
+      clearInterval(pending); pending = null;
       box.focus();
       if (box.isContentEditable) {
         box.textContent = question;
@@ -112,11 +130,15 @@
         setter.call(box, question);
         box.dispatchEvent(new Event("input", { bubbles: true }));
       }
-      setTimeout(() => {
+      let waits = 0;                                               // the button enables once the text is in
+      const click = setInterval(() => {
         const submit = doc.querySelector("#chat-submit");
-        if (submit && !submit.disabled) submit.click();
-        else box.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", code: "Enter", bubbles: true }));
-      }, 120);
+        if (submit && !submit.disabled) { clearInterval(click); submit.click(); }
+        else if (++waits > 20) {
+          clearInterval(click);
+          box.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", code: "Enter", bubbles: true }));
+        }
+      }, 100);
     }, 150);
   }
   document.addEventListener("click", ev => {
@@ -133,8 +155,7 @@ document.addEventListener("error", (ev) => { if (ev.target.matches?.(WIKI_IMG)) 
 document.querySelectorAll(WIKI_IMG).forEach(i => { if (i.complete && !i.naturalWidth) i.remove(); });  // failed before this script ran
 
 // Home banner background video: plays the newest characters' gameplay clips in turn, muted. With reduced motion it
-// waits until the pointer passes over the banner (or the button is pressed); the button also pauses it; if a clip
-// fails the key art image shows.
+// waits for the "Play background" button; the button also pauses it; if a clip fails the key art image shows.
 (() => {
   const v = document.querySelector(".bannervideo"), btn = document.querySelector(".bgtoggle");
   if (!v) return;
@@ -172,12 +193,6 @@ document.querySelectorAll(WIKI_IMG).forEach(i => { if (i.complete && !i.naturalW
     btn.setAttribute("aria-pressed", String(paused));
     btn.textContent = paused ? "Play background" : "Pause background";
   });
-  if (paused) {
-    // Reduced motion: start when the visitor moves the pointer over (or tabs into) the banner, or presses the button.
-    label(); btn.hidden = false;
-    const banner = v.closest(".banner");
-    const start = () => { if (started) return; started = true; paused = false; label(); load(); };
-    banner.addEventListener("pointerenter", start, { once: true });
-    banner.addEventListener("focusin", start, { once: true });
-  } else { started = true; load(); }
+  if (paused) { label(); btn.hidden = false; }   // reduced motion: only the "Play background" button starts it (review on #90)
+  else { started = true; load(); }
 })();
