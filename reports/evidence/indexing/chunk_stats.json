@@ -1,0 +1,24 @@
+{
+  "A": {
+    "chunks": 1345,
+    "docs": 337,
+    "tokens_min": 65,
+    "tokens_p25": 511,
+    "tokens_median": 512,
+    "tokens_p75": 512,
+    "tokens_p95": 513,
+    "tokens_max": 513,
+    "tokens_total": 597632
+  },
+  "B": {
+    "chunks": 2218,
+    "docs": 337,
+    "tokens_min": 14,
+    "tokens_p25": 86,
+    "tokens_median": 226,
+    "tokens_p75": 454,
+    "tokens_p95": 505,
+    "tokens_max": 512,
+    "tokens_total": 567509
+  }
+}
