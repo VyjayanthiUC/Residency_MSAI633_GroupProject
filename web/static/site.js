@@ -31,8 +31,24 @@
         sec.hidden = term && n === 0; shown += n;
       });
       $("#empty").hidden = !term || shown > 0;
-      $("#results").textContent = term ? `${shown} ${shown === 1 ? "page" : "pages"} found` : "";
+      // While searching, the page collapses to the results (#98): banner shrinks, region cards and section links hide,
+      // and the count under the box is visible (it is also the aria-live status).
+      document.body.classList.toggle("searching", !!term);
+      $("#results").textContent = term ? (shown ? `${shown} ${shown === 1 ? "page" : "pages"} found. Press Enter to go to the first.`
+                                                : "No pages match your search.") : "";
     });
+    const firstResult = () => [...document.querySelectorAll("section.block:not([hidden]) a[href^='/wiki/']")]
+      .find(a => a.offsetParent !== null && !a.closest("[hidden]"));
+    if (q) q.addEventListener("keydown", ev => {
+      if (ev.key === "Enter") {
+        const a = firstResult();
+        if (a) { ev.preventDefault(); a.scrollIntoView({ block: "center" }); a.focus({ preventScroll: true }); }
+      } else if (ev.key === "Escape" && q.value) {
+        ev.stopPropagation();                           // don't also close the chat panel
+        q.value = ""; q.dispatchEvent(new Event("input"));
+      }
+    });
+    if (q) q.addEventListener("search", () => q.dispatchEvent(new Event("input")));   // the box's ✕ button
 
     // --- sortable tables: click a column heading; aria-sort tells screen readers the order ---
     document.querySelectorAll("table.sortable th button").forEach(btn => btn.addEventListener("click", () => {
