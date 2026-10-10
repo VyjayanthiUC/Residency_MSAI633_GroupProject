@@ -19,6 +19,7 @@ from pathlib import Path
 
 from rag import config
 from web.images import clips, images
+from web.talents import tables_for
 
 MD_DIR = config.DOCS_PATH.parent / "md"
 _HEADER = re.compile(r"<!--\s*(\S+)\s*\|\s*type=(\S+)\s*\|\s*effective=(\S*)\s*-->")
@@ -353,10 +354,44 @@ def home_body() -> str:
             '<p class="sr" id="results" role="status" aria-live="polite"></p>')
 
 
+# Character-page sections whose wiki table nests tabs inside rows (flattened by the extractor): shown from the raw crawl
+NESTED = {"Gameplay Info › Talents": "Type", "Gameplay Info › Constellation": "Level"}
+
+
+def nested_table(p: Page, heading: str, flat: str) -> str:
+    """The talent / constellation table rebuilt from the raw crawl (web/talents.py), one card per row with the wiki's
+    tabs, followed by the flattened text the chatbot retrieves from, so a citation still finds its words here."""
+    rows = tables_for(p.slug).get(NESTED.get(heading, ""), []) if p.type in ("character", "character_upcoming") else []
+    if not rows:
+        return flat
+    slugs = {q.title: q.slug for q in pages().values()}
+    base = section_id(heading.split(" › "))
+    cards = []
+    for i, r in enumerate(rows):
+        name = (f'<a href="/wiki/{e(slugs[r.name])}">{e(r.name)}</a>' if r.name in slugs else e(r.name))
+        kind = f"C{r.kind}" if r.kind.isdigit() else r.kind
+        tabs, panels = [], []
+        for j, (label, body) in enumerate(r.tabs):
+            tid, pid = f"tab-{base}-{i}-{j}", f"panel-{base}-{i}-{j}"
+            tabs.append(f'<button type="button" role="tab" id="{tid}" aria-controls="{pid}" '
+                        f'aria-selected="{"true" if j == 0 else "false"}"{"" if j == 0 else " tabindex=\"-1\""}>{e(label)}</button>')
+            panels.append(f'<div class="tabpanel" role="tabpanel" id="{pid}" aria-labelledby="{tid}"{"" if j == 0 else " hidden"}>'
+                          f'{body}</div>')
+        tablist = f'<div class="tabs" role="tablist" aria-label="{e(r.name)}">{"".join(tabs)}</div>' if len(tabs) > 1 else ""
+        cards.append(f'<div class="tt"><div class="tthead"><h3>{name}</h3><span class="ttkind">{e(kind)}</span></div>'
+                     f'{tablist}{"".join(panels)}</div>')
+    return (f'<div class="tts">{"".join(cards)}</div>'
+            f'<details class="asbot"><summary>As the chatbot sees it</summary>'
+            f'<p class="meta">The extractor flattened this table into the text below; it is what retrieval searches '
+            f'and what a citation of this section quotes.</p>{flat}</details>')
+
+
 def page_body(p: Page) -> str:
     parts = []
     for heading, body in p.sections:
         content = render_block(heading, body)
+        if heading in NESTED and content:
+            content = nested_table(p, heading, content)
         if not content:
             continue
         if not heading:

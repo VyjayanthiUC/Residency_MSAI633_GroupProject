@@ -221,3 +221,24 @@ body.cite-open .page > details:not(.cited), body.cite-open .page > .lead { opaci
   .page details.cited { animation: sweep .9s var(--ease); background-size: 100% 100%; }
   @keyframes sweep { from { background-size: 0% 100%; box-shadow: inset 0 0 0 var(--hi); } }
 }
+
+/* Talent and constellation tables (rebuilt from the raw crawl, web/talents.py): one card per row, the wiki's tabs on top */
+.tts { display: grid; gap: 12px; }
+.tt { border: 1px solid var(--line); border-radius: 8px; background: color-mix(in srgb, var(--panel) 90%, transparent); padding: 14px 16px; }
+.tthead { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.tthead h3 { font-size: 1.08rem; } .tthead h3 a { color: var(--ink); text-decoration-color: var(--accent); }
+.ttkind { color: var(--muted); font-size: 0.9rem; }
+.tabs { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 10px 0 4px; border-bottom: 1px solid var(--line); }
+.tabs [role="tab"] { background: none; border: 0; padding: 6px 0; color: var(--muted); cursor: pointer; font-weight: 600;
+                     border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tabs [role="tab"][aria-selected="true"] { color: var(--hi); border-bottom-color: var(--hi); }
+.tabs [role="tab"]:hover { color: var(--ink); }
+.tabpanel { overflow-x: auto; padding-top: 10px; }
+.tabpanel p { margin: 0 0 .6rem; }
+.tabpanel table { width: auto; min-width: 100%; font-variant-numeric: tabular-nums; border: 1px solid var(--line); }
+.tabpanel th, .tabpanel td { text-align: center; white-space: nowrap; }
+.tabpanel tr > th:first-child, .tabpanel tr > td:first-child { text-align: left; white-space: normal; min-width: 9em; }
+.tabpanel th { position: static; }
+details.asbot { margin-top: 14px; border-top: 1px dashed var(--line); }
+details.asbot > summary { color: var(--muted); font-weight: 600; font-size: 0.95rem; }
+details.asbot .meta { margin: 6px 0 10px; }

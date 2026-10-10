@@ -111,3 +111,21 @@ def test_page_sections_carry_their_ids_and_links_point_at_them():
     assert f'<details id="{wiki.section_id(heading.split(" › "))}"' in body
     assert wiki.page_href("gi-x", ["Talents", "Elemental Skill"]) == "/wiki/gi-x#sec-talents-elemental-skill"
     assert wiki.page_href("gi-x", []) == "/wiki/gi-x"
+
+
+def test_talent_tables_are_rebuilt_from_the_raw_crawl_and_keep_the_flattened_text():
+    """The extractor flattens the nested talent table; the page rebuilds it from data/genshin/raw (#99) but still shows
+    the flattened text a citation quotes, and lets no markup from the wiki through except plain table tags."""
+    from web import talents
+    odette = next(p for p in wiki.pages().values() if p.title == "Odette")
+    rows = talents.tables_for(odette.slug)
+    assert [r.kind for r in rows["Type"]][:3] == ["Normal Attack", "Elemental Skill", "Elemental Burst"]
+    assert len(rows["Level"]) == 6
+    scaling = dict(rows["Type"][0].tabs)["Attribute Scaling"]
+    assert "<th>1-Hit DMG (%)</th><td>51.86</td>" in scaling
+    body = wiki.page_body(odette)
+    assert 'role="tablist"' in body and 'class="asbot"' in body
+    flat = next(b for h, b in odette.sections if h == "Gameplay Info › Talents")
+    assert "Snow Swan Variation" in flat and "51.86" in body
+    assert not re.search(r"<(script|img|video|a\s[^>]*fandom|iframe)", body.split('<details class="asbot">')[0].split("Talents and constellations")[-1])
+    assert "onclick" not in body and "javascript:" not in body

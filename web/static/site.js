@@ -78,6 +78,24 @@
       });
       table.showPage(1);
     });
+    // --- tabs in talent / constellation cards: click, or arrow keys along the tab row ---
+    document.querySelectorAll('.tabs[role="tablist"]').forEach(list => {
+      const tabs = [...list.querySelectorAll('[role="tab"]')];
+      const pick = (t, focus) => {
+        tabs.forEach(x => {
+          const on = x === t;
+          x.setAttribute("aria-selected", String(on)); x.tabIndex = on ? 0 : -1;
+          document.getElementById(x.getAttribute("aria-controls")).hidden = !on;
+        });
+        if (focus) t.focus();
+      };
+      list.addEventListener("click", ev => { const t = ev.target.closest('[role="tab"]'); if (t) pick(t); });
+      list.addEventListener("keydown", ev => {
+        const i = tabs.indexOf(document.activeElement), step = { ArrowRight: 1, ArrowLeft: -1 }[ev.key];
+        if (i < 0 || !step) return;
+        ev.preventDefault(); pick(tabs[(i + step + tabs.length) % tabs.length], true);
+      });
+    });
     initBanner();
     dropBrokenImages();
   }
