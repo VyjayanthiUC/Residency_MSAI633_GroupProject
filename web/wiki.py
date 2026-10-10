@@ -175,7 +175,9 @@ def card(p: Page, version_titles: dict[str, str]) -> str:
     meta_html = " · ".join(e(m) for m in meta if m)
     title = p.title.removeprefix("Version/")
     style = f' style="--el: var(--{e(el)})"' if el else ""
-    return (f'<li class="card" data-search="{e((p.title + " " + " ".join(meta)).lower())}"{style}>'
+    q = i.get("Quality", "")
+    rarity = f' data-q="{q[0]}"' if q[:1] in ("4", "5") else ""   # the picture's backdrop follows rarity, as in the game
+    return (f'<li class="card" data-search="{e((p.title + " " + " ".join(meta)).lower())}"{style}{rarity}>'
             f'{img(p, "thumb", "thumb")}{stars(i)}<h3><a href="/wiki/{e(p.slug)}">{e(title)}</a></h3>'
             f'<span class="meta">{meta_html}</span>'
             f'<button type="button" class="ask" data-q="Tell me about {e(title)}.">Ask about {e(title)}</button></li>')
@@ -382,7 +384,9 @@ def page_body(p: Page) -> str:
         top = f'<div class="banner pagebanner">{banner}<div class="bannertext">{head}</div></div>'
     else:
         top = img(p, "hero", "pageimg") + head
-    return f"<article class=\"page\">{top}{''.join(parts)}</article>"
+    el = p.info.get("Element", "") if p.type in ("character", "character_upcoming") else ""
+    data_el = f' data-el="{e(el)}"' if el else ""   # tints the page's night sky with the character's element
+    return f"<article class=\"page\"{data_el}>{top}{''.join(parts)}</article>"
 
 
 TEMPLATE = Path(__file__).parent / "templates" / "base.html"

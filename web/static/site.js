@@ -141,17 +141,35 @@
     return u.origin === location.origin && (u.pathname === "/" || u.pathname.startsWith("/wiki/")) ? u : null;
   };
   // Highlight the cited section: its own <details>, or (a chunk under a parent heading) every subsection under it.
-  function reveal(hash) {
+  // body.cite-open is the only state: it dims the other sections (site.css); clicking elsewhere or Esc clears it.
+  function clearCite() {
+    document.body.classList.remove("cite-open");
     main.querySelectorAll(".cited").forEach(el => el.classList.remove("cited"));
+    main.querySelectorAll(".citetag").forEach(el => el.remove());
+  }
+  function reveal(hash, label = "") {
+    clearCite();
     const id = decodeURIComponent((hash || "").slice(1));
-    if (!id) { window.scrollTo(0, 0); return; }
-    const exact = document.getElementById(id);
-    const hits = exact ? [exact] : [...main.querySelectorAll(`details[id^="${CSS.escape(id)}-"]`)];
+    const exact = id && document.getElementById(id);
+    const hits = exact ? [exact] : id ? [...main.querySelectorAll(`details[id^="${CSS.escape(id)}-"]`)] : [];
     if (!hits.length) { window.scrollTo(0, 0); return; }
-    hits.forEach(el => { if (el.tagName === "DETAILS") el.open = true; el.classList.add("cited"); });
+    hits.forEach(el => {
+      if (el.tagName !== "DETAILS") return;
+      el.open = true; el.classList.add("cited");
+      if (label) {
+        const tag = document.createElement("span");
+        tag.className = "citetag"; tag.textContent = `Cited as ${label}`;
+        el.querySelector("summary")?.append(tag);
+      }
+    });
+    document.body.classList.add("cite-open");
     hits[0].scrollIntoView({ block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }
-  async function go(u, push = true) {
+  main.addEventListener("click", ev => { if (document.body.classList.contains("cite-open") && !ev.target.closest(".cited")) clearCite(); });
+  window.addEventListener("keydown", ev => {
+    if (ev.key === "Escape" && document.body.classList.contains("cite-open")) { clearCite(); ev.stopImmediatePropagation(); }
+  }, true);
+  async function go(u, push = true, label = "") {
     try {
       const res = await fetch(u.pathname);
       if (!res.ok) throw new Error(res.status);
@@ -161,7 +179,8 @@
     } catch { location.href = u.href; return; }   // fall back to a normal page load
     if (push) history.pushState(null, "", u.pathname + u.hash);
     initMain();
-    reveal(u.hash);
+    main.classList.remove("swapped"); void main.offsetWidth; main.classList.add("swapped");   // replay the entrance
+    reveal(u.hash, label);
     main.focus({ preventScroll: true });
   }
   window.addEventListener("popstate", () => { if (frame) go(new URL(location.href), false); else location.reload(); });
@@ -194,9 +213,12 @@
       const u = link && internal(new URL(link.getAttribute("href"), frame.contentWindow.location.href).href);
       if (!u) return;
       ev.preventDefault(); ev.stopPropagation();
+      const before = link.previousElementSibling;   // "S2" badge right before a Sources-line link
+      const label = badge ? badge.textContent.trim() : before?.matches(".element-link") ? before.textContent.trim() : "";
       // On phones the panel covers the page: fold it away to show the source (the launcher brings the chat back as it was)
       if (matchMedia("(max-width: 560px)").matches) open(false);
-      go(u);
+      if (u.pathname === location.pathname) { history.pushState(null, "", u.hash || u.pathname); reveal(u.hash, label); return; }
+      go(u, true, label);
     }, true);
     // Chainlit opens its source view by itself when an answer arrives; in the pop-up it is a dialog over the answer.
     // Close it with its own ✕ button (a synthetic Escape is ignored): the main page shows the sources instead.
