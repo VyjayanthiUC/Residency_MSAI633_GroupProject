@@ -37,6 +37,14 @@ def client(max_retries: int = EVAL_RETRIES) -> AsyncOpenAI:
     return _clients[max_retries]
 
 
+class EmptyCompletion(RuntimeError):
+    """The model returned no answer text (seen intermittently through OpenRouter, with tokens still billed)."""
+
+
+# An empty answer is retried, then raised: returned as "", it would be cached and scored as a wrong answer
+EMPTY_RETRIES = 2
+
+
 REWRITE_PROMPT = """Rewrite the user's latest message into ONE standalone English search query for a Genshin Impact wiki.
 Resolve pronouns and follow-ups using the conversation (e.g. "her C2?" -> "Lauma constellation 2").
 Translate non-English questions into English. Keep character, talent, weapon and version names exactly.
@@ -109,19 +117,30 @@ async def stream_answer(history: list[dict], question: str, chunks: list[Chunk],
         model=MODEL, max_tokens=1500, temperature=0, stream=True,
         messages=_answer_messages(history, question, chunks, note), **EXTRA,
     )
+    empty = True
     async for ev in stream:
         if ev.choices and ev.choices[0].delta.content:
+            empty = False
             yield ev.choices[0].delta.content
+    if empty:
+        raise EmptyCompletion(f"{MODEL} streamed no answer text")
 
 
 async def complete(messages: list[dict], max_tokens: int = 1500) -> tuple[str, dict]:
-    """Non-streamed call for the evaluation harness: returns (text, token usage)."""
-    resp = await client().chat.completions.create(
-        model=MODEL, max_tokens=max_tokens, temperature=0, messages=messages, **EXTRA,
-    )
-    u = resp.usage
-    usage = {"prompt_tokens": u.prompt_tokens, "completion_tokens": u.completion_tokens} if u else {}
-    return (resp.choices[0].message.content or "").strip(), usage
+    """Non-streamed call for the evaluation harness: returns (text, token usage and serving provider)."""
+    for _ in range(EMPTY_RETRIES + 1):
+        resp = await client().chat.completions.create(
+            model=MODEL, max_tokens=max_tokens, temperature=0, messages=messages, **EXTRA,
+        )
+        text = (resp.choices[0].message.content or "").strip() if resp.choices else ""
+        if text:
+            u = resp.usage
+            usage = {"prompt_tokens": u.prompt_tokens, "completion_tokens": u.completion_tokens} if u else {}
+            # OpenRouter can serve one model from several providers; record which one answered
+            if provider := getattr(resp, "provider", None):
+                usage["provider"] = provider
+            return text, usage
+    raise EmptyCompletion(f"{MODEL} returned no answer text {EMPTY_RETRIES + 1} times")
 
 
 async def answer(question: str, chunks: list[Chunk], note: str = "") -> tuple[str, dict]:
