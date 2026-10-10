@@ -7,7 +7,7 @@
 
 ## 0. Hypothesis and Research Grounding
 
-**Hypothesis.** On a scraped, table-heavy game-wiki corpus, a pipeline that combines *structure-aware chunking*, *hybrid (BM25 + dense) retrieval*, and *cross-encoder reranking* (B3) will achieve significantly higher answer correctness and correct-refusal rate than a dense-only retriever over naive fixed-size chunks (B2), measured on a human-verified golden set with a 95% bootstrap confidence interval or McNemar's test.
+**Hypothesis.** On a scraped, table-heavy game-wiki corpus, a pipeline that combines *structure-aware chunking*, *hybrid (BM25 + dense) retrieval*, and *cross-encoder reranking* (B3) will achieve significantly higher answer correctness and correct-refusal rate than a dense-only retriever over naive fixed-size chunks (B2), measured on a human-verified golden set with a 95% bootstrap confidence interval or McNemar's test. This matters because most published RAG evaluations use general-domain corpora such as Wikipedia; far fewer test retrieval on table-heavy, frequently versioned domain content, where exact numbers and effective dates decide whether an answer is correct and where a wrong answer can cost users real money.
 
 **Supporting sources.**
 
@@ -16,11 +16,13 @@
 3. Cormack, Clarke, and Buettcher (2009) showed that Reciprocal Rank Fusion of multiple rankers outperforms the individual rankers — the fusion method we use for hybrid retrieval.
 4. Nogueira and Cho (2019) showed that a BERT cross-encoder reranking a BM25 candidate pool yields large ranking gains — the basis for our reranking stage and our Recall@20-as-ceiling analysis.
 5. Es et al. (2024) proposed RAGAS, separating retrieval quality from answer faithfulness in RAG evaluation — the framing behind reporting retrieval metrics and grounded-answer metrics separately.
+6. Reimers and Gurevych (2019) introduced Sentence-BERT, showing that siamese sentence-embedding networks make semantic similarity search over large collections both accurate and fast — the foundation of the bi-encoder embedding models (such as bge-m3) used in our dense retriever.
 
 **Opposing sources.**
 
 1. Thakur et al. (2021), the BEIR benchmark, found that BM25 remains a strong baseline and that dense retrievers often fail to beat it out of domain. Our corpus (game-specific names and terms) is exactly such a domain, so dense retrieval may *not* help — we test this directly with B1 (BM25 only) vs. B2.
 2. Liu et al. (2024), "Lost in the Middle," found that LLMs use information at the start and end of long contexts far better than information in the middle. More retrieved context is not automatically better, which is why we cap generation context at the top 5 reranked chunks and measure over-refusal.
+3. Barnett et al. (2024) analyzed RAG systems built in three domains and identified seven failure points — including missing content, failure to extract the answer from retrieved context, and incorrect specificity — many of which better retrieval alone does not fix. Gains from B2 to B3 may therefore be smaller in answer correctness than in retrieval metrics, which is why we report both.
 
 ---
 
@@ -31,12 +33,12 @@
 | Gudla, Shyamala Keerthi | @ShyamalaKeerthi | Product Manager | Scope, schedule, issue board, presentation |
 | Kamath, Vyjayanthi (VJ) | @VyjayanthiUC | Lead Analyst | Repository admin, golden set review, final performance report |
 | Konkayala, Deep | _[handle]_ | AI Engineer / Architect | Embedding, retrieval, reranking |
-| Daniel, Ibukun | @ibkcode | _[role]_ | _[stages]_ |
-| Ban, Sohyun | _[handle]_ | _[role]_ | _[stages]_ |
+| Daniel, Ibukun | @ibkcode | Software Engineer | Chunking (strategies A and B), Chroma vector store, re-chunk migration and orphan check, CI tests |
+| Ban, Sohyun | @Eva103 | QA & Evaluation Engineer | Chatbot testing, citation/refusal validation, error analysis |
 | Akpe, Oyin | @oyinakpe2-firstgrandprince | _[role]_ | _[stages]_ |
 | Li, Yanwei | @Saweisra | Data & Evaluation Engineer | Crawl, extraction, golden set, evaluation harness |
 
-Every member commits under their own GitHub account across more than one pipeline stage; ownership is tracked in GitHub Issues.
+Every member commits under the shared GitHub repository from their individual account across more than one pipeline stage; ownership is tracked in GitHub Issues.
 
 ---
 
@@ -226,6 +228,8 @@ Two safeguards will be running in code by Saturday evening: the **number check**
 
 ## References
 
+Barnett, S., Kurniawan, S., Thudumu, S., Brannelly, Z., & Abdelrazek, M. (2024). Seven failure points when engineering a retrieval augmented generation system. *Proceedings of the IEEE/ACM 3rd International Conference on AI Engineering – Software Engineering for AI (CAIN 2024)*, 194–199. https://arxiv.org/abs/2401.05856
+
 Cormack, G. V., Clarke, C. L. A., & Buettcher, S. (2009). Reciprocal rank fusion outperforms Condorcet and individual rank learning methods. *Proceedings of the 32nd International ACM SIGIR Conference on Research and Development in Information Retrieval*, 758–759. https://doi.org/10.1145/1571941.1572114
 
 Es, S., James, J., Espinosa-Anke, L., & Schockaert, S. (2024). RAGAS: Automated evaluation of retrieval augmented generation. *Proceedings of the 18th Conference of the European Chapter of the Association for Computational Linguistics: System Demonstrations*, 150–158. https://arxiv.org/abs/2309.15217
@@ -237,5 +241,7 @@ Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., Küttle
 Liu, N. F., Lin, K., Hewitt, J., Paranjape, A., Bevilacqua, M., Petroni, F., & Liang, P. (2024). Lost in the middle: How language models use long contexts. *Transactions of the Association for Computational Linguistics, 12*, 157–173. https://arxiv.org/abs/2307.03172
 
 Nogueira, R., & Cho, K. (2019). Passage re-ranking with BERT. *arXiv preprint* arXiv:1901.04085. https://arxiv.org/abs/1901.04085
+
+Reimers, N., & Gurevych, I. (2019). Sentence-BERT: Sentence embeddings using Siamese BERT-networks. *Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)*, 3982–3992. https://arxiv.org/abs/1908.10084
 
 Thakur, N., Reimers, N., Rücklé, A., Srivastava, A., & Gurevych, I. (2021). BEIR: A heterogeneous benchmark for zero-shot evaluation of information retrieval models. *Advances in Neural Information Processing Systems Datasets and Benchmarks Track*. https://arxiv.org/abs/2104.08663
