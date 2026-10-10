@@ -22,17 +22,19 @@ if "openrouter.ai" in config.LLM_BASE_URL:
 else:
     EXTRA = {"reasoning_effort": "low"}
 
-_client: AsyncOpenAI | None = None
+# Free OpenRouter models rate-limit hard (429). The eval harness backs off and retries; the chat UI fails fast
+# instead, since 4 backed-off retries keep a user waiting ~7s per call only to fail on an exhausted quota.
+EVAL_RETRIES, CHAT_RETRIES = 4, 1
+_clients: dict[int, AsyncOpenAI] = {}
 
 
-def client() -> AsyncOpenAI:
-    global _client
-    if _client is None:
+def client(max_retries: int = EVAL_RETRIES) -> AsyncOpenAI:
+    if max_retries not in _clients:
         if not config.LLM_API_KEY:
             raise RuntimeError("LLM_API_KEY is not set: copy .env.example to .env and add it")
-        # Free OpenRouter models rate-limit hard (429); let the client back off and retry
-        _client = AsyncOpenAI(api_key=config.LLM_API_KEY, base_url=config.LLM_BASE_URL, max_retries=4)
-    return _client
+        _clients[max_retries] = AsyncOpenAI(api_key=config.LLM_API_KEY, base_url=config.LLM_BASE_URL,
+                                            max_retries=max_retries)
+    return _clients[max_retries]
 
 
 REWRITE_PROMPT = """Rewrite the user's latest message into ONE standalone English search query for a Genshin Impact wiki.
@@ -64,7 +66,7 @@ async def rewrite_query(history: list[dict], question: str) -> str:
     if not history and question.isascii():
         return question
     convo = "\n".join(f"{m['role']}: {m['content']}" for m in history[-6:])
-    resp = await client().chat.completions.create(
+    resp = await client(CHAT_RETRIES).chat.completions.create(
         model=MODEL,
         max_tokens=200,
         **EXTRA,
@@ -88,7 +90,7 @@ def _answer_messages(history: list[dict], question: str, chunks: list[Chunk], no
 
 
 async def stream_answer(history: list[dict], question: str, chunks: list[Chunk], note: str = "") -> AsyncIterator[str]:
-    stream = await client().chat.completions.create(
+    stream = await client(CHAT_RETRIES).chat.completions.create(
         model=MODEL, max_tokens=1500, temperature=0, stream=True,
         messages=_answer_messages(history, question, chunks, note), **EXTRA,
     )
