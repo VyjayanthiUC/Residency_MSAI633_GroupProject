@@ -38,6 +38,33 @@ def retrieval_table(res: dict) -> str:
     return "\n".join(lines)
 
 
+# One change at a time from B1 to B3, then the end-to-end baseline comparisons
+ABLATION_STEPS = [("B1 bm25/A", "B2 dense/A"), ("B2 dense/A", "+struct dense/B"), ("+struct dense/B", "+hybrid hybrid/B"),
+                  ("+hybrid hybrid/B", "B3 hybrid/B+rerank"), ("B2 dense/A", "B3 hybrid/B+rerank"), ("B1 bm25/A", "B3 hybrid/B+rerank")]
+
+
+def ablation_table(res: dict) -> str:
+    """Paired differences per step (95% bootstrap CI over per-item deltas) and McNemar on 'all evidence in the top 5'."""
+    data = res["data"]
+    lines = ["| Step | n | ΔRecall@5 | ΔMRR | ΔRecall@20 | McNemar: all evidence in top 5 (gained / lost, p) |",
+             "|---|---|---|---|---|---|"]
+    for a, b in ABLATION_STEPS:
+        if not (data.get(a) and data.get(b)):
+            continue
+        ra, rb = {r["id"]: r for r in data[a]}, {r["id"]: r for r in data[b]}
+        ids = sorted(set(ra) & set(rb))
+        cells = []
+        for k in ("recall@5", "mrr", "recall@20"):
+            d = [rb[i][k] - ra[i][k] for i in ids]
+            lo, hi = bootstrap_ci(d)
+            cells.append(f"{mean(d):+.3f} [{lo:+.2f}, {hi:+.2f}]")
+        t = mcnemar([{"id": i, "passed": ra[i]["recall@5"] == 1} for i in ids],
+                    [{"id": i, "passed": rb[i]["recall@5"] == 1} for i in ids])
+        lines.append(f"| {a} → {b} | {len(ids)} | " + " | ".join(cells)
+                     + f" | +{t['a_fail_b_pass']} / −{t['a_pass_b_fail']}, p = {t['p_value']:.2f} |")
+    return "\n".join(lines)
+
+
 def generation_table(res: dict) -> str:
     lines = ["| Config | n | Pass rate | Correct (answerable) | Correct refusal (unanswerable) | Over-refusal (answerable) | "
              "Citation valid | Unsupported numbers / answer | Spend advice given | p50 latency (s) | Tokens / query |",
@@ -92,7 +119,8 @@ def write_report(split: str) -> Path:
               f"Verified by a human: {sum(1 for i in golden.load() if i['verified_by'])}.", ""]
     ret, gen, thr = _load("retrieval", split), _load("generation", split), _load("threshold", "dev")
     if ret:
-        parts += ["## Retrieval (mean [95% bootstrap CI])", "", retrieval_table(ret), ""]
+        parts += ["## Retrieval (mean [95% bootstrap CI])", "", retrieval_table(ret), "",
+                  "## Retrieval ablation (paired, one change per step)", "", ablation_table(ret), ""]
     if thr:
         c = thr["data"]["chosen"]
         parts += ["## Refusal threshold (tuned on dev)", "",

@@ -1,0 +1,2503 @@
+{
+ "model": "nvidia/nemotron-3-super-120b-a12b:free",
+ "split": "dev",
+ "created_at": "2026-10-10T20:20:02.341843+00:00",
+ "data": {
+  "B1 bm25/A": [
+   {
+    "id": "sh03",
+    "category": "single_hop",
+    "latency_s": 0.0020145089947618544,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 13.079677357796328,
+    "final_ids": [
+     "gi-tartaglia-9604710f#A#0000",
+     "gi-never-ending-abbb3d96#A#0000",
+     "gi-snezhnaya-e80a1ce6#A#0014",
+     "gi-havoc-annihilation-6db3f001#A#0000",
+     "gi-tartaglia-9604710f#A#0016"
+    ]
+   },
+   {
+    "id": "sh04",
+    "category": "single_hop",
+    "latency_s": 0.0012708029826171696,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 17.255466281628895,
+    "final_ids": [
+     "gi-wanderer-ae36a27a#A#0000",
+     "gi-wanderer-ae36a27a#A#0019",
+     "gi-shoban-ostentatious-plumage-cd14909b#A#0000",
+     "gi-strum-the-swirling-winds-6d59eb42#A#0000",
+     "gi-wanderer-ae36a27a#A#0017"
+    ]
+   },
+   {
+    "id": "sh05",
+    "category": "single_hop",
+    "latency_s": 0.004089131020009518,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6309297535714575,
+    "top_score_post": 44.50426767957801,
+    "final_ids": [
+     "gi-heretic-s-molten-blade-d14d812c#A#0001",
+     "gi-heretic-s-molten-blade-d14d812c#A#0000",
+     "gi-heretic-s-molten-blade-d14d812c#A#0003",
+     "gi-moonweaver-s-dawn-5557ec10#A#0000",
+     "gi-athame-artis-2a586c43#A#0001"
+    ]
+   },
+   {
+    "id": "sh06",
+    "category": "single_hop",
+    "latency_s": 0.0019897419842891395,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.25,
+    "ndcg@10": 0.43067655807339306,
+    "top_score_post": 31.521433955241367,
+    "final_ids": [
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#A#0005",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#A#0006",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#A#0001",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#A#0000",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#A#0004"
+    ]
+   },
+   {
+    "id": "sh07",
+    "category": "single_hop",
+    "latency_s": 0.00271543295821175,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6309297535714575,
+    "top_score_post": 36.80652978956587,
+    "final_ids": [
+     "gi-golden-frostbound-oath-360440f7#A#0002",
+     "gi-golden-frostbound-oath-360440f7#A#0000",
+     "gi-golden-frostbound-oath-360440f7#A#0006",
+     "gi-ya-hoho-compendium-a484ea48#A#0000",
+     "gi-golden-frostbound-oath-360440f7#A#0005"
+    ]
+   },
+   {
+    "id": "sh11",
+    "category": "single_hop",
+    "latency_s": 0.003154126985464245,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 40.86909922128963,
+    "final_ids": [
+     "gi-arlecchino-13095691#A#0009",
+     "gi-from-this-day-on-we-shall-delight-in-new-life-together-8f931c17#A#0000",
+     "gi-balemoon-rising-0861b3ab#A#0000",
+     "gi-all-is-ash-e9f8cb7d#A#0000",
+     "gi-arlecchino-13095691#A#0014"
+    ]
+   },
+   {
+    "id": "sh12",
+    "category": "single_hop",
+    "latency_s": 0.0024649339611642063,
+    "recall@5": 0.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.1111111111111111,
+    "ndcg@10": 0.3010299956639812,
+    "top_score_post": 44.55282139775288,
+    "final_ids": [
+     "gi-balemoon-rising-0861b3ab#A#0000",
+     "gi-arlecchino-13095691#A#0010",
+     "gi-arlecchino-13095691#A#0014",
+     "gi-arlecchino-13095691#A#0009",
+     "gi-from-this-day-on-we-shall-delight-in-new-life-together-8f931c17#A#0000"
+    ]
+   },
+   {
+    "id": "sh13",
+    "category": "single_hop",
+    "latency_s": 0.0016859929892234504,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 16.106915286874617,
+    "final_ids": [
+     "gi-lunar-charged-b72f331c#A#0001",
+     "gi-lunar-bloom-c5d168b1#A#0000",
+     "gi-columbina-06f9db50#A#0014",
+     "gi-elemental-reaction-e932ba4c#A#0000",
+     "gi-through-darkness-led-by-moonlight-65ba4ef2#A#0000"
+    ]
+   },
+   {
+    "id": "sh15",
+    "category": "single_hop",
+    "latency_s": 0.0014334790175780654,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.2,
+    "ndcg@10": 0.38685280723454163,
+    "top_score_post": 25.623395073387638,
+    "final_ids": [
+     "gi-bloodsoaked-ruins-7399d36b#A#0005",
+     "gi-version-luna-viii-c8a851b4#A#0000",
+     "gi-version-luna-vii-8bacdc23#A#0000",
+     "gi-version-7-1-9ec6d612#A#0000",
+     "gi-version-7-0-31a66e47#A#0000"
+    ]
+   },
+   {
+    "id": "sh16",
+    "category": "single_hop",
+    "latency_s": 0.0022663410054519773,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6309297535714575,
+    "top_score_post": 37.36217742935295,
+    "final_ids": [
+     "gi-ineffa-a7baec9f#A#0011",
+     "gi-astral-actuation-e5b7f8bd#A#0000",
+     "gi-ineffa-a7baec9f#A#0000",
+     "gi-wish-d3fd1ebb#A#0000",
+     "gi-wish-d3fd1ebb#A#0015"
+    ]
+   },
+   {
+    "id": "mh01",
+    "category": "multi_hop",
+    "latency_s": 0.005149720993358642,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 1.0,
+    "ndcg@10": 0.6131471927654584,
+    "top_score_post": 95.54456291893061,
+    "final_ids": [
+     "gi-the-hearth-s-ashen-shadow-262c3a32#A#0000",
+     "gi-alyosha-377c06ed#A#0009",
+     "gi-arlecchino-13095691#A#0015",
+     "gi-somnias-a-luna-3016ce19#A#0000",
+     "gi-arlecchino-13095691#A#0014"
+    ]
+   },
+   {
+    "id": "mh03",
+    "category": "multi_hop",
+    "latency_s": 0.0034879930317401886,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 47.29186278166008,
+    "final_ids": [
+     "gi-arlecchino-13095691#A#0009",
+     "gi-all-is-ash-e9f8cb7d#A#0000",
+     "gi-balemoon-rising-0861b3ab#A#0000",
+     "gi-from-this-day-on-we-shall-delight-in-new-life-together-8f931c17#A#0000",
+     "gi-arlecchino-13095691#A#0008"
+    ]
+   },
+   {
+    "id": "mh04",
+    "category": "multi_hop",
+    "latency_s": 0.004101353988517076,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 1.0,
+    "ndcg@10": 0.6131471927654584,
+    "top_score_post": 77.17959072197671,
+    "final_ids": [
+     "gi-moonsong-of-the-groves-ee928c14#A#0000",
+     "gi-farewell-of-snezhnaya-484b0de0#A#0000",
+     "gi-somnias-a-luna-3016ce19#A#0000",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#A#0000",
+     "gi-ya-hoho-compendium-a484ea48#A#0000"
+    ]
+   },
+   {
+    "id": "mh06",
+    "category": "multi_hop",
+    "latency_s": 0.003583121986594051,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.3065735963827292,
+    "top_score_post": 43.30158387839119,
+    "final_ids": [
+     "gi-demonhunter-s-dusk-a40f5d02#A#0000",
+     "gi-illuga-15df5768#A#0009",
+     "gi-lunar-crystallize-7891cd9b#A#0001",
+     "gi-shadowless-reflection-879d1e2d#A#0001",
+     "gi-illuga-15df5768#A#0007"
+    ]
+   },
+   {
+    "id": "cmp02",
+    "category": "comparative",
+    "latency_s": 0.004279077984392643,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.5706417189553201,
+    "top_score_post": 34.306902397457,
+    "final_ids": [
+     "gi-angelos-heptades-09a847ba#A#0002",
+     "gi-hymn-of-the-maelstrom-b9e625b7#A#0002",
+     "gi-angelos-heptades-09a847ba#A#0000",
+     "gi-hymn-of-the-maelstrom-b9e625b7#A#0000",
+     "gi-angelos-heptades-09a847ba#A#0005"
+    ]
+   },
+   {
+    "id": "cmp03",
+    "category": "comparative",
+    "latency_s": 0.0016927049728110433,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 13.740583835239718,
+    "final_ids": [
+     "gi-bloom-3ef84d55#A#0012",
+     "gi-bloom-3ef84d55#A#0011",
+     "gi-nod-krai-1196cc41#A#0029",
+     "gi-peregrination-of-linnunrata-35e96bdd#A#0000",
+     "gi-heretic-s-molten-blade-d14d812c#A#0005"
+    ]
+   },
+   {
+    "id": "cmp04",
+    "category": "comparative",
+    "latency_s": 0.0014932409976609051,
+    "recall@5": 0.0,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.05,
+    "ndcg@10": 0.0,
+    "top_score_post": 15.41761757830148,
+    "final_ids": [
+     "gi-snezhnaya-e80a1ce6#A#0012",
+     "gi-wanderer-ae36a27a#A#0016",
+     "gi-farewell-of-snezhnaya-484b0de0#A#0000",
+     "gi-wanderer-ae36a27a#A#0019",
+     "gi-version-luna-vi-57f3ed88#A#0000"
+    ]
+   },
+   {
+    "id": "temp03",
+    "category": "temporal",
+    "latency_s": 0.00262587598990649,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 50.700937839329846,
+    "final_ids": [
+     "gi-astral-actuation-e5b7f8bd#A#0000",
+     "gi-farewell-of-snezhnaya-484b0de0#A#0000",
+     "gi-temptation-of-the-crimson-sands-75500b18#A#0000",
+     "gi-moonsong-of-the-groves-ee928c14#A#0000",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#A#0000"
+    ]
+   },
+   {
+    "id": "temp04",
+    "category": "temporal",
+    "latency_s": 0.0024736400227993727,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 69.72428484990827,
+    "final_ids": [
+     "gi-temptation-of-the-crimson-sands-75500b18#A#0000",
+     "gi-nefer-3fbcaf82#A#0014",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#A#0000",
+     "gi-farewell-of-snezhnaya-484b0de0#A#0000",
+     "gi-moonsong-of-the-groves-ee928c14#A#0000"
+    ]
+   },
+   {
+    "id": "temp05",
+    "category": "temporal",
+    "latency_s": 0.0021632680436596274,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 56.65848124027516,
+    "final_ids": [
+     "gi-the-hearth-s-ashen-shadow-262c3a32#A#0000",
+     "gi-arlecchino-13095691#A#0014",
+     "gi-arlecchino-13095691#A#0000",
+     "gi-arlecchino-13095691#A#0015",
+     "gi-alyosha-377c06ed#A#0009"
+    ]
+   },
+   {
+    "id": "unans07",
+    "category": "adversarial",
+    "latency_s": 0.002497684967238456,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 21.786334615673674,
+    "final_ids": [
+     "gi-team-bonus-64242bf1#A#0000",
+     "gi-bloom-3ef84d55#A#0000",
+     "gi-bloom-3ef84d55#A#0004",
+     "gi-team-bonus-64242bf1#A#0002",
+     "gi-all-is-ash-e9f8cb7d#A#0000"
+    ]
+   },
+   {
+    "id": "syn01",
+    "category": "synthesis",
+    "latency_s": 0.004311878990847617,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6309297535714575,
+    "top_score_post": 41.772601892209366,
+    "final_ids": [
+     "gi-ineffa-a7baec9f#A#0008",
+     "gi-ineffa-a7baec9f#A#0009",
+     "gi-cleaning-mode-carrier-frequency-52d141d7#A#0003",
+     "gi-cleaning-mode-carrier-frequency-52d141d7#A#0004",
+     "gi-supreme-instruction-cyclonic-exterminator-0da3d312#A#0002"
+    ]
+   },
+   {
+    "id": "syn03",
+    "category": "synthesis",
+    "latency_s": 0.0042955290409736335,
+    "recall@5": 0.75,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 0.75,
+    "mrr": 1.0,
+    "ndcg@10": 0.6542448095688422,
+    "top_score_post": 54.37276343612297,
+    "final_ids": [
+     "gi-lunar-charged-b72f331c#A#0001",
+     "gi-elemental-reaction-e932ba4c#A#0012",
+     "gi-lunar-reaction-a6f6a14e#A#0002",
+     "gi-assemblage-hub-0bec3f01#A#0000",
+     "gi-old-world-secrets-fec776fb#A#0000"
+    ]
+   }
+  ],
+  "B2 dense/A": [
+   {
+    "id": "sh03",
+    "category": "single_hop",
+    "latency_s": 0.11477275600191206,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.5373697280883789,
+    "final_ids": [
+     "gi-tartaglia-9604710f#A#0000",
+     "gi-foul-legacy-raging-tide-7a72e5fc#A#0000",
+     "gi-never-ending-abbb3d96#A#0000",
+     "gi-sword-of-torrents-1a8f6f91#A#0000",
+     "gi-farewell-of-snezhnaya-484b0de0#A#0000"
+    ]
+   },
+   {
+    "id": "sh04",
+    "category": "single_hop",
+    "latency_s": 0.10636106500169262,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.47127991914749146,
+    "final_ids": [
+     "gi-wanderer-ae36a27a#A#0000",
+     "gi-wanderer-ae36a27a#A#0019",
+     "gi-from-ashes-reborn-20b9d8cb#A#0000",
+     "gi-wanderer-ae36a27a#A#0020",
+     "gi-wanderer-ae36a27a#A#0016"
+    ]
+   },
+   {
+    "id": "sh05",
+    "category": "single_hop",
+    "latency_s": 0.1422745760064572,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.6436527967453003,
+    "final_ids": [
+     "gi-heretic-s-molten-blade-d14d812c#A#0000",
+     "gi-heretic-s-molten-blade-d14d812c#A#0001",
+     "gi-nightweaver-s-looking-glass-7b1421fd#A#0003",
+     "gi-linnea-9080b6b6#A#0001",
+     "gi-alyosha-377c06ed#A#0008"
+    ]
+   },
+   {
+    "id": "sh06",
+    "category": "single_hop",
+    "latency_s": 0.1271089249639772,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.5478636026382446,
+    "final_ids": [
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#A#0000",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#A#0005",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#A#0006",
+     "gi-serenity-s-call-7ec37c9d#A#0001",
+     "gi-rainbow-serpent-s-rain-bow-37576ee8#A#0000"
+    ]
+   },
+   {
+    "id": "sh07",
+    "category": "single_hop",
+    "latency_s": 0.12073826597770676,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.6022302508354187,
+    "final_ids": [
+     "gi-golden-frostbound-oath-360440f7#A#0000",
+     "gi-linnea-9080b6b6#A#0001",
+     "gi-nightweaver-s-looking-glass-7b1421fd#A#0003",
+     "gi-rainbow-serpent-s-rain-bow-37576ee8#A#0000",
+     "gi-golden-frostbound-oath-360440f7#A#0002"
+    ]
+   },
+   {
+    "id": "sh11",
+    "category": "single_hop",
+    "latency_s": 0.13506514101754874,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 0.6753298044204712,
+    "final_ids": [
+     "gi-all-is-ash-e9f8cb7d#A#0000",
+     "gi-arlecchino-13095691#A#0009",
+     "gi-from-this-day-on-we-shall-delight-in-new-life-together-8f931c17#A#0000",
+     "gi-arlecchino-13095691#A#0004",
+     "gi-balemoon-rising-0861b3ab#A#0001"
+    ]
+   },
+   {
+    "id": "sh12",
+    "category": "single_hop",
+    "latency_s": 0.13455088605405763,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 0.7098958492279053,
+    "final_ids": [
+     "gi-balemoon-rising-0861b3ab#A#0000",
+     "gi-arlecchino-13095691#A#0010",
+     "gi-arlecchino-13095691#A#0009",
+     "gi-the-balemoon-alone-may-know-046f8d14#A#0000",
+     "gi-from-this-day-on-we-shall-delight-in-new-life-together-8f931c17#A#0000"
+    ]
+   },
+   {
+    "id": "sh13",
+    "category": "single_hop",
+    "latency_s": 0.13473392504965886,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.5824201107025146,
+    "final_ids": [
+     "gi-bloom-3ef84d55#A#0000",
+     "gi-bloom-3ef84d55#A#0004",
+     "gi-lunar-bloom-c5d168b1#A#0000",
+     "gi-bloom-3ef84d55#A#0014",
+     "gi-elemental-reaction-e932ba4c#A#0013"
+    ]
+   },
+   {
+    "id": "sh15",
+    "category": "single_hop",
+    "latency_s": 0.12150179204763845,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.595207154750824,
+    "final_ids": [
+     "gi-version-7-0-31a66e47#A#0000",
+     "gi-version-luna-vii-8bacdc23#A#0000",
+     "gi-version-7-1-9ec6d612#A#0000",
+     "gi-version-luna-viii-c8a851b4#A#0000",
+     "gi-version-luna-i-9a88035d#A#0000"
+    ]
+   },
+   {
+    "id": "sh16",
+    "category": "single_hop",
+    "latency_s": 0.15877194399945438,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.6780668497085571,
+    "final_ids": [
+     "gi-astral-actuation-e5b7f8bd#A#0000",
+     "gi-wish-d3fd1ebb#A#0000",
+     "gi-alyosha-377c06ed#A#0009",
+     "gi-athame-artis-2a586c43#A#0006",
+     "gi-aino-a9b14fc5#A#0011"
+    ]
+   },
+   {
+    "id": "mh01",
+    "category": "multi_hop",
+    "latency_s": 0.1971938390051946,
+    "recall@5": 0.5,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 1.0,
+    "ndcg@10": 0.6131471927654584,
+    "top_score_post": 0.7335772514343262,
+    "final_ids": [
+     "gi-the-hearth-s-ashen-shadow-262c3a32#A#0000",
+     "gi-arlecchino-13095691#A#0015",
+     "gi-arlecchino-13095691#A#0014",
+     "gi-aino-a9b14fc5#A#0012",
+     "gi-bloodsoaked-ruins-7399d36b#A#0005"
+    ]
+   },
+   {
+    "id": "mh03",
+    "category": "multi_hop",
+    "latency_s": 0.14122541196411476,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 0.716976523399353,
+    "final_ids": [
+     "gi-all-is-ash-e9f8cb7d#A#0000",
+     "gi-arlecchino-13095691#A#0009",
+     "gi-arlecchino-13095691#A#0013",
+     "gi-arlecchino-13095691#A#0004",
+     "gi-from-this-day-on-we-shall-delight-in-new-life-together-8f931c17#A#0000"
+    ]
+   },
+   {
+    "id": "mh04",
+    "category": "multi_hop",
+    "latency_s": 0.1718180500320159,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 1.0,
+    "ndcg@10": 0.6131471927654584,
+    "top_score_post": 0.6571442484855652,
+    "final_ids": [
+     "gi-moonsong-of-the-groves-ee928c14#A#0000",
+     "gi-lauma-dd827016#A#0000",
+     "gi-lauma-dd827016#A#0003",
+     "gi-athame-artis-2a586c43#A#0006",
+     "gi-hymn-of-the-maelstrom-b9e625b7#A#0000"
+    ]
+   },
+   {
+    "id": "mh06",
+    "category": "multi_hop",
+    "latency_s": 0.1791558230179362,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 0.5,
+    "ndcg@10": 0.38685280723454163,
+    "top_score_post": 0.6839572191238403,
+    "final_ids": [
+     "gi-demonhunter-s-dusk-a40f5d02#A#0000",
+     "gi-lunar-crystallize-7891cd9b#A#0001",
+     "gi-columbina-06f9db50#A#0009",
+     "gi-lunar-crystallize-7891cd9b#A#0008",
+     "gi-lauma-dd827016#A#0016"
+    ]
+   },
+   {
+    "id": "cmp02",
+    "category": "comparative",
+    "latency_s": 0.13046068605035543,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6934264036172708,
+    "top_score_post": 0.5514227747917175,
+    "final_ids": [
+     "gi-hymn-of-the-maelstrom-b9e625b7#A#0002",
+     "gi-hymn-of-the-maelstrom-b9e625b7#A#0000",
+     "gi-angelos-heptades-09a847ba#A#0000",
+     "gi-angelos-heptades-09a847ba#A#0006",
+     "gi-hymn-of-the-maelstrom-b9e625b7#A#0006"
+    ]
+   },
+   {
+    "id": "cmp03",
+    "category": "comparative",
+    "latency_s": 0.09582970500923693,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 1.0,
+    "ndcg@10": 0.6131471927654584,
+    "top_score_post": 0.5106728076934814,
+    "final_ids": [
+     "gi-lauma-dd827016#A#0000",
+     "gi-bloom-3ef84d55#A#0015",
+     "gi-runo-all-hearts-become-the-beating-moon-e6fc1126#A#0001",
+     "gi-bloom-3ef84d55#A#0009",
+     "gi-o-lips-weave-me-songs-and-psalms-49840d50#A#0000"
+    ]
+   },
+   {
+    "id": "cmp04",
+    "category": "comparative",
+    "latency_s": 0.10669844096992165,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 0.25,
+    "ndcg@10": 0.2640681225725909,
+    "top_score_post": 0.4299795627593994,
+    "final_ids": [
+     "gi-wanderer-ae36a27a#A#0016",
+     "gi-foul-legacy-tide-withholder-fdcf34f5#A#0000",
+     "gi-farewell-of-snezhnaya-484b0de0#A#0000",
+     "gi-tartaglia-9604710f#A#0000",
+     "gi-never-ending-abbb3d96#A#0000"
+    ]
+   },
+   {
+    "id": "temp03",
+    "category": "temporal",
+    "latency_s": 0.130042920995038,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.5562770366668701,
+    "final_ids": [
+     "gi-astral-actuation-e5b7f8bd#A#0000",
+     "gi-vodyanitsa-767ec93b#A#0010",
+     "gi-aino-a9b14fc5#A#0011",
+     "gi-tartaglia-9604710f#A#0017",
+     "gi-aino-a9b14fc5#A#0012"
+    ]
+   },
+   {
+    "id": "temp04",
+    "category": "temporal",
+    "latency_s": 0.1359744289657101,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.5792080163955688,
+    "final_ids": [
+     "gi-temptation-of-the-crimson-sands-75500b18#A#0000",
+     "gi-nefer-3fbcaf82#A#0015",
+     "gi-aino-a9b14fc5#A#0012",
+     "gi-wanderer-ae36a27a#A#0020",
+     "gi-arlecchino-13095691#A#0015"
+    ]
+   },
+   {
+    "id": "temp05",
+    "category": "temporal",
+    "latency_s": 0.18669976701494306,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.6070294380187988,
+    "final_ids": [
+     "gi-the-hearth-s-ashen-shadow-262c3a32#A#0000",
+     "gi-arlecchino-13095691#A#0015",
+     "gi-arlecchino-13095691#A#0014",
+     "gi-bloodsoaked-ruins-7399d36b#A#0005",
+     "gi-hymn-of-the-maelstrom-b9e625b7#A#0006"
+    ]
+   },
+   {
+    "id": "unans07",
+    "category": "adversarial",
+    "latency_s": 0.17350257700309157,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 0.49588727951049805,
+    "final_ids": [
+     "gi-bloom-3ef84d55#A#0000",
+     "gi-eternal-speculation-engine-b94ddbd6#A#0000",
+     "gi-stellar-conduct-1a7ab9ce#A#0009",
+     "gi-formule-phenomenale-self-evident-proposition-c4c5c84e#A#0001",
+     "gi-formule-phenomenale-q-e-d-8225432f#A#0004"
+    ]
+   },
+   {
+    "id": "syn01",
+    "category": "synthesis",
+    "latency_s": 0.1553696999908425,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.6521944999694824,
+    "final_ids": [
+     "gi-ineffa-a7baec9f#A#0009",
+     "gi-cleaning-mode-carrier-frequency-52d141d7#A#0003",
+     "gi-tartaglia-9604710f#A#0014",
+     "gi-foul-legacy-raging-tide-7a72e5fc#A#0009",
+     "gi-cyclonic-duster-ca291334#A#0005"
+    ]
+   },
+   {
+    "id": "syn03",
+    "category": "synthesis",
+    "latency_s": 0.21356801799265668,
+    "recall@5": 0.75,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 0.75,
+    "mrr": 1.0,
+    "ndcg@10": 0.5585075862632192,
+    "top_score_post": 0.7046831250190735,
+    "final_ids": [
+     "gi-lunar-charged-b72f331c#A#0001",
+     "gi-moonlight-lent-unto-you-e8257b07#A#0000",
+     "gi-assemblage-hub-0bec3f01#A#0000",
+     "gi-old-world-secrets-fec776fb#A#0000",
+     "gi-lunar-reaction-a6f6a14e#A#0000"
+    ]
+   }
+  ],
+  "+struct dense/B": [
+   {
+    "id": "sh03",
+    "category": "single_hop",
+    "latency_s": 0.12542859197128564,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.56502366065979,
+    "final_ids": [
+     "gi-tartaglia-9604710f#B#0001",
+     "gi-tartaglia-9604710f#B#0002",
+     "gi-tartaglia-9604710f#B#0014",
+     "gi-tartaglia-9604710f#B#0000",
+     "gi-tartaglia-9604710f#B#0008"
+    ]
+   },
+   {
+    "id": "sh04",
+    "category": "single_hop",
+    "latency_s": 0.10879622196080163,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.5208497047424316,
+    "final_ids": [
+     "gi-wanderer-ae36a27a#B#0001",
+     "gi-wanderer-ae36a27a#B#0002",
+     "gi-wanderer-ae36a27a#B#0024",
+     "gi-wanderer-ae36a27a#B#0008",
+     "gi-wanderer-ae36a27a#B#0000"
+    ]
+   },
+   {
+    "id": "sh05",
+    "category": "single_hop",
+    "latency_s": 0.12017972604371607,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.6661084294319153,
+    "final_ids": [
+     "gi-heretic-s-molten-blade-d14d812c#B#0000",
+     "gi-heretic-s-molten-blade-d14d812c#B#0004",
+     "gi-heretic-s-molten-blade-d14d812c#B#0005",
+     "gi-heretic-s-molten-blade-d14d812c#B#0002",
+     "gi-blade-of-atonement-bbc3a634#B#0005"
+    ]
+   },
+   {
+    "id": "sh06",
+    "category": "single_hop",
+    "latency_s": 0.112087782996241,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.25,
+    "ndcg@10": 0.43067655807339306,
+    "top_score_post": 0.6270880699157715,
+    "final_ids": [
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0002",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0009",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0008",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0000",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0006"
+    ]
+   },
+   {
+    "id": "sh07",
+    "category": "single_hop",
+    "latency_s": 0.11904855497414246,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.5,
+    "top_score_post": 0.6385108232498169,
+    "final_ids": [
+     "gi-golden-frostbound-oath-360440f7#B#0005",
+     "gi-golden-frostbound-oath-360440f7#B#0004",
+     "gi-golden-frostbound-oath-360440f7#B#0000",
+     "gi-golden-frostbound-oath-360440f7#B#0003",
+     "gi-golden-frostbound-oath-360440f7#B#0009"
+    ]
+   },
+   {
+    "id": "sh11",
+    "category": "single_hop",
+    "latency_s": 0.12801080499775708,
+    "recall@5": 0.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.1111111111111111,
+    "ndcg@10": 0.3010299956639812,
+    "top_score_post": 0.6836032867431641,
+    "final_ids": [
+     "gi-arlecchino-13095691#B#0012",
+     "gi-all-is-ash-e9f8cb7d#B#0000",
+     "gi-arlecchino-13095691#B#0018",
+     "gi-all-is-ash-e9f8cb7d#B#0002",
+     "gi-arlecchino-13095691#B#0016"
+    ]
+   },
+   {
+    "id": "sh12",
+    "category": "single_hop",
+    "latency_s": 0.12788265402195975,
+    "recall@5": 0.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.16666666666666666,
+    "ndcg@10": 0.3562071871080222,
+    "top_score_post": 0.7005375623703003,
+    "final_ids": [
+     "gi-arlecchino-13095691#B#0014",
+     "gi-balemoon-rising-0861b3ab#B#0000",
+     "gi-arlecchino-13095691#B#0013",
+     "gi-arlecchino-13095691#B#0011",
+     "gi-arlecchino-13095691#B#0018"
+    ]
+   },
+   {
+    "id": "sh13",
+    "category": "single_hop",
+    "latency_s": 0.10017351299757138,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.6657488346099854,
+    "final_ids": [
+     "gi-bloom-3ef84d55#B#0002",
+     "gi-bloom-3ef84d55#B#0007",
+     "gi-bloom-3ef84d55#B#0019",
+     "gi-bloom-3ef84d55#B#0015",
+     "gi-lunar-reaction-a6f6a14e#B#0005"
+    ]
+   },
+   {
+    "id": "sh15",
+    "category": "single_hop",
+    "latency_s": 0.08631994895404205,
+    "recall@5": 0.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.16666666666666666,
+    "ndcg@10": 0.3562071871080222,
+    "top_score_post": 0.6791238188743591,
+    "final_ids": [
+     "gi-version-7-0-31a66e47#B#0000",
+     "gi-version-7-1-9ec6d612#B#0001",
+     "gi-version-luna-vii-8bacdc23#B#0001",
+     "gi-version-7-0-31a66e47#B#0002",
+     "gi-version-luna-vii-8bacdc23#B#0002"
+    ]
+   },
+   {
+    "id": "sh16",
+    "category": "single_hop",
+    "latency_s": 0.10911886999383569,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.6854961514472961,
+    "final_ids": [
+     "gi-astral-actuation-e5b7f8bd#B#0001",
+     "gi-astral-actuation-e5b7f8bd#B#0000",
+     "gi-wish-d3fd1ebb#B#0002",
+     "gi-astral-actuation-e5b7f8bd#B#0003",
+     "gi-athame-artis-2a586c43#B#0008"
+    ]
+   },
+   {
+    "id": "mh01",
+    "category": "multi_hop",
+    "latency_s": 0.1510527409845963,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 0.5,
+    "ndcg@10": 0.38685280723454163,
+    "top_score_post": 0.6834602952003479,
+    "final_ids": [
+     "gi-arlecchino-13095691#B#0019",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0002",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0000",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0001",
+     "gi-arlecchino-13095691#B#0001"
+    ]
+   },
+   {
+    "id": "mh03",
+    "category": "multi_hop",
+    "latency_s": 0.14053170202532783,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 0.7213810682296753,
+    "final_ids": [
+     "gi-all-is-ash-e9f8cb7d#B#0000",
+     "gi-arlecchino-13095691#B#0012",
+     "gi-arlecchino-13095691#B#0018",
+     "gi-all-is-ash-e9f8cb7d#B#0002",
+     "gi-balemoon-rising-0861b3ab#B#0000"
+    ]
+   },
+   {
+    "id": "mh04",
+    "category": "multi_hop",
+    "latency_s": 0.15226910199271515,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 1.0,
+    "ndcg@10": 0.6131471927654584,
+    "top_score_post": 0.7019631862640381,
+    "final_ids": [
+     "gi-moonsong-of-the-groves-ee928c14#B#0003",
+     "gi-lauma-dd827016#B#0021",
+     "gi-lauma-dd827016#B#0001",
+     "gi-astral-actuation-e5b7f8bd#B#0003",
+     "gi-moonsong-of-the-groves-ee928c14#B#0001"
+    ]
+   },
+   {
+    "id": "mh06",
+    "category": "multi_hop",
+    "latency_s": 0.1628408239921555,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 0.5,
+    "ndcg@10": 0.38685280723454163,
+    "top_score_post": 0.6926805973052979,
+    "final_ids": [
+     "gi-demonhunter-s-dusk-a40f5d02#B#0000",
+     "gi-lunar-crystallize-7891cd9b#B#0005",
+     "gi-demonhunter-s-dusk-a40f5d02#B#0001",
+     "gi-lunar-crystallize-7891cd9b#B#0007",
+     "gi-lunar-crystallize-7891cd9b#B#0013"
+    ]
+   },
+   {
+    "id": "cmp02",
+    "category": "comparative",
+    "latency_s": 0.1444924380048178,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.5719290971755981,
+    "final_ids": [
+     "gi-angelos-heptades-09a847ba#B#0000",
+     "gi-hymn-of-the-maelstrom-b9e625b7#B#0000",
+     "gi-hymn-of-the-maelstrom-b9e625b7#B#0005",
+     "gi-hymn-of-the-maelstrom-b9e625b7#B#0004",
+     "gi-angelos-heptades-09a847ba#B#0003"
+    ]
+   },
+   {
+    "id": "cmp03",
+    "category": "comparative",
+    "latency_s": 0.12581594701623544,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 0.48165273666381836,
+    "final_ids": [
+     "gi-runo-all-hearts-become-the-beating-moon-e6fc1126#B#0000",
+     "gi-lauma-dd827016#B#0013",
+     "gi-lauma-dd827016#B#0019",
+     "gi-lauma-dd827016#B#0002",
+     "gi-bloom-3ef84d55#B#0021"
+    ]
+   },
+   {
+    "id": "cmp04",
+    "category": "comparative",
+    "latency_s": 0.14445318398065865,
+    "recall@5": 0.5,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 0.5,
+    "ndcg@10": 0.5640920940185894,
+    "top_score_post": 0.47166311740875244,
+    "final_ids": [
+     "gi-tartaglia-9604710f#B#0022",
+     "gi-tartaglia-9604710f#B#0001",
+     "gi-tartaglia-9604710f#B#0000",
+     "gi-tartaglia-9604710f#B#0002",
+     "gi-never-ending-abbb3d96#B#0001"
+    ]
+   },
+   {
+    "id": "temp03",
+    "category": "temporal",
+    "latency_s": 0.1583374380134046,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.5989607572555542,
+    "final_ids": [
+     "gi-astral-actuation-e5b7f8bd#B#0002",
+     "gi-astral-actuation-e5b7f8bd#B#0001",
+     "gi-athame-artis-2a586c43#B#0008",
+     "gi-stellar-conduct-1a7ab9ce#B#0026",
+     "gi-the-daybreak-chronicles-0e3914e7#B#0009"
+    ]
+   },
+   {
+    "id": "temp04",
+    "category": "temporal",
+    "latency_s": 0.1569786979816854,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.6907244920730591,
+    "final_ids": [
+     "gi-temptation-of-the-crimson-sands-75500b18#B#0002",
+     "gi-nefer-3fbcaf82#B#0019",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0002",
+     "gi-nefer-3fbcaf82#B#0001",
+     "gi-temptation-of-the-crimson-sands-75500b18#B#0001"
+    ]
+   },
+   {
+    "id": "temp05",
+    "category": "temporal",
+    "latency_s": 0.15969519404461607,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.6454514265060425,
+    "final_ids": [
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0002",
+     "gi-arlecchino-13095691#B#0019",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0001",
+     "gi-arlecchino-13095691#B#0001",
+     "gi-from-ashes-reborn-20b9d8cb#B#0002"
+    ]
+   },
+   {
+    "id": "unans07",
+    "category": "adversarial",
+    "latency_s": 0.12609458295628428,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 0.4784505367279053,
+    "final_ids": [
+     "gi-bloom-3ef84d55#B#0002",
+     "gi-sandrone-3495f1b6#B#0007",
+     "gi-bloom-3ef84d55#B#0007",
+     "gi-lunar-bloom-c5d168b1#B#0003",
+     "gi-hidden-aces-seven-tools-of-the-hunter-2b36ccb3#B#0002"
+    ]
+   },
+   {
+    "id": "syn01",
+    "category": "synthesis",
+    "latency_s": 0.13790035399142653,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.742680549621582,
+    "final_ids": [
+     "gi-ineffa-a7baec9f#B#0012",
+     "gi-ineffa-a7baec9f#B#0011",
+     "gi-nefer-3fbcaf82#B#0016",
+     "gi-supreme-instruction-cyclonic-exterminator-0da3d312#B#0005",
+     "gi-linnea-9080b6b6#B#0016"
+    ]
+   },
+   {
+    "id": "syn03",
+    "category": "synthesis",
+    "latency_s": 0.16473822598345578,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.7668091220635322,
+    "top_score_post": 0.7286656498908997,
+    "final_ids": [
+     "gi-lunar-charged-b72f331c#B#0001",
+     "gi-lunar-charged-b72f331c#B#0004",
+     "gi-lunar-charged-b72f331c#B#0005",
+     "gi-moonlight-lent-unto-you-e8257b07#B#0000",
+     "gi-assemblage-hub-0bec3f01#B#0000"
+    ]
+   }
+  ],
+  "+hybrid hybrid/B": [
+   {
+    "id": "sh03",
+    "category": "single_hop",
+    "latency_s": 0.11700326297432184,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.03252247488101534,
+    "final_ids": [
+     "gi-tartaglia-9604710f#B#0001",
+     "gi-tartaglia-9604710f#B#0021",
+     "gi-tartaglia-9604710f#B#0012",
+     "gi-sword-of-torrents-1a8f6f91#B#0000",
+     "gi-cutting-torrent-6185663b#B#0001"
+    ]
+   },
+   {
+    "id": "sh04",
+    "category": "single_hop",
+    "latency_s": 0.11031328904209659,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.03278688524590164,
+    "final_ids": [
+     "gi-wanderer-ae36a27a#B#0001",
+     "gi-wanderer-ae36a27a#B#0002",
+     "gi-wanderer-ae36a27a#B#0023",
+     "gi-wanderer-ae36a27a#B#0019",
+     "gi-yuuban-meigen-9ef19f28#B#0001"
+    ]
+   },
+   {
+    "id": "sh05",
+    "category": "single_hop",
+    "latency_s": 0.15780389995779842,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.03252247488101534,
+    "final_ids": [
+     "gi-heretic-s-molten-blade-d14d812c#B#0000",
+     "gi-heretic-s-molten-blade-d14d812c#B#0002",
+     "gi-heretic-s-molten-blade-d14d812c#B#0005",
+     "gi-blade-of-atonement-bbc3a634#B#0005",
+     "gi-heretic-s-molten-blade-d14d812c#B#0001"
+    ]
+   },
+   {
+    "id": "sh06",
+    "category": "single_hop",
+    "latency_s": 0.12195176596287638,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.25,
+    "ndcg@10": 0.43067655807339306,
+    "top_score_post": 0.03278688524590164,
+    "final_ids": [
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0002",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0008",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0009",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0000",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0006"
+    ]
+   },
+   {
+    "id": "sh07",
+    "category": "single_hop",
+    "latency_s": 0.1518922770046629,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.5,
+    "top_score_post": 0.032266458495966696,
+    "final_ids": [
+     "gi-golden-frostbound-oath-360440f7#B#0005",
+     "gi-golden-frostbound-oath-360440f7#B#0003",
+     "gi-golden-frostbound-oath-360440f7#B#0000",
+     "gi-golden-frostbound-oath-360440f7#B#0004",
+     "gi-golden-frostbound-oath-360440f7#B#0009"
+    ]
+   },
+   {
+    "id": "sh11",
+    "category": "single_hop",
+    "latency_s": 0.17811074800556526,
+    "recall@5": 0.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.05555555555555555,
+    "ndcg@10": 0.0,
+    "top_score_post": 0.03252247488101534,
+    "final_ids": [
+     "gi-arlecchino-13095691#B#0012",
+     "gi-arlecchino-13095691#B#0018",
+     "gi-all-is-ash-e9f8cb7d#B#0000",
+     "gi-arlecchino-13095691#B#0013",
+     "gi-all-is-ash-e9f8cb7d#B#0002"
+    ]
+   },
+   {
+    "id": "sh12",
+    "category": "single_hop",
+    "latency_s": 0.163581961998716,
+    "recall@5": 0.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.07142857142857142,
+    "ndcg@10": 0.0,
+    "top_score_post": 0.03200204813108039,
+    "final_ids": [
+     "gi-arlecchino-13095691#B#0013",
+     "gi-balemoon-rising-0861b3ab#B#0000",
+     "gi-balemoon-rising-0861b3ab#B#0002",
+     "gi-arlecchino-13095691#B#0018",
+     "gi-arlecchino-13095691#B#0014"
+    ]
+   },
+   {
+    "id": "sh13",
+    "category": "single_hop",
+    "latency_s": 0.14489819697337225,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.2,
+    "ndcg@10": 0.38685280723454163,
+    "top_score_post": 0.031099324975891997,
+    "final_ids": [
+     "gi-lunar-bloom-c5d168b1#B#0003",
+     "gi-bloom-3ef84d55#B#0019",
+     "gi-bloom-3ef84d55#B#0007",
+     "gi-elemental-reaction-e932ba4c#B#0033",
+     "gi-bloom-3ef84d55#B#0002"
+    ]
+   },
+   {
+    "id": "sh15",
+    "category": "single_hop",
+    "latency_s": 0.11477074201684445,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.5,
+    "top_score_post": 0.03252247488101534,
+    "final_ids": [
+     "gi-version-7-0-31a66e47#B#0000",
+     "gi-version-7-0-31a66e47#B#0002",
+     "gi-version-7-0-31a66e47#B#0001",
+     "gi-version-luna-viii-c8a851b4#B#0000",
+     "gi-version-luna-vii-8bacdc23#B#0003"
+    ]
+   },
+   {
+    "id": "sh16",
+    "category": "single_hop",
+    "latency_s": 0.13633580500027165,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.03278688524590164,
+    "final_ids": [
+     "gi-astral-actuation-e5b7f8bd#B#0001",
+     "gi-astral-actuation-e5b7f8bd#B#0000",
+     "gi-ineffa-a7baec9f#B#0015",
+     "gi-astral-actuation-e5b7f8bd#B#0003",
+     "gi-wish-d3fd1ebb#B#0004"
+    ]
+   },
+   {
+    "id": "mh01",
+    "category": "multi_hop",
+    "latency_s": 0.20093344303313643,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 0.5,
+    "ndcg@10": 0.38685280723454163,
+    "top_score_post": 0.03278688524590164,
+    "final_ids": [
+     "gi-arlecchino-13095691#B#0019",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0002",
+     "gi-alyosha-377c06ed#B#0014",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0001",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0000"
+    ]
+   },
+   {
+    "id": "mh03",
+    "category": "multi_hop",
+    "latency_s": 0.17364533100044355,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 0.03252247488101534,
+    "final_ids": [
+     "gi-arlecchino-13095691#B#0012",
+     "gi-arlecchino-13095691#B#0018",
+     "gi-all-is-ash-e9f8cb7d#B#0000",
+     "gi-all-is-ash-e9f8cb7d#B#0002",
+     "gi-arlecchino-13095691#B#0013"
+    ]
+   },
+   {
+    "id": "mh04",
+    "category": "multi_hop",
+    "latency_s": 0.22439973702421412,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 1.0,
+    "ndcg@10": 0.6131471927654584,
+    "top_score_post": 0.03278688524590164,
+    "final_ids": [
+     "gi-moonsong-of-the-groves-ee928c14#B#0003",
+     "gi-moonsong-of-the-groves-ee928c14#B#0001",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0003",
+     "gi-the-lone-light-knocks-at-night-61c9454c#B#0003",
+     "gi-from-ashes-reborn-20b9d8cb#B#0003"
+    ]
+   },
+   {
+    "id": "mh06",
+    "category": "multi_hop",
+    "latency_s": 0.18804963497677818,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.3065735963827292,
+    "top_score_post": 0.03278688524590164,
+    "final_ids": [
+     "gi-demonhunter-s-dusk-a40f5d02#B#0000",
+     "gi-demonhunter-s-dusk-a40f5d02#B#0001",
+     "gi-lunar-crystallize-7891cd9b#B#0005",
+     "gi-lunar-crystallize-7891cd9b#B#0013",
+     "gi-lunar-crystallize-7891cd9b#B#0007"
+    ]
+   },
+   {
+    "id": "cmp02",
+    "category": "comparative",
+    "latency_s": 0.1846949839964509,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.9197207891481876,
+    "top_score_post": 0.032266458495966696,
+    "final_ids": [
+     "gi-angelos-heptades-09a847ba#B#0000",
+     "gi-angelos-heptades-09a847ba#B#0003",
+     "gi-hymn-of-the-maelstrom-b9e625b7#B#0000",
+     "gi-hymn-of-the-maelstrom-b9e625b7#B#0005",
+     "gi-angelos-heptades-09a847ba#B#0006"
+    ]
+   },
+   {
+    "id": "cmp03",
+    "category": "comparative",
+    "latency_s": 0.11752886499743909,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 0.028629032258064516,
+    "final_ids": [
+     "gi-lauma-dd827016#B#0013",
+     "gi-runo-all-hearts-become-the-beating-moon-e6fc1126#B#0000",
+     "gi-bloom-3ef84d55#B#0010",
+     "gi-bloom-3ef84d55#B#0014",
+     "gi-lauma-dd827016#B#0002"
+    ]
+   },
+   {
+    "id": "cmp04",
+    "category": "comparative",
+    "latency_s": 0.1061656009987928,
+    "recall@5": 0.0,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.125,
+    "ndcg@10": 0.19342640361727081,
+    "top_score_post": 0.0288981288981289,
+    "final_ids": [
+     "gi-wanderer-ae36a27a#B#0019",
+     "gi-tartaglia-9604710f#B#0022",
+     "gi-wanderer-ae36a27a#B#0022",
+     "gi-wanderer-ae36a27a#B#0002",
+     "gi-wanderer-ae36a27a#B#0021"
+    ]
+   },
+   {
+    "id": "temp03",
+    "category": "temporal",
+    "latency_s": 0.11354014300741255,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.03278688524590164,
+    "final_ids": [
+     "gi-astral-actuation-e5b7f8bd#B#0002",
+     "gi-astral-actuation-e5b7f8bd#B#0001",
+     "gi-astral-actuation-e5b7f8bd#B#0000",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0002",
+     "gi-astral-actuation-e5b7f8bd#B#0003"
+    ]
+   },
+   {
+    "id": "temp04",
+    "category": "temporal",
+    "latency_s": 0.1236403840011917,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.03278688524590164,
+    "final_ids": [
+     "gi-temptation-of-the-crimson-sands-75500b18#B#0002",
+     "gi-nefer-3fbcaf82#B#0019",
+     "gi-temptation-of-the-crimson-sands-75500b18#B#0001",
+     "gi-moonsong-of-the-groves-ee928c14#B#0002",
+     "gi-nefer-3fbcaf82#B#0001"
+    ]
+   },
+   {
+    "id": "temp05",
+    "category": "temporal",
+    "latency_s": 0.11299330595647916,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.03278688524590164,
+    "final_ids": [
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0002",
+     "gi-arlecchino-13095691#B#0019",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0001",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0003",
+     "gi-arlecchino-13095691#B#0001"
+    ]
+   },
+   {
+    "id": "unans07",
+    "category": "adversarial",
+    "latency_s": 0.11890934797702357,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.2,
+    "ndcg@10": 0.38685280723454163,
+    "top_score_post": 0.03252247488101534,
+    "final_ids": [
+     "gi-bloom-3ef84d55#B#0002",
+     "gi-bloom-3ef84d55#B#0007",
+     "gi-bloom-3ef84d55#B#0003",
+     "gi-sandrone-3495f1b6#B#0007",
+     "gi-team-bonus-64242bf1#B#0003"
+    ]
+   },
+   {
+    "id": "syn01",
+    "category": "synthesis",
+    "latency_s": 0.13319151499308646,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.03278688524590164,
+    "final_ids": [
+     "gi-ineffa-a7baec9f#B#0012",
+     "gi-ineffa-a7baec9f#B#0011",
+     "gi-supreme-instruction-cyclonic-exterminator-0da3d312#B#0005",
+     "gi-cleaning-mode-carrier-frequency-52d141d7#B#0006",
+     "gi-cyclonic-duster-ca291334#B#0008"
+    ]
+   },
+   {
+    "id": "syn03",
+    "category": "synthesis",
+    "latency_s": 0.1643266130122356,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.7757386182436072,
+    "top_score_post": 0.03252247488101534,
+    "final_ids": [
+     "gi-lunar-charged-b72f331c#B#0004",
+     "gi-lunar-charged-b72f331c#B#0001",
+     "gi-assemblage-hub-0bec3f01#B#0000",
+     "gi-lunar-reaction-a6f6a14e#B#0004",
+     "gi-elemental-reaction-e932ba4c#B#0020"
+    ]
+   }
+  ],
+  "B3 hybrid/B+rerank": [
+   {
+    "id": "sh03",
+    "category": "single_hop",
+    "latency_s": 17.67175836500246,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.9931578040122986,
+    "final_ids": [
+     "gi-tartaglia-9604710f#B#0001",
+     "gi-tartaglia-9604710f#B#0002",
+     "gi-foul-legacy-raging-tide-7a72e5fc#B#0000",
+     "gi-tartaglia-9604710f#B#0012",
+     "gi-havoc-obliteration-58bb656f#B#0000"
+    ]
+   },
+   {
+    "id": "sh04",
+    "category": "single_hop",
+    "latency_s": 14.248446594981942,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.993016242980957,
+    "final_ids": [
+     "gi-wanderer-ae36a27a#B#0001",
+     "gi-shoban-ostentatious-plumage-cd14909b#B#0001",
+     "gi-wanderer-ae36a27a#B#0009",
+     "gi-wanderer-ae36a27a#B#0024",
+     "gi-wanderer-ae36a27a#B#0023"
+    ]
+   },
+   {
+    "id": "sh05",
+    "category": "single_hop",
+    "latency_s": 18.698683199996594,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.9978989362716675,
+    "final_ids": [
+     "gi-heretic-s-molten-blade-d14d812c#B#0000",
+     "gi-heretic-s-molten-blade-d14d812c#B#0005",
+     "gi-heretic-s-molten-blade-d14d812c#B#0004",
+     "gi-blade-of-atonement-bbc3a634#B#0001",
+     "gi-athame-artis-2a586c43#B#0000"
+    ]
+   },
+   {
+    "id": "sh06",
+    "category": "single_hop",
+    "latency_s": 17.90863627503859,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.9830811619758606,
+    "final_ids": [
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0000",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0009",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0002",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0008",
+     "gi-to-the-looking-glass-the-mademoiselle-said-a45417e6#B#0003"
+    ]
+   },
+   {
+    "id": "sh07",
+    "category": "single_hop",
+    "latency_s": 14.03992669202853,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.9937347769737244,
+    "final_ids": [
+     "gi-golden-frostbound-oath-360440f7#B#0000",
+     "gi-golden-frostbound-oath-360440f7#B#0005",
+     "gi-golden-frostbound-oath-360440f7#B#0004",
+     "gi-golden-frostbound-oath-360440f7#B#0003",
+     "gi-frostbreath-b3a81708#B#0000"
+    ]
+   },
+   {
+    "id": "sh11",
+    "category": "single_hop",
+    "latency_s": 20.297781973029487,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6309297535714575,
+    "top_score_post": 0.9752834439277649,
+    "final_ids": [
+     "gi-arlecchino-13095691#B#0012",
+     "gi-all-is-ash-e9f8cb7d#B#0004",
+     "gi-all-is-ash-e9f8cb7d#B#0000",
+     "gi-arlecchino-13095691#B#0014",
+     "gi-from-this-day-on-we-shall-delight-in-new-life-together-8f931c17#B#0000"
+    ]
+   },
+   {
+    "id": "sh12",
+    "category": "single_hop",
+    "latency_s": 18.616722350998316,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.5,
+    "top_score_post": 0.987795352935791,
+    "final_ids": [
+     "gi-arlecchino-13095691#B#0011",
+     "gi-arlecchino-13095691#B#0014",
+     "gi-balemoon-rising-0861b3ab#B#0004",
+     "gi-all-is-ash-e9f8cb7d#B#0000",
+     "gi-the-balemoon-alone-may-know-046f8d14#B#0000"
+    ]
+   },
+   {
+    "id": "sh13",
+    "category": "single_hop",
+    "latency_s": 14.43099397001788,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.9675930738449097,
+    "final_ids": [
+     "gi-bloom-3ef84d55#B#0002",
+     "gi-bloom-3ef84d55#B#0007",
+     "gi-lunar-bloom-c5d168b1#B#0003",
+     "gi-lunar-bloom-c5d168b1#B#0004",
+     "gi-lunar-reaction-a6f6a14e#B#0005"
+    ]
+   },
+   {
+    "id": "sh15",
+    "category": "single_hop",
+    "latency_s": 10.213345369964372,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.8820579051971436,
+    "final_ids": [
+     "gi-version-7-0-31a66e47#B#0001",
+     "gi-version-7-1-9ec6d612#B#0002",
+     "gi-version-7-0-31a66e47#B#0000",
+     "gi-aino-a9b14fc5#B#0017",
+     "gi-version-luna-viii-c8a851b4#B#0001"
+    ]
+   },
+   {
+    "id": "sh16",
+    "category": "single_hop",
+    "latency_s": 12.70572104002349,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.9976922273635864,
+    "final_ids": [
+     "gi-astral-actuation-e5b7f8bd#B#0001",
+     "gi-ineffa-a7baec9f#B#0015",
+     "gi-aino-a9b14fc5#B#0017",
+     "gi-astral-actuation-e5b7f8bd#B#0000",
+     "gi-ineffa-a7baec9f#B#0001"
+    ]
+   },
+   {
+    "id": "mh01",
+    "category": "multi_hop",
+    "latency_s": 13.644479140988551,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.3065735963827292,
+    "top_score_post": 0.7651963233947754,
+    "final_ids": [
+     "gi-arlecchino-13095691#B#0019",
+     "gi-alyosha-377c06ed#B#0014",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0002",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0001",
+     "gi-arlecchino-13095691#B#0001"
+    ]
+   },
+   {
+    "id": "mh03",
+    "category": "multi_hop",
+    "latency_s": 16.409970166976564,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 0.8978389501571655,
+    "final_ids": [
+     "gi-all-is-ash-e9f8cb7d#B#0000",
+     "gi-arlecchino-13095691#B#0012",
+     "gi-arlecchino-13095691#B#0018",
+     "gi-all-is-ash-e9f8cb7d#B#0001",
+     "gi-arlecchino-13095691#B#0011"
+    ]
+   },
+   {
+    "id": "mh04",
+    "category": "multi_hop",
+    "latency_s": 10.482502373983152,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 1.0,
+    "ndcg@10": 0.6131471927654584,
+    "top_score_post": 0.9952312111854553,
+    "final_ids": [
+     "gi-moonsong-of-the-groves-ee928c14#B#0003",
+     "gi-moonsong-of-the-groves-ee928c14#B#0001",
+     "gi-astral-actuation-e5b7f8bd#B#0003",
+     "gi-from-ashes-reborn-20b9d8cb#B#0003",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0003"
+    ]
+   },
+   {
+    "id": "mh06",
+    "category": "multi_hop",
+    "latency_s": 17.59190605900949,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.3065735963827292,
+    "top_score_post": 0.9988765120506287,
+    "final_ids": [
+     "gi-demonhunter-s-dusk-a40f5d02#B#0001",
+     "gi-demonhunter-s-dusk-a40f5d02#B#0000",
+     "gi-lunar-crystallize-7891cd9b#B#0005",
+     "gi-illuga-15df5768#B#0012",
+     "gi-illuga-15df5768#B#0010"
+    ]
+   },
+   {
+    "id": "cmp02",
+    "category": "comparative",
+    "latency_s": 15.377915447985288,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.5706417189553201,
+    "top_score_post": 0.9990718364715576,
+    "final_ids": [
+     "gi-hymn-of-the-maelstrom-b9e625b7#B#0003",
+     "gi-angelos-heptades-09a847ba#B#0003",
+     "gi-hymn-of-the-maelstrom-b9e625b7#B#0000",
+     "gi-angelos-heptades-09a847ba#B#0000",
+     "gi-hymn-of-the-maelstrom-b9e625b7#B#0005"
+    ]
+   },
+   {
+    "id": "cmp03",
+    "category": "comparative",
+    "latency_s": 15.433363438001834,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 0.8701159954071045,
+    "final_ids": [
+     "gi-lauma-dd827016#B#0002",
+     "gi-arlecchino-13095691#B#0002",
+     "gi-bloom-3ef84d55#B#0012",
+     "gi-bloom-3ef84d55#B#0014",
+     "gi-arlecchino-13095691#B#0016"
+    ]
+   },
+   {
+    "id": "cmp04",
+    "category": "comparative",
+    "latency_s": 11.941296538047027,
+    "recall@5": 0.0,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.16666666666666666,
+    "ndcg@10": 0.21840743681816419,
+    "top_score_post": 0.9977357387542725,
+    "final_ids": [
+     "gi-tartaglia-9604710f#B#0002",
+     "gi-wanderer-ae36a27a#B#0002",
+     "gi-wanderer-ae36a27a#B#0019",
+     "gi-wanderer-ae36a27a#B#0021",
+     "gi-tartaglia-9604710f#B#0022"
+    ]
+   },
+   {
+    "id": "temp03",
+    "category": "temporal",
+    "latency_s": 12.062448131968267,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.9843264222145081,
+    "final_ids": [
+     "gi-astral-actuation-e5b7f8bd#B#0002",
+     "gi-ineffa-a7baec9f#B#0015",
+     "gi-astral-actuation-e5b7f8bd#B#0001",
+     "gi-astral-actuation-e5b7f8bd#B#0003",
+     "gi-temptation-of-the-crimson-sands-75500b18#B#0002"
+    ]
+   },
+   {
+    "id": "temp04",
+    "category": "temporal",
+    "latency_s": 12.410459391016047,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.9961138963699341,
+    "final_ids": [
+     "gi-temptation-of-the-crimson-sands-75500b18#B#0002",
+     "gi-nefer-3fbcaf82#B#0019",
+     "gi-jahoda-ef8f26c4#B#0019",
+     "gi-aino-a9b14fc5#B#0017",
+     "gi-golden-frostbound-oath-360440f7#B#0009"
+    ]
+   },
+   {
+    "id": "temp05",
+    "category": "temporal",
+    "latency_s": 12.590749353985302,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.7699963450431824,
+    "final_ids": [
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0002",
+     "gi-arlecchino-13095691#B#0001",
+     "gi-arlecchino-13095691#B#0019",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0001",
+     "gi-alyosha-377c06ed#B#0014"
+    ]
+   },
+   {
+    "id": "unans07",
+    "category": "adversarial",
+    "latency_s": 16.862563515023794,
+    "recall@5": 0.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.07142857142857142,
+    "ndcg@10": 0.0,
+    "top_score_post": 0.10046766698360443,
+    "final_ids": [
+     "gi-bloom-3ef84d55#B#0003",
+     "gi-bloom-3ef84d55#B#0007",
+     "gi-bloom-3ef84d55#B#0002",
+     "gi-jahoda-ef8f26c4#B#0013",
+     "gi-hidden-aces-seven-tools-of-the-hunter-2b36ccb3#B#0002"
+    ]
+   },
+   {
+    "id": "syn01",
+    "category": "synthesis",
+    "latency_s": 15.135685208020732,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 0.9914518594741821,
+    "final_ids": [
+     "gi-ineffa-a7baec9f#B#0012",
+     "gi-ineffa-a7baec9f#B#0011",
+     "gi-cleaning-mode-carrier-frequency-52d141d7#B#0006",
+     "gi-supreme-instruction-cyclonic-exterminator-0da3d312#B#0005",
+     "gi-cleaning-mode-carrier-frequency-52d141d7#B#0005"
+    ]
+   },
+   {
+    "id": "syn03",
+    "category": "synthesis",
+    "latency_s": 15.524273451010231,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 0.787702056960637,
+    "top_score_post": 0.9974544644355774,
+    "final_ids": [
+     "gi-lunar-charged-b72f331c#B#0001",
+     "gi-lunar-charged-b72f331c#B#0004",
+     "gi-moonlight-lent-unto-you-e8257b07#B#0000",
+     "gi-assemblage-hub-0bec3f01#B#0000",
+     "gi-old-world-secrets-fec776fb#B#0000"
+    ]
+   }
+  ],
+  "(extra) bm25/B": [
+   {
+    "id": "sh03",
+    "category": "single_hop",
+    "latency_s": 0.004312247969210148,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6309297535714575,
+    "top_score_post": 13.009306277239002,
+    "final_ids": [
+     "gi-tartaglia-9604710f#B#0021",
+     "gi-tartaglia-9604710f#B#0001",
+     "gi-snezhnaya-e80a1ce6#B#0020",
+     "gi-never-ending-abbb3d96#B#0002",
+     "gi-tartaglia-9604710f#B#0011"
+    ]
+   },
+   {
+    "id": "sh04",
+    "category": "single_hop",
+    "latency_s": 0.0034542789799161255,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 16.139194943265633,
+    "final_ids": [
+     "gi-wanderer-ae36a27a#B#0001",
+     "gi-strum-the-swirling-winds-6d59eb42#B#0001",
+     "gi-yuuban-meigen-9ef19f28#B#0001",
+     "gi-wanderer-ae36a27a#B#0002",
+     "gi-wanderer-ae36a27a#B#0023"
+    ]
+   },
+   {
+    "id": "sh05",
+    "category": "single_hop",
+    "latency_s": 0.00821743399137631,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6309297535714575,
+    "top_score_post": 48.9893730284429,
+    "final_ids": [
+     "gi-heretic-s-molten-blade-d14d812c#B#0002",
+     "gi-heretic-s-molten-blade-d14d812c#B#0000",
+     "gi-heretic-s-molten-blade-d14d812c#B#0001",
+     "gi-heretic-s-molten-blade-d14d812c#B#0005",
+     "gi-heretic-s-molten-blade-d14d812c#B#0008"
+    ]
+   },
+   {
+    "id": "sh06",
+    "category": "single_hop",
+    "latency_s": 0.003660500980913639,
+    "recall@5": 0.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.16666666666666666,
+    "ndcg@10": 0.3562071871080222,
+    "top_score_post": 29.93167450502707,
+    "final_ids": [
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0002",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0008",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0009",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0007",
+     "gi-a-teaspoon-of-transcendence-c14b8fc3#B#0001"
+    ]
+   },
+   {
+    "id": "sh07",
+    "category": "single_hop",
+    "latency_s": 0.005457914026919752,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.5,
+    "ndcg@10": 0.6309297535714575,
+    "top_score_post": 41.1902602163222,
+    "final_ids": [
+     "gi-golden-frostbound-oath-360440f7#B#0003",
+     "gi-golden-frostbound-oath-360440f7#B#0000",
+     "gi-golden-frostbound-oath-360440f7#B#0005",
+     "gi-golden-frostbound-oath-360440f7#B#0008",
+     "gi-golden-frostbound-oath-360440f7#B#0007"
+    ]
+   },
+   {
+    "id": "sh11",
+    "category": "single_hop",
+    "latency_s": 0.007134768005926162,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 37.68833260516591,
+    "final_ids": [
+     "gi-arlecchino-13095691#B#0018",
+     "gi-arlecchino-13095691#B#0012",
+     "gi-arlecchino-13095691#B#0013",
+     "gi-balemoon-rising-0861b3ab#B#0002",
+     "gi-all-is-ash-e9f8cb7d#B#0001"
+    ]
+   },
+   {
+    "id": "sh12",
+    "category": "single_hop",
+    "latency_s": 0.005248876987025142,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 43.882027560269165,
+    "final_ids": [
+     "gi-balemoon-rising-0861b3ab#B#0002",
+     "gi-arlecchino-13095691#B#0013",
+     "gi-balemoon-rising-0861b3ab#B#0000",
+     "gi-arlecchino-13095691#B#0018",
+     "gi-from-this-day-on-we-shall-delight-in-new-life-together-8f931c17#B#0000"
+    ]
+   },
+   {
+    "id": "sh13",
+    "category": "single_hop",
+    "latency_s": 0.0034526860108599067,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 18.810240342514753,
+    "final_ids": [
+     "gi-lunar-bloom-c5d168b1#B#0003",
+     "gi-lunar-crystallize-7891cd9b#B#0003",
+     "gi-through-darkness-led-by-moonlight-65ba4ef2#B#0000",
+     "gi-lunar-bloom-c5d168b1#B#0015",
+     "gi-moonlit-melancholy-30a11145#B#0002"
+    ]
+   },
+   {
+    "id": "sh15",
+    "category": "single_hop",
+    "latency_s": 0.0033201450132764876,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.2,
+    "ndcg@10": 0.38685280723454163,
+    "top_score_post": 20.725575320458795,
+    "final_ids": [
+     "gi-version-luna-vii-8bacdc23#B#0003",
+     "gi-version-7-0-31a66e47#B#0000",
+     "gi-version-7-0-31a66e47#B#0002",
+     "gi-version-luna-viii-c8a851b4#B#0000",
+     "gi-version-7-0-31a66e47#B#0001"
+    ]
+   },
+   {
+    "id": "sh16",
+    "category": "single_hop",
+    "latency_s": 0.004172693006694317,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 36.02018808220134,
+    "final_ids": [
+     "gi-astral-actuation-e5b7f8bd#B#0001",
+     "gi-ineffa-a7baec9f#B#0015",
+     "gi-astral-actuation-e5b7f8bd#B#0000",
+     "gi-aino-a9b14fc5#B#0017",
+     "gi-wish-d3fd1ebb#B#0004"
+    ]
+   },
+   {
+    "id": "mh01",
+    "category": "multi_hop",
+    "latency_s": 0.009112594008911401,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.3065735963827292,
+    "top_score_post": 85.69172793417783,
+    "final_ids": [
+     "gi-arlecchino-13095691#B#0019",
+     "gi-alyosha-377c06ed#B#0014",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0002",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0001",
+     "gi-arlecchino-13095691#B#0001"
+    ]
+   },
+   {
+    "id": "mh03",
+    "category": "multi_hop",
+    "latency_s": 0.006986806984059513,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 40.81732948095975,
+    "final_ids": [
+     "gi-arlecchino-13095691#B#0012",
+     "gi-arlecchino-13095691#B#0018",
+     "gi-arlecchino-13095691#B#0013",
+     "gi-all-is-ash-e9f8cb7d#B#0002",
+     "gi-balemoon-rising-0861b3ab#B#0002"
+    ]
+   },
+   {
+    "id": "mh04",
+    "category": "multi_hop",
+    "latency_s": 0.007503678963985294,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 1.0,
+    "ndcg@10": 0.6131471927654584,
+    "top_score_post": 77.60088879100111,
+    "final_ids": [
+     "gi-moonsong-of-the-groves-ee928c14#B#0003",
+     "gi-farewell-of-snezhnaya-484b0de0#B#0003",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0003",
+     "gi-moonsong-of-the-groves-ee928c14#B#0001",
+     "gi-the-lone-light-knocks-at-night-61c9454c#B#0003"
+    ]
+   },
+   {
+    "id": "mh06",
+    "category": "multi_hop",
+    "latency_s": 0.007092417974490672,
+    "recall@5": 0.5,
+    "recall@20": 0.5,
+    "recall@5_pre_rerank": 0.5,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.3065735963827292,
+    "top_score_post": 41.41348131685983,
+    "final_ids": [
+     "gi-demonhunter-s-dusk-a40f5d02#B#0000",
+     "gi-demonhunter-s-dusk-a40f5d02#B#0001",
+     "gi-lunar-crystallize-7891cd9b#B#0005",
+     "gi-illuga-15df5768#B#0012",
+     "gi-linnea-9080b6b6#B#0011"
+    ]
+   },
+   {
+    "id": "cmp02",
+    "category": "comparative",
+    "latency_s": 0.006331633019726723,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.5706417189553201,
+    "top_score_post": 43.14758015595846,
+    "final_ids": [
+     "gi-angelos-heptades-09a847ba#B#0003",
+     "gi-hymn-of-the-maelstrom-b9e625b7#B#0003",
+     "gi-angelos-heptades-09a847ba#B#0000",
+     "gi-hymn-of-the-maelstrom-b9e625b7#B#0000",
+     "gi-hymn-of-the-maelstrom-b9e625b7#B#0005"
+    ]
+   },
+   {
+    "id": "cmp03",
+    "category": "comparative",
+    "latency_s": 0.002646165026817471,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 12.568231495384207,
+    "final_ids": [
+     "gi-peregrination-of-linnunrata-35e96bdd#B#0002",
+     "gi-bloom-3ef84d55#B#0017",
+     "gi-bloom-3ef84d55#B#0018",
+     "gi-heretic-s-molten-blade-d14d812c#B#0007",
+     "gi-nod-krai-1196cc41#B#0034"
+    ]
+   },
+   {
+    "id": "cmp04",
+    "category": "comparative",
+    "latency_s": 0.0025792780215851963,
+    "recall@5": 0.0,
+    "recall@20": 0.0,
+    "recall@5_pre_rerank": 0.0,
+    "mrr": 0.0,
+    "ndcg@10": 0.0,
+    "top_score_post": 14.893372456223702,
+    "final_ids": [
+     "gi-farewell-of-snezhnaya-484b0de0#B#0003",
+     "gi-snezhnaya-e80a1ce6#B#0017",
+     "gi-version-luna-i-9a88035d#B#0001",
+     "gi-version-luna-v-268feab5#B#0001",
+     "gi-wanderer-ae36a27a#B#0019"
+    ]
+   },
+   {
+    "id": "temp03",
+    "category": "temporal",
+    "latency_s": 0.004683583043515682,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 39.06275664452976,
+    "final_ids": [
+     "gi-astral-actuation-e5b7f8bd#B#0002",
+     "gi-astral-actuation-e5b7f8bd#B#0003",
+     "gi-farewell-of-snezhnaya-484b0de0#B#0003",
+     "gi-astral-actuation-e5b7f8bd#B#0001",
+     "gi-moonsong-of-the-groves-ee928c14#B#0002"
+    ]
+   },
+   {
+    "id": "temp04",
+    "category": "temporal",
+    "latency_s": 0.00451729801716283,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 71.00181785426426,
+    "final_ids": [
+     "gi-temptation-of-the-crimson-sands-75500b18#B#0002",
+     "gi-temptation-of-the-crimson-sands-75500b18#B#0003",
+     "gi-temptation-of-the-crimson-sands-75500b18#B#0000",
+     "gi-temptation-of-the-crimson-sands-75500b18#B#0001",
+     "gi-nefer-3fbcaf82#B#0019"
+    ]
+   },
+   {
+    "id": "temp05",
+    "category": "temporal",
+    "latency_s": 0.0034857489517889917,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 50.549697635449455,
+    "final_ids": [
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0002",
+     "gi-arlecchino-13095691#B#0019",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0003",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0000",
+     "gi-the-hearth-s-ashen-shadow-262c3a32#B#0001"
+    ]
+   },
+   {
+    "id": "unans07",
+    "category": "adversarial",
+    "latency_s": 0.004319572006352246,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 0.3333333333333333,
+    "ndcg@10": 0.5,
+    "top_score_post": 22.741894226229213,
+    "final_ids": [
+     "gi-bloom-3ef84d55#B#0003",
+     "gi-bloom-3ef84d55#B#0002",
+     "gi-team-bonus-64242bf1#B#0003",
+     "gi-wish-d3fd1ebb#B#0008",
+     "gi-bloom-3ef84d55#B#0007"
+    ]
+   },
+   {
+    "id": "syn01",
+    "category": "synthesis",
+    "latency_s": 0.006562482041772455,
+    "recall@5": 1.0,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 1.0,
+    "mrr": 1.0,
+    "ndcg@10": 1.0,
+    "top_score_post": 43.28417817210886,
+    "final_ids": [
+     "gi-ineffa-a7baec9f#B#0012",
+     "gi-ineffa-a7baec9f#B#0011",
+     "gi-cyclonic-duster-ca291334#B#0008",
+     "gi-cleaning-mode-carrier-frequency-52d141d7#B#0006",
+     "gi-supreme-instruction-cyclonic-exterminator-0da3d312#B#0005"
+    ]
+   },
+   {
+    "id": "syn03",
+    "category": "synthesis",
+    "latency_s": 0.007753974001388997,
+    "recall@5": 0.75,
+    "recall@20": 1.0,
+    "recall@5_pre_rerank": 0.75,
+    "mrr": 1.0,
+    "ndcg@10": 0.6595629128335778,
+    "top_score_post": 55.8345806458359,
+    "final_ids": [
+     "gi-lunar-charged-b72f331c#B#0004",
+     "gi-elemental-reaction-e932ba4c#B#0020",
+     "gi-lunar-reaction-a6f6a14e#B#0004",
+     "gi-assemblage-hub-0bec3f01#B#0000",
+     "gi-lunar-reaction-a6f6a14e#B#0005"
+    ]
+   }
+  ]
+ }
+}
