@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10
+      - uses: astral-sh/setup-uv@v10.3.0  # setup-uv publishes no floating major tag (no @v10); pin the release
         with:
           python-version: "3.12"
           enable-cache: true
