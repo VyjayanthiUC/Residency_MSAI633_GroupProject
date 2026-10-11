@@ -1,0 +1,171 @@
+/* FanBot Day 2 deck. 1920×1080 stage scaled to the window.
+ * MiSans is not redistributed (local only); without it the deck falls back to Inter (OFL, bundled).
+ * Palette and type from genshin-quest's Teyvat board: night-sky gradient, gold hairlines, cream text, MiSans everywhere,
+ * Cinzel Decorative only for the title wordmark. Chart colours validated for this surface (dataviz validate_palette, dark).
+ * Layout: module strip y 44–84 · headline y 120–300 · content y 340–900 · source line y ≈ 910 · constellation y 976–1036. */
+@font-face{font-family:"MiSans";src:url(fonts/MiSans-Medium.woff2) format("woff2");font-weight:100 550;font-display:block}
+@font-face{font-family:"MiSans";src:url(fonts/MiSans-Demibold.woff2) format("woff2");font-weight:551 800;font-display:block}
+@font-face{font-family:"MiSans";src:url(fonts/MiSans-Heavy.woff2) format("woff2");font-weight:801 1000;font-display:block}
+@font-face{font-family:"Inter";src:url(fonts/Inter.ttf) format("truetype");font-weight:100 900;font-display:block}
+@font-face{font-family:"Fraunces";src:url(fonts-x/Fraunces.ttf) format("truetype");font-weight:100 900;font-display:block}
+@font-face{font-family:"Cinzel Decorative";src:url(fonts/CinzelDecorative.woff2) format("woff2");font-weight:700;font-display:block}
+
+:root{
+  /* surfaces and ink */
+  --night:#0b1030; --surface:#151c4e; --panel:rgba(20,26,66,.82); --line:rgba(211,188,142,.32); --grid:rgba(236,229,216,.12);
+  --cream:#ece5d8; --muted:#a39d92; --faint:rgba(236,229,216,.42);
+  --gold:#d3bc8e; --gold-hi:#ffe6a8;
+  /* data marks (validated: dark, surface #151c4e) — FanBot / second series / from memory / everything else */
+  --d-ours:#b48c2c; --d-ours-hi:#ffe6a8; --d-alt:#3a9cc4; --d-memory:#d9604c; --d-neutral:#6d79bf;
+  --ease:cubic-bezier(.2,.9,.25,1);
+  /* WBS modules (validated: dark, surface #151c4e; adjacent pairs alternate warm/cool) */
+  --m-data:#2fa89a; --m-indexing:#c27f24; --m-retrieval:#4d8fe0; --m-generation:#d6608f; --m-chat:#6fa83a; --m-evaluation:#9a78e0;
+  --display:"Fraunces","MiSans",serif;
+  font-family:"MiSans","Inter","Noto Sans CJK SC",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#070a1e;overflow:hidden;color:var(--cream)}
+#stage{position:fixed;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden}
+.sky{position:absolute;inset:0;background:
+  radial-gradient(ellipse 45% 38% at 72% 16%,rgba(120,140,255,.20),transparent 70%),
+  radial-gradient(ellipse 40% 34% at 20% 24%,rgba(170,120,230,.14),transparent 70%),
+  radial-gradient(ellipse 80% 50% at 50% 100%,rgba(60,70,160,.42),transparent 70%),
+  linear-gradient(180deg,#0b1030 0%,#131a4a 50%,#18205c 80%,#121845 100%)}
+.sky i{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff}
+@media (prefers-reduced-motion:no-preference){.sky i:nth-child(4n){animation:tw 6s ease-in-out infinite}}
+@keyframes tw{50%{opacity:.15}}
+
+/* ---------------------------------------------------------------- slide frame */
+.slide{position:absolute;inset:0;display:none}
+.slide.on{display:block}
+.slide>h1{position:absolute;left:150px;top:128px;width:1620px;font-family:var(--display);font-weight:600;font-size:74px;line-height:1.06;letter-spacing:-.015em;font-variation-settings:"opsz" 144,"SOFT" 50}
+.slide>.sub{position:absolute;left:150px;top:var(--sub-top,300px);width:1500px;font-size:32px;line-height:1.4;color:var(--muted)}
+.content{position:absolute;left:150px;right:150px;top:380px;bottom:170px}
+.source{position:absolute;left:150px;right:150px;bottom:128px;font-size:22px;color:var(--faint)}
+
+/* module strip (WBS epics): full-width band, one colour per module; the module(s) this slide is about light up */
+.mods{position:absolute;left:0;right:0;top:0;height:68px;display:grid;grid-template-columns:repeat(6,1fr);z-index:3}
+.mods span{display:flex;align-items:center;justify-content:center;font-size:23px;font-weight:600;color:rgba(236,229,216,.38);
+  border-top:5px solid var(--mc);background:linear-gradient(180deg,color-mix(in srgb,var(--mc) 16%,transparent),transparent);opacity:.55}
+.mods span.on{opacity:1;color:#0b1030;font-weight:800;background:var(--mc);border-top-color:color-mix(in srgb,var(--mc) 60%,#fff);
+  box-shadow:0 0 34px 4px color-mix(in srgb,var(--mc) 55%,transparent)}
+.mods span:nth-child(1){--mc:var(--m-data)}.mods span:nth-child(2){--mc:var(--m-indexing)}.mods span:nth-child(3){--mc:var(--m-retrieval)}
+.mods span:nth-child(4){--mc:var(--m-generation)}.mods span:nth-child(5){--mc:var(--m-chat)}.mods span:nth-child(6){--mc:var(--m-evaluation)}
+.pageno{position:absolute;right:28px;bottom:18px;font-size:18px;color:var(--faint);z-index:3}
+
+/* speakers: seven elements in the seven nations' order; the current speaker's emblem glows in its element colour */
+.cons{position:absolute;left:150px;right:150px;bottom:30px;height:74px;display:flex;align-items:center;justify-content:space-between;z-index:3}
+.cons::before{content:"";position:absolute;left:20px;right:20px;top:24px;height:1px;
+  background:linear-gradient(90deg,#6fe0c8,#f0c060,#b48cff,#8fd14f,#5ab8ff,#ff8a4c,#9fe6f2);opacity:.28}
+.cons span{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;width:120px;font-size:19px;letter-spacing:.02em;color:rgba(236,229,216,.34);white-space:nowrap}
+.cons .em{width:36px;height:36px;padding:5px;border-radius:50%;color:var(--ec);background:#121845;box-shadow:0 0 0 1px color-mix(in srgb,var(--ec) 35%,transparent);opacity:.42}
+.cons span.done .em{opacity:.75}
+.cons span.now{color:var(--ec);font-weight:700}
+.cons span.now .em{opacity:1;transform:scale(1.35);background:radial-gradient(circle,rgba(var(--eg),.28),#121845 70%);
+  box-shadow:0 0 0 2px var(--ec),0 0 22px 6px rgba(var(--eg),.55)}
+
+/* ---------------------------------------------------------------- steps (presenter-paced reveals) */
+.step{opacity:.07;transition:opacity .45s var(--ease)}
+.step.shown{opacity:1}
+@media (prefers-reduced-motion:reduce){.step,.bar .fill,.cyc .sweep,.cyc .pt{transition:none!important}}
+
+/* ---------------------------------------------------------------- building blocks */
+.big{font-family:var(--display);font-variation-settings:"opsz" 144,"SOFT" 30;font-weight:800;font-size:230px;line-height:.9;color:var(--gold-hi);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.big small{display:block;font-family:"MiSans","Inter",sans-serif;font-variation-settings:normal;font-weight:500;font-size:34px;letter-spacing:0;color:var(--cream);margin-top:22px;line-height:1.35}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center}
+.cols.wide-left{grid-template-columns:1.35fr 1fr}
+.list{list-style:none;display:flex;flex-direction:column;gap:28px;font-size:36px;line-height:1.3}
+.list li{padding-left:32px;position:relative}
+.list li{padding-left:40px}
+.list li::before{content:"";position:absolute;left:0;top:.42em;width:14px;height:14px;transform:rotate(45deg);border:1px solid var(--gold)}
+.list b{color:var(--gold-hi);font-weight:700}
+.list small{display:block;font-size:25px;color:var(--muted);margin-top:4px}
+.cite{display:inline-block;font-size:21px;font-weight:700;color:var(--night);background:var(--gold);border-radius:12px;padding:0 9px;margin-left:5px;vertical-align:4px}
+.memory{color:#f08a76}
+.ours{color:var(--gold-hi)}
+
+/* comparison table: question / from memory / FanBot */
+.vs{display:grid;grid-template-columns:1.1fr .9fr 1.1fr;column-gap:48px;font-size:31px;line-height:1.3}
+.vs .h{font-size:24px;font-weight:700;color:var(--muted);padding-bottom:14px;border-bottom:1px solid var(--line)}
+.vs .h.memory{color:#f08a76}.vs .h.ours{color:var(--gold-hi)}
+.vs .c{padding:20px 0;border-bottom:1px solid var(--grid)}
+.vs .c small{display:block;font-size:22px;color:var(--muted);margin-top:6px}
+.vs .c.m{color:#f3b2a5}
+.vs .c.m b{text-decoration:line-through;text-decoration-color:rgba(217,96,76,.9);text-decoration-thickness:2px;font-weight:700}
+.vs .c.o b{color:var(--gold-hi);font-weight:700}
+
+/* flow diagram: absolutely placed HTML nodes + SVG connectors drawn by deck.js from data-from/data-to */
+.flow{position:relative;height:100%}
+.flow .node{position:absolute;padding:22px 26px;border:2px solid rgba(211,188,142,.55);border-radius:12px;background:rgba(24,31,78,.92);font-size:32px;font-weight:600;line-height:1.2;box-shadow:0 10px 30px rgba(4,6,24,.45)}
+.flow .node small{display:block;font-weight:500;font-size:23px;line-height:1.3;color:var(--muted);margin-top:6px}
+.flow .node code{font-family:inherit;font-weight:600;font-size:22px;color:#8fd0ea;background:rgba(58,156,196,.14);padding:2px 9px;border-radius:6px;display:inline-block;margin:10px 6px 0 0}
+.flow .node.key{border-color:var(--gold-hi);box-shadow:0 0 0 1px var(--gold-hi) inset}
+.flow .num{position:absolute;left:-18px;top:-18px;width:40px;height:40px;font-weight:800;border-radius:50%;background:var(--night);border:1px solid var(--gold);color:var(--gold-hi);font-size:22px;display:grid;place-items:center}
+.flow svg.wires{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.flow svg.wires path{fill:none;stroke:var(--gold-hi);stroke-width:3.5;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);transition:stroke-dashoffset .6s var(--ease)}
+.flow svg.wires path.shown{stroke-dashoffset:0}
+
+/* ---------------------------------------------------------------- charts (built by charts.js) */
+.chart{position:relative;font-variant-numeric:tabular-nums}
+.bars{display:flex;flex-direction:column;gap:22px}
+.bar{display:grid;grid-template-columns:var(--lab,420px) 1fr 120px;align-items:center;gap:28px;font-size:31px}
+.bar .lab{text-align:right;color:var(--cream);line-height:1.2}
+.bar .lab small{display:block;font-size:22px;color:var(--muted)}
+.bar .track{position:relative;height:38px}
+.bar .track::before{content:"";position:absolute;left:0;top:-9px;bottom:-9px;width:1px;background:var(--grid)}
+.bar .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--d-neutral);border-radius:0 4px 4px 0;transition:width .9s var(--ease)}
+.bar .ci{position:absolute;top:50%;height:3px;margin-top:-1.5px;background:rgba(236,229,216,.9);opacity:0;transition:opacity .4s .7s}
+.bar .ci::before,.bar .ci::after{content:"";position:absolute;top:-10px;width:3px;height:23px;background:inherit}
+.bar .ci::before{left:0}.bar .ci::after{right:0}
+.bar .val{font-family:var(--display);font-size:38px;font-weight:700;color:var(--cream);opacity:0;transition:opacity .3s .6s}
+.bar.key .fill{background:var(--d-ours-hi);box-shadow:0 0 24px 2px rgba(255,230,168,.35)}
+.bar.key .lab,.bar.key .val{color:var(--gold-hi)}
+.bar.memory .fill{background:var(--d-memory)}
+.bar.alt .fill{background:var(--d-alt)}
+.chart.live .bar .fill{width:var(--w)}
+.chart.live .bar .ci,.chart.live .bar .val{opacity:1}
+.axis{display:grid;grid-template-columns:var(--lab,420px) 1fr 120px;gap:28px;font-size:21px;color:var(--faint);margin-top:8px}
+.axis .ticks{position:relative;height:20px}
+.axis .ticks span{position:absolute;transform:translateX(-50%)}
+
+/* cycle: dated events around a ring (charts.js "cycle"); the gold arc sweeps clockwise and lights each node */
+.cyc{position:relative}
+.cyc svg{overflow:visible}
+.cyc .ring{fill:none;stroke:var(--grid);stroke-width:4}
+.cyc .sweep{fill:none;stroke:var(--gold-hi);stroke-width:6;stroke-linecap:round;stroke-dasharray:var(--len);stroke-dashoffset:var(--len);
+  transition:stroke-dashoffset 2.6s cubic-bezier(.45,.05,.35,1);filter:drop-shadow(0 0 10px rgba(255,230,168,.55))}
+.cyc .pt{fill:#1a2156;stroke:var(--gold);stroke-width:3;transition:fill .3s,r .3s}
+.cyc text{fill:var(--muted);font:500 24px "MiSans","Inter",sans-serif}
+.cyc text.n{fill:var(--cream);font-weight:700;font-size:30px}
+.cyc .hub{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.cyc .hub b{font-family:var(--display);font-variation-settings:"opsz" 144,"SOFT" 30;font-weight:800;font-size:150px;line-height:.9;color:var(--gold-hi)}
+.cyc .hub span{font-size:30px;color:var(--cream);margin-top:10px}
+.chart.live .cyc .sweep{stroke-dashoffset:0}
+.chart.live .cyc .pt{fill:var(--gold-hi);transition-delay:var(--d)}
+
+/* title slide */
+.title .mark{position:absolute;left:150px;top:300px;z-index:1;font-family:"Cinzel Decorative",serif;font-size:190px;line-height:1;color:var(--gold-hi);text-shadow:0 0 60px rgba(255,230,168,.22)}
+.title>h1{top:540px;font-family:"MiSans","Inter",sans-serif;font-variation-settings:normal;font-weight:500;font-size:46px;line-height:1.3;width:1300px}
+.title .team{position:absolute;left:150px;bottom:110px;font-size:27px;color:var(--muted);line-height:1.7;width:1500px}
+.title .team b{color:var(--cream);font-weight:500}
+
+/* icons */
+.ico{width:1em;height:1em;flex:none;vertical-align:-.14em}
+.mods .ico{width:30px;height:30px;margin-right:10px}
+.mods span{gap:0}
+.ico.lg{width:64px;height:64px}
+.ico.el-pyro{color:#ff8a5c}.ico.el-hydro{color:#4fc3ff}.ico.el-electro{color:#c58cff}.ico.el-dendro{color:#9be05a}.ico.el-cryo{color:#9fe3f5}
+.ico.gem{width:1.25em;height:1.25em;vertical-align:-.28em}
+
+.flow .nico{display:block;width:40px;height:40px;color:var(--gold-hi);margin-bottom:10px}
+.list.icons li{padding-left:0;display:grid;grid-template-columns:68px 1fr;align-items:start}.list.icons li::before{display:none}
+.list.icons .gem{width:50px;height:50px;margin-top:-4px}
+.vs .c.q .gem{width:42px;height:42px;margin-right:6px;vertical-align:-.35em}
+
+aside.notes{display:none}
+
+/* export mode: every step visible, charts at their final state, no chrome */
+body.export .cm,body.export .hint{display:none!important}
+body.export .step{opacity:1}
+body.export *{transition:none!important}
+.hint{position:fixed;right:18px;bottom:12px;font:13px "MiSans","Inter",sans-serif;color:rgba(236,229,216,.32);z-index:50}

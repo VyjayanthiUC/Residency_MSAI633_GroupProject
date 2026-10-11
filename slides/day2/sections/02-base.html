@@ -1,0 +1,73 @@
+<section class="slide" id="base-pipeline" data-speaker="Yanwei" data-mod="Data">
+  <h1>From the wiki's data dump to our snapshot: five steps, all re-runnable</h1>
+  <div class="content flow" style="top:330px">
+    <div class="node step" id="p1" style="left:0;top:40px;width:290px"><span class="num">1</span><svg class="ico nico"><use href="#m-data"/></svg>Index the official dump<small>Fandom's XML export, offline</small><code>xml.etree</code><code>sqlite3</code></div>
+    <div class="node step" id="p2" style="left:332px;top:40px;width:290px"><span class="num">2</span><svg class="ico nico"><use href="#m-retrieval"/></svg>Choose pages<small>by infobox type, region and release date; no link crawling</small></div>
+    <div class="node step" id="p3" style="left:664px;top:40px;width:290px"><span class="num">3</span><svg class="ico nico"><use href="#i-robot"/></svg>Fetch politely<small>MediaWiki API, robots.txt checked, ≤ 1 request/s</small><code>urllib</code><code>robotparser</code></div>
+    <div class="node step" id="p4" style="left:996px;top:40px;width:290px"><span class="num">4</span><svg class="ico nico"><use href="#m-indexing"/></svg>Clean, keep tables<small>strip menus and pop-ups; merged cells become grids</small><code>BeautifulSoup</code><code>lxml</code></div>
+    <div class="node key step" id="p5" style="left:1328px;top:40px;width:292px"><span class="num">5</span><svg class="ico nico"><use href="#i-hash"/></svg>Snapshot<small>raw copy hashed with SHA-256 for every page</small></div>
+    <svg class="wires">
+      <path class="step" data-from="p1" data-to="p2"/><path class="step" data-from="p2" data-to="p3"/>
+      <path class="step" data-from="p3" data-to="p4"/><path class="step" data-from="p4" data-to="p5"/>
+    </svg>
+    <div class="step" style="position:absolute;left:0;right:0;top:420px;display:flex;gap:120px;font-size:32px">
+      <div><span class="big" style="font-size:96px">337</span> pages, all HTTP 200</div>
+      <div><span class="big" style="font-size:96px">0</span> bytes changed on a re-run</div>
+    </div>
+  </div>
+  <p class="source">Code in ingest/: dump_to_sqlite.py, select_pages.py, crawl.py, extract.py. Crawl: 337 requests over 59 minutes.</p>
+  <aside class="notes">Yanwei (55 s): one press per step. Emphasise two choices: we chose pages from the dump instead of crawling links, and we keep the raw copy so cleaning can be re-run without touching the site. End on the two numbers.</aside>
+</section>
+
+<section class="slide" id="base-exam" data-speaker="Yanwei" data-mod="Evaluation">
+  <style>
+    #base-exam .content{top:330px;display:grid;grid-template-columns:640px 1fr;gap:90px;align-items:start}
+    #base-exam .big{font-size:200px}
+    #base-exam .big small{margin-top:14px}
+    #base-exam .who{display:flex;flex-direction:column;gap:18px;margin-top:30px;font-size:30px;line-height:1.25}
+    #base-exam .who div{display:grid;grid-template-columns:62px 1fr;align-items:center}
+    #base-exam .who .ico{width:46px;height:46px;color:var(--gold-hi)}
+    #base-exam .who b{color:var(--gold-hi);font-weight:700}
+    #base-exam .bars{gap:18px}
+    #base-exam .bar .track{height:34px}
+    #base-exam .split{margin-top:34px}
+    #base-exam .split .row{display:flex;height:64px;border-radius:8px;overflow:hidden;font-size:29px;font-weight:700}
+    #base-exam .split .row div{display:flex;align-items:center;gap:12px;padding:0 22px}
+    #base-exam .split .dev{flex:32;background:var(--d-ours);color:var(--night)}
+    #base-exam .split .test{flex:21;border:2px dashed var(--gold);border-left:none;border-radius:0 8px 8px 0;color:var(--gold-hi)}
+    #base-exam .split .test .ico{width:34px;height:34px}
+    #base-exam .split small{display:block;margin-top:10px;font-size:24px;color:var(--muted)}
+  </style>
+  <h1>We wrote the exam first, and a person checked every answer</h1>
+  <div class="content">
+    <div>
+      <div class="big">53<small>questions, in 7 types</small></div>
+      <div class="who step">
+        <div><svg class="ico"><use href="#i-robot"/></svg><span>AI drafted each question</span></div>
+        <div><svg class="ico"><use href="#i-person"/></svg><span><b>A person</b> checked every answer against the page</span></div>
+      </div>
+      <div class="split step">
+        <div class="row">
+          <div class="dev">Practice 32</div>
+          <div class="test"><svg class="ico"><use href="#i-clock"/></svg>Final 21</div>
+        </div>
+        <small>Final exam: run once, on Sunday</small>
+      </div>
+    </div>
+    <div>
+      <div class="chart step" data-chart="bars" data-max="16" data-ticks="0,4,8,12,16" data-digits="0" style="--lab:330px" id="exam-types">
+        <script type="application/json">[
+          {"label":"Single-hop","note":"one fact, one page","v":16},
+          {"label":"Multi-hop","note":"chain two pages","v":7},
+          {"label":"Player tasks","note":"builds, teams, materials","v":7},
+          {"label":"Comparative","v":5},
+          {"label":"Temporal","note":"when did it run","v":5},
+          {"label":"Unanswerable","note":"the wiki doesn't say","v":8,"tone":"alt"},
+          {"label":"Adversarial","note":"trick questions","v":5,"tone":"alt"}
+        ]</script>
+      </div>
+    </div>
+  </div>
+  <p class="source">evaluation/golden.jsonl (53 items, all verified by hand 2026-10-10); evaluation/split.json (seed 633, stratified by type). Report 03.</p>
+  <aside class="notes">Yanwei (50 s): we wrote the questions before tuning anything, so we could not bend the exam to the system. AI drafted, but a person read every answer against the wiki page; unverified items would score zero. The blue bars are the traps: 13 questions where the right move is to refuse or push back. Practice 32 is what every number today comes from; the final 21 stay sealed until Sunday.</aside>
+</section>

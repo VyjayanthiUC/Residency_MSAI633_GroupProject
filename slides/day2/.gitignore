@@ -1,0 +1,6 @@
+# Generated: rebuild with build.py / export.py
+index.html
+shots/
+*.pptx
+# HoYoverse game art from fetch_images.py: never committed (see README)
+img/*.webp

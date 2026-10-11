@@ -1,0 +1,118 @@
+<section class="slide title" id="open-title" data-speaker="Shyamala">
+  <style>
+    #open-title .orn{position:absolute;left:1050px;top:20px;width:1000px;height:1000px;color:var(--gold);opacity:.13}
+    @media (prefers-reduced-motion:no-preference){body:not(.export) #open-title .orn{animation:orn 120s linear infinite}}
+    @keyframes orn{to{transform:rotate(360deg)}}
+    #open-title .mark{top:250px}
+    #open-title .tag{position:absolute;left:150px;top:470px;width:820px;font-family:var(--display);font-style:italic;font-weight:500;font-size:50px;line-height:1.15;color:var(--cream);font-variation-settings:"opsz" 144,"SOFT" 100}
+    #open-title .tag2{position:absolute;left:150px;top:610px;width:780px;font-size:30px;line-height:1.4;color:var(--muted)}
+    #open-title .meta{position:absolute;left:150px;bottom:110px;font-size:24px;color:var(--faint);letter-spacing:.02em}
+    #open-title svg.team-cons{position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible}
+    #open-title .tline{fill:none;stroke:var(--gold);stroke-width:2;stroke-opacity:.7;stroke-dasharray:1400;stroke-dashoffset:1400;animation:draw 2.4s .3s var(--ease) forwards}
+    body.export #open-title .tline{animation:none;stroke-dashoffset:0}
+    @keyframes draw{to{stroke-dashoffset:0}}
+    #open-title .star{fill:var(--gold-hi);filter:drop-shadow(0 0 10px rgba(255,230,168,.8))}
+    #open-title .halo{fill:none;stroke:var(--gold);stroke-opacity:.45}
+    #open-title text.nm{fill:var(--cream);font:700 30px "MiSans",sans-serif}
+    #open-title text.rl{fill:var(--muted);font:500 21px "MiSans",sans-serif}
+  </style>
+  <svg class="orn"><use href="#s-emblem-gold"/></svg>
+  <div class="mark">FanBot</div>
+  <p class="tag">A Genshin Impact wiki assistant you can check.</p>
+  <p class="tag2">Every answer comes from a wiki page, and it shows you which one.</p>
+  <p class="meta">MSAI 633 Residency, Dallas, October 2026</p>
+  <svg class="team-cons" viewBox="0 0 1920 1080" aria-label="Team constellation">
+    <path class="tline" d="M1170 250 L1380 190 L1540 330 L1720 250 L1780 500 L1590 690 L1330 790"/>
+    <g id="team-stars"></g>
+  </svg>
+  <script>
+  (function () {
+    const T = [["Shyamala Gudla","Product Manager",1170,250,"s"],["Yanwei Li","Data & Evaluation",1380,190,"n"],["Deep Konkayala","AI Architect",1540,330,"s"],
+      ["Sohyun Ban","QA & Evaluation",1720,250,"n"],["Oyin Akpe","Project Manager",1780,500,"e"],["Vyjayanthi Kamath","Lead Analyst",1590,690,"s"],["Ibukun Daniel","AI Engineer",1330,790,"s"]];
+    const star = (x, y, r) => `M${x} ${y - r}C${x + r * .18} ${y - r * .18} ${x + r * .18} ${y - r * .18} ${x + r} ${y}C${x + r * .18} ${y + r * .18} ${x + r * .18} ${y + r * .18} ${x} ${y + r}C${x - r * .18} ${y + r * .18} ${x - r * .18} ${y + r * .18} ${x - r} ${y}C${x - r * .18} ${y - r * .18} ${x - r * .18} ${y - r * .18} ${x} ${y - r}Z`;
+    document.getElementById("team-stars").innerHTML = T.map(([n, r, x, y, side]) => {
+      const tx = side === "e" ? x - 34 : x, ty = side === "n" ? y - 58 : y + 66, anchor = side === "e" ? "end" : "middle";
+      return `<circle class="halo" cx="${x}" cy="${y}" r="30"/><path class="star" d="${star(x, y, 22)}"/>
+        <text class="nm" x="${tx}" y="${ty}" text-anchor="${anchor}">${n}</text><text class="rl" x="${tx}" y="${ty + 28}" text-anchor="${anchor}">${r}</text>`;
+    }).join("");
+  })();
+  </script>
+  <aside class="notes">Shyamala (15 s): name the project in one sentence and move on. The seven stars are the team; the same constellation runs along the bottom of every slide to show who is speaking.</aside>
+</section>
+
+<section class="slide" id="open-genshin" data-speaker="Shyamala">
+  <style>
+    #open-genshin .art{position:absolute;left:760px;top:0;width:1160px;height:1080px;object-fit:cover;object-position:78% 40%;opacity:.26;
+      -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 35%,#000 80%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 35%,#000 80%,transparent 100%)}
+    #open-genshin .new{margin-top:34px;display:flex;align-items:center;gap:26px}
+    #open-genshin .new>span{font-size:22px;color:var(--muted);width:120px;line-height:1.25}
+    #open-genshin .new figure{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:20px;color:var(--cream)}
+    #open-genshin .new img{width:92px;height:92px;border-radius:50%;object-fit:cover;background:#1a2156;box-shadow:0 0 0 2px var(--gold),0 0 18px rgba(255,230,168,.35)}
+  </style>
+  <img class="art" src="img/v71.webp" alt="">
+  <h1>Genshin Impact changes every six weeks. A chatbot’s memory doesn’t.</h1>
+    <div class="content cols" style="top:320px;bottom:175px;grid-template-columns:500px 1fr;gap:190px">
+    <div class="chart" data-chart="cycle" data-size="500" data-hub="42|days per version" id="versions">
+      <script type="application/json">[
+        {"label":"Luna I","date":"2025-09-10","sub":"Sep 2025"},
+        {"label":"Luna II","date":"2025-10-22","sub":"Oct 2025"},
+        {"label":"Luna III","date":"2025-12-03","sub":"Dec 2025"},
+        {"label":"Luna IV","date":"2026-01-14","sub":"Jan 2026"},
+        {"label":"Luna V","date":"2026-02-25","sub":"Feb 2026"},
+        {"label":"Luna VI","date":"2026-04-08","sub":"Apr 2026"},
+        {"label":"Luna VII","date":"2026-05-20","sub":"May 2026"},
+        {"label":"Luna VIII","date":"2026-07-01","sub":"Jul 2026"},
+        {"label":"7.0","date":"2026-08-12","sub":"Aug 2026"},
+        {"label":"7.1","date":"2026-09-23","sub":"Sep 2026"}
+      ]</script>
+    </div>
+    <div>
+    <ul class="list icons">
+      <li class="step"><svg class="ico gem" style="color:var(--gold-hi)"><use href="#i-clock"/></svg><span><b>Training data lags</b><small>new characters, weapons and banners arrive every version</small></span></li>
+      <li class="step"><svg class="ico gem" style="color:var(--gold-hi)"><use href="#m-indexing"/></svg><span><b>Wiki pages are hard to read</b><small>info boxes and nested tables scramble when scraped</small></span></li>
+      <li class="step"><svg class="ico gem" style="color:var(--gold-hi)"><use href="#i-memory"/></svg><span><b>When unsure, models guess</b><small>and on a paid banner, a confident wrong answer costs real money</small></span></li>
+    </ul>
+    <div class="new step"><span>New this year</span>
+      <figure><img src="img/lauma.webp" alt="Lauma">Lauma</figure>
+      <figure><img src="img/ineffa.webp" alt="Ineffa">Ineffa</figure>
+      <figure><img src="img/flins.webp" alt="Flins">Flins</figure>
+      <figure><img src="img/columbina.webp" alt="Columbina">Columbina</figure>
+    </div>
+    </div>
+  </div>
+  <p class="source">10 versions in 13 months: version pages in our snapshot. Images © HoYoverse, via the Genshin Impact Fandom wiki.</p>
+  <aside class="notes">Shyamala (60 s): Genshin in one sentence for non-players: an open-world game whose characters and weapons come from limited-time banners paid with real money. The ring: ten versions in thirteen months. Then the three reasons ordinary chatbots fail, one press each.</aside>
+</section>
+
+<section class="slide" id="open-mistakes" data-speaker="Shyamala">
+  <style>
+    #open-mistakes .promises{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:30px}
+    #open-mistakes .promises span{display:flex;align-items:center;gap:16px;padding:18px 22px;border:2px solid var(--gold-hi);border-radius:14px;
+      background:rgba(255,230,168,.08);font-family:var(--display);font-weight:600;font-size:30px;line-height:1.15;color:var(--gold-hi);box-shadow:0 0 30px rgba(255,230,168,.18)}
+    #open-mistakes .promises .ico{width:46px;height:46px;flex:none}
+    #open-mistakes .vs .c{padding:14px 0}
+    #open-mistakes .pt{width:46px;height:46px;border-radius:50%;object-fit:cover;vertical-align:-12px;margin-right:10px;background:#1a2156;box-shadow:0 0 0 2px var(--gold)}
+  </style>
+  <h1>Same model, three questions: memory vs. the wiki</h1>
+  <div class="content" style="top:250px;bottom:150px">
+    <div class="vs">
+      <div class="h">Question</div><div class="h memory"><svg class="ico"><use href="#i-memory"/></svg> Model from memory</div><div class="h ours"><svg class="ico"><use href="#i-book"/></svg> FanBot, reading the wiki</div>
+      <div class="c q step"><svg class="ico gem"><use href="#r-primo"/></svg> Which weapon banner ran alongside <img class="pt" src="img/lauma.webp" alt="" style="width:38px;height:38px;vertical-align:-10px;margin:0 6px 0 2px">Lauma's, and what is its base ATK at level 90?</div>
+      <div class="c m step"><b>Silvershower Heartstrings</b>, <b>454</b> ATK</div>
+      <div class="c o step"><img class="pt" src="img/nightweaver.webp" alt=""><b>Nightweaver's Looking Glass</b><span class="cite">S1</span><small>Couldn't find the ATK, and said so instead of guessing</small></div>
+      <div class="c q step"><svg class="ico gem"><use href="#r-mora"/></svg> How many Philosophies of Conflict to raise one of Ineffa's talents from 1 to 10?</div>
+      <div class="c m step"><b>31</b></div>
+      <div class="c o step"><b>38</b>, plus 1,652,500 Mora<span class="cite">S2</span></div>
+      <div class="c q step"><svg class="ico gem el-electro"><use href="#e-electro"/></svg> Who is featured on the "Astral Actuation" banner?</div>
+      <div class="c m step"><b>Tartaglia</b>, <svg class="ico el-hydro"><use href="#e-hydro"/></svg> Hydro</div>
+      <div class="c o step"><img class="pt" src="img/ineffa.webp" alt=""><b>Ineffa</b>, <svg class="ico el-electro"><use href="#e-electro"/></svg> Electro<span class="cite">S1</span></div>
+    </div>
+    <div class="promises step">
+      <span><svg class="ico"><use href="#i-book"/></svg>Answer only from the wiki</span>
+      <span><svg class="ico"><use href="#i-refuse"/></svg>Say “I don’t know” when it doesn’t say</span>
+      <span><svg class="ico"><use href="#m-generation"/></svg>Be responsible to players and wiki authors</span>
+    </div>
+  </div>
+  <p class="source">Real outputs from our practice-split run, same model (GLM 5.3 Flash) with and without retrieval: items mh04, syn01, sh16. Images © HoYoverse, via the Genshin Impact Fandom wiki.</p>
+  <aside class="notes">Shyamala (60 s): read each question, pause, reveal the confident wrong answer, then FanBot's. Land the cost: the wrong banner means pulling for the wrong weapon; 31 versus 38 means farming that comes up short. Last press: the three promises — the rest of the talk keeps them, one by one.</aside>
+</section>
