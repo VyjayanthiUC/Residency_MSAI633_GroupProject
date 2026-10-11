@@ -52,6 +52,7 @@ answer (numbers that do not appear verbatim in the cited sources): 0.03 for ever
 **What the numbers say.**
 
 - **Retrieval is what makes the system work.** B0 → B3 is the only significant difference: 16 items fixed, 1 broken (unans07, §5).
+  These are automatic scores; §5 gives the human-adjudicated ones, under which B3 ties B1.
 - **B2 → B3 differs on one item and is not significant.** The one item is cmp03 (the elements of two characters): B3 retrieves both
   characters' answers, while all four RAG configurations without the reranker answer only for Lauma. The five RAG configurations land
   between 16 and 18 correct answers out of 23. We report the direction, not a proven gain.
@@ -98,20 +99,55 @@ On the items the model did not know, every RAG configuration recovers about four
   $0.50 / M output tokens); our runs went through a flat-rate Z.ai subscription. B3 is the cheapest RAG configuration because the refusal
   gate skips 10 of 32 LLM calls and structure-aware chunks are shorter.
 
-## 5. Scoring caveats (to be resolved by hand-labeling)
+## 5. Failure analysis and human adjudication
 
-B3 fails five dev items. Reading every B3 answer, automatic scoring errs in both directions:
+Every dev item that failed under any RAG configuration (B1, B2, + structure-aware chunks, + hybrid, B3) was read and labeled by hand,
+one label per (item, configuration), using the assignment's categories plus *scoring artifact* for answers that are correct but were scored
+as failures. Automatic *passes* that do not answer the question (cmp04 under B2, + structure-aware chunks and B3) were also reviewed. Labels are in
+`evaluation/failures_dev.jsonl` (37 entries, labeled by Saweisra on 2026-10-10; the labeling page pre-filled a suggested label from
+retrieval metrics, and every suggestion was reviewed). Coverage: every B3 answer was read; for the other configurations we read every failure and the cmp04 answers, but not every automatic pass, so a few false passes may remain there.
 
-| Item | B3 answer | Automatic | By reading |
+**28 system failures, on 6 items:**
+
+| Item | Category | What happened | Labels (configs) |
 |---|---|---|---|
-| sh06 | "a 5-star claymore" | fail: the answer key is "5 Stars" | correct |
-| cmp04 | opens with the refusal sentence, gives Tartaglia's date, never says who was released earlier | pass: both answer keys appear and citations make it a partial answer | not an answer to the question |
-| mh01, mh04, mh06 | answers the first hop, says the second fact is not in the snapshot | fail | genuine: the second-hop page was not retrieved (Report 04 §6) |
-| unans07 | full refusal | fail | genuine: a false-premise question that should be corrected; B0 corrects it from memory, while retrieval finds no chunk above the refusal gate |
+| mh01 | multi hop | Second hop not found: the answer gives "Version 7.0" but not its title | retrieval miss (4), rank failure (B2: the page was in the top 20, not the top 5) |
+| mh04 | multi hop | Second hop not found: the weapon is named, its base ATK is not | retrieval miss (5) |
+| mh06 | multi hop | The release date is in Illuga's infobox chunk, which no configuration retrieved | retrieval miss (5) |
+| cmp03 | comparative | Arlecchino's element is in her infobox chunk; only B3 retrieved it | retrieval miss (4) |
+| cmp04 | comparative | Wanderer's release date was retrieved only by B1; every other configuration says it cannot compare, or never says who came first | retrieval miss (4, incl. three automatic passes) |
+| unans07 | adversarial (false premise) | Should correct the premise from the Team Bonus page; every configuration refused | reranker demotion (B3), over-refusal (B1, + hybrid: evidence in the top 5, the LLM refused anyway), retrieval miss (B2, + structure-aware) |
 
-We do **not** edit answer keys after seeing system outputs, since that would tune the golden set to the system. Instead every failure is
-hand-labeled with the assignment's categories (≥ 15 failures), and the final report shows the automatic pass rate next to the
-human-adjudicated one, listing every item where they differ.
+| Label | Count |
+|---|---|
+| Retrieval miss | 24 |
+| Over-refusal | 2 |
+| Rank failure | 1 |
+| Reranker demotion | 1 |
+| Chunk boundary, extraction failure, stale content, generator ignored context, invalid citation, hallucination | 0 |
+
+**9 scoring artifacts:** sh06 under all five configurations ("5-star claymore" is correct; the answer key "5 Stars" does not match), and
+syn05 and unans02 under B1 and + structure-aware chunks. Those four are correct refusals: the answer opens with the refusal sentence and
+then explains, with citations, what the sources do cover; the automatic check treats any citation as a partial answer.
+
+**Pass rate after human adjudication** (dev, n=32):
+
+| Config | Automatic | Human-adjudicated | Changed items |
+|---|---|---|---|
+| B1 BM25 / A | 0.750 | 0.844 | sh06, syn05, unans02 → pass |
+| B2 dense / A | 0.812 | 0.812 | sh06 → pass, cmp04 → fail |
+| + structure-aware chunks | 0.750 | 0.812 | sh06, syn05, unans02 → pass, cmp04 → fail |
+| + hybrid fusion | 0.781 | 0.812 | sh06 → pass |
+| B3 | 0.844 | 0.844 | sh06 → pass, cmp04 → fail |
+
+**What this changes.** After adjudication every RAG configuration refuses all 6 unanswerable items, and B3 (0.844) is tied with BM25
+(0.844), one item ahead of the other three. On 32 dev items we cannot show that the final pipeline beats the simplest retriever; what it does show is that
+retrieval itself is what matters (B0 → any RAG configuration), and that the remaining errors are almost all **retrieval misses on
+multi-hop and comparative questions**: the second fact sits on a page or in an infobox chunk that the question does not name. That points
+at query decomposition (retrieve per sub-question) and indexing infobox fields separately, not at the generator.
+
+We did not edit answer keys after seeing outputs. The automatic numbers in §2 are what the harness produces; this table is the
+adjudicated view, and both will be reported for the test split.
 
 **Run-to-run variation.** The same model at `temperature=0` does not return identical answers: between our two dev runs (the second
 after PR #87 added one line about Chinese refusals to the answer prompt), each RAG configuration's pass count moved by one item, and
