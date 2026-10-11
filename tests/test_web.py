@@ -86,9 +86,64 @@ def test_home_background_video_is_muted_never_autoplays_from_html_and_can_be_pau
     assert "<video" not in wiki.page_body(next(p for p in wiki.pages().values() if p.title == "Lauma"))
 
 
+def test_every_chunk_heading_path_resolves_to_a_section_on_its_page():
+    """Citations link to /wiki/<doc_id>#<section_id(heading_path)> (#99). A chunk's heading path is a block's path or
+    one of its parents (strategy B merges subsections), so every prefix of every kept block's path must resolve: to a
+    section with that exact id, or (a parent heading with no text of its own) to the subsections under it."""
+    from rag import chunking
+    pages = wiki.pages()
+    missing = []
+    for doc in chunking.load_docs():
+        ids = {wiki.section_id(h.split(" › ")) for h, _ in pages[doc["doc_id"]].sections if h}
+        for b in chunking.kept_blocks(doc):
+            path = b["heading_path"][1:]
+            for k in range(1, len(path) + 1):
+                sid = wiki.section_id(path[:k])
+                if sid not in ids and not any(i.startswith(sid + "-") for i in ids):
+                    missing.append((doc["doc_id"], path[:k]))
+    assert not missing, missing[:5]
+
+
+def test_page_sections_carry_their_ids_and_links_point_at_them():
+    lauma = next(p for p in wiki.pages().values() if p.title == "Lauma")
+    body = wiki.page_body(lauma)
+    heading = next(h for h, _ in lauma.sections if " › " in h)
+    assert f'<details id="{wiki.section_id(heading.split(" › "))}"' in body
+    assert wiki.page_href("gi-x", ["Talents", "Elemental Skill"]) == "/wiki/gi-x#sec-talents-elemental-skill"
+    assert wiki.page_href("gi-x", []) == "/wiki/gi-x"
+
+
+def test_talent_tables_are_rebuilt_from_the_raw_crawl_and_keep_the_flattened_text():
+    """The extractor flattens the nested talent table; the page rebuilds it from data/genshin/raw (#99) but still shows
+    the flattened text a citation quotes, and lets no markup from the wiki through except plain table tags."""
+    from web import talents
+    odette = next(p for p in wiki.pages().values() if p.title == "Odette")
+    rows = talents.tables_for(odette.slug)
+    assert [r.kind for r in rows["Type"]][:3] == ["Normal Attack", "Elemental Skill", "Elemental Burst"]
+    assert len(rows["Level"]) == 6
+    scaling = dict(rows["Type"][0].tabs)["Attribute Scaling"]
+    assert "<th>1-Hit DMG (%)</th><td>51.86</td>" in scaling
+    body = wiki.page_body(odette)
+    assert 'role="tablist"' in body and 'class="asbot"' in body
+    flat = next(b for h, b in odette.sections if h == "Gameplay Info › Talents")
+    assert "Snow Swan Variation" in flat and "51.86" in body
+    assert not re.search(r"<(script|img|video|a\s[^>]*fandom|iframe)", body.split('<details class="asbot">')[0].split("Talents and constellations")[-1])
+    assert "onclick" not in body and "javascript:" not in body
+
 
 def test_version_ask_buttons_name_the_version():
     home = wiki.home_body()
     assert 'data-q="Tell me about Version 7.0."' in home and 'data-q="Tell me about 7.0."' not in home
     v = next(p for p in wiki.pages().values() if p.title == "Version/7.0")
     assert 'data-q="Tell me about Version 7.0."' in wiki.page_body(v)
+
+
+def test_search_count_is_visible_under_the_box_and_hidden_really_hides():
+    from pathlib import Path
+
+    home = wiki.home_body()
+    box, count = home.index('id="q"'), home.index('id="results"')
+    assert box < count < home.index('class="regions"')           # count sits right under the search box (#98)
+    assert 'class="sr" id="results"' not in home                  # visible, not screen-reader only
+    css = (Path(wiki.__file__).parent / "static" / "site.css").read_text()
+    assert "[hidden] { display: none !important; }" in css      # .card's display:flex must not beat [hidden]

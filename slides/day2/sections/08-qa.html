@@ -1,0 +1,201 @@
+<section class="slide" id="qa-hub" data-speaker="Ibukun">
+  <style>
+    #qa-hub .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+    #qa-hub a.q{display:flex;flex-direction:column;gap:14px;height:275px;padding:28px 26px;border:2px solid rgba(211,188,142,.55);border-radius:12px;background:rgba(24,31,78,.92);color:var(--cream);text-decoration:none;font-size:30px;font-weight:600;line-height:1.22;transition:border-color .2s,background .2s}
+    #qa-hub a.q:hover{border-color:var(--gold-hi);background:rgba(36,44,104,.95)}
+    #qa-hub a.q .ico{width:46px;height:46px;color:var(--gold-hi)}
+    #qa-hub a.q small{margin-top:auto;font-size:22px;font-weight:500;color:var(--muted)}
+  </style>
+  <h1>Questions?</h1>
+  <div class="content" style="top:290px">
+    <div class="grid">
+      <a class="q" data-to="qa-chatgpt"><svg class="ico"><use href="#i-memory"/></svg>Why not just ask ChatGPT?<small>Sohyun</small></a>
+      <a class="q" data-to="qa-speed"><svg class="ico"><use href="#i-clock"/></svg>Isn’t 15 seconds too slow?<small>Deep</small></a>
+      <a class="q" data-to="qa-cost"><svg class="ico"><use href="#r-mora"/></svg>What does a question cost?<small>Deep</small></a>
+      <a class="q" data-to="qa-robots"><svg class="ico"><use href="#i-robot"/></svg>The wiki discourages AI crawlers. Why crawl?<small>VJ</small></a>
+      <a class="q" data-to="qa-sample"><svg class="ico"><use href="#m-evaluation"/></svg>Are 53 questions enough?<small>Sohyun</small></a>
+      <a class="q" data-to="qa-chinese"><svg class="ico"><use href="#i-person"/></svg>What about questions in Chinese?<small>Yanwei</small></a>
+      <a class="q" data-to="qa-update"><svg class="ico"><use href="#m-data"/></svg>What happens when the wiki updates?<small>Yanwei</small></a>
+      <a class="q" data-to="qa-model"><svg class="ico"><use href="#m-generation"/></svg>Why GLM 5.3 Flash?<small>Deep</small></a>
+    </div>
+  </div>
+  <p class="source">Click a question to open its answer; Esc or “← Questions” comes back here.</p>
+  <aside class="notes">Ibukun (whole team, 210 s): "Thank you, we are happy to take questions." Stop at the 20-minute mark. Open a backup slide only when someone asks that question; the named person answers. Esc returns to this grid.</aside>
+</section>
+
+<style>
+  .slide.qa-bk .back{position:absolute;right:150px;top:86px;z-index:4;font-size:24px;font-weight:600;color:var(--gold);text-decoration:none;border:1px solid var(--line);border-radius:20px;padding:4px 18px}
+  .slide.qa-bk .back:hover{color:var(--gold-hi);border-color:var(--gold-hi)}
+  body.export .slide.qa-bk .back{display:none}
+  .slide.qa-bk .say{font-size:32px;line-height:1.35;color:var(--cream)}
+  .slide.qa-bk .say b{color:var(--gold-hi)}
+</style>
+
+<section class="slide qa-bk" id="qa-chatgpt" data-speaker="Sohyun" data-mod="Evaluation">
+  <a class="back" data-to="qa-hub">← Questions</a>
+  <h1>From memory, our model got 4 of 23 right and cited nothing</h1>
+  <p class="sub" style="--sub-top:290px">Answerable practice questions, correct answers; GLM 5.3 Flash with and without our wiki search</p>
+  <div class="content" style="top:440px">
+    <div class="chart" data-chart="bars" data-max="1" data-ticks="0,0.25,0.5,0.75,1" style="--lab:380px">
+      <script type="application/json">[
+        {"label":"From memory","note":"no sources to check","v":0.174,"lo":0.04,"hi":0.35,"tone":"memory","text":"4/23"},
+        {"label":"FanBot (B3)","note":"every sentence cited","v":0.783,"lo":0.61,"hi":0.91,"tone":"key","text":"18/23"}
+      ]</script>
+    </div>
+  </div>
+  <p class="source">Report 06 §2–3, practice split (23 answerable items), 95% bootstrap intervals. The closed-book run refused 13 of 23.</p>
+  <aside class="notes">Sohyun: we did not test ChatGPT itself; we tested our own model with retrieval switched off, which is the fair comparison. From memory it got 4 right and could not show where any answer came from. The difference to FanBot is the only one in our study that is statistically significant.</aside>
+</section>
+
+<section class="slide qa-bk" id="qa-speed" data-speaker="Deep" data-mod="Retrieval">
+  <a class="back" data-to="qa-hub">← Questions</a>
+  <style>
+    #qa-speed .tl{position:relative;height:120px;display:flex;border-radius:8px;overflow:hidden}
+    #qa-speed .tl div{display:flex;align-items:center;padding-left:24px;font-size:30px;font-weight:700;color:var(--night)}
+    #qa-speed .tl .r{flex:15.14;background:var(--m-retrieval)}
+    #qa-speed .tl .g{flex:1.65;background:var(--m-generation);padding-left:0;justify-content:center}
+    #qa-speed .ax{display:flex;justify-content:space-between;font-size:22px;color:var(--faint);margin-top:12px}
+    #qa-speed .lg{display:flex;gap:80px;margin-top:50px}
+    #qa-speed .lg .big{font-size:110px}
+    #qa-speed .lg .big small{font-size:28px}
+  </style>
+  <h1>Almost all of the 15 seconds is the reranker, running on a CPU</h1>
+  <div class="content" style="top:345px">
+    <div class="tl"><div class="r">Find and rerank 20 passages (CPU)</div><div class="g">Write</div></div>
+    <div class="ax"><span>0 s</span><span>16.8 s</span></div>
+    <div class="lg">
+      <div class="big">15.14<small>seconds to retrieve, median</small></div>
+      <div class="big" style="color:var(--cream)">1.65<small>seconds to write the answer, median</small></div>
+    </div>
+  </div>
+  <p class="source">Report 06 §4, B3 p50 latencies on CPU (AMD Ryzen Z2 Extreme). A GPU would remove most of the rerank time; we did not measure it.</p>
+  <aside class="notes">Deep: the reranker scores 20 candidate passages with a cross-encoder, and on a CPU that is about 15 s. Generation is under 2 s. Two fixes: run the reranker on a GPU, or score fewer candidates. We have not measured either, so no number for the speed-up.</aside>
+</section>
+
+<section class="slide qa-bk" id="qa-cost" data-speaker="Deep" data-mod="Generation & Guardrails">
+  <a class="back" data-to="qa-hub">← Questions</a>
+  <h1>About 19 cents per thousand questions, half the cost of keyword search</h1>
+  <p class="sub" style="--sub-top:290px">Cost per 1,000 questions at list price; the refusal gate skips the model on 10 of 32</p>
+  <div class="content" style="top:440px">
+    <div class="chart" data-chart="bars" data-max="0.0004" style="--lab:380px">
+      <script type="application/json">[
+        {"label":"From memory (B0)","note":"short prompt, no sources","v":0.00005,"text":"$0.05"},
+        {"label":"Keyword search (B1)","note":"model called on 32 of 32","v":0.00038,"text":"$0.38"},
+        {"label":"FanBot (B3)","note":"model called on 22 of 32","v":0.00019,"tone":"key","text":"$0.19"}
+      ]</script>
+    </div>
+  </div>
+  <p class="source">Report 06 §4: $0.00019 per question (B3) over 32 practice questions, OpenRouter list price; our runs used a flat-rate plan.</p>
+  <aside class="notes">Deep: B3 is the cheapest of the retrieval setups because when the reranker finds nothing relevant, we refuse without calling the model at all. These are list prices converted from token counts; we actually paid a flat subscription.</aside>
+</section>
+
+<section class="slide qa-bk" id="qa-robots" data-speaker="VJ" data-mod="Data">
+  <a class="back" data-to="qa-hub">← Questions</a>
+  <style>
+    #qa-robots pre{font:500 27px/1.42 "DejaVu Sans Mono",monospace;padding:28px 34px;border:2px solid rgba(211,188,142,.4);border-radius:12px;background:rgba(11,16,48,.85);color:var(--muted)}
+    #qa-robots pre .no{color:#f3b2a5}
+    #qa-robots pre .yes{color:var(--gold-hi)}
+  </style>
+  <h1>The wiki blocks named AI bots; we follow the rules it sets for everyone</h1>
+  <div class="content cols" style="top:300px;grid-template-columns:640px 1fr;gap:90px">
+<pre><span class="no">User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /</span>
+…
+<span class="yes">User-agent: *
+Allow: /api.php?action=</span></pre>
+    <ul class="list icons">
+      <li><svg class="ico gem" style="color:var(--gold)"><use href="#i-robot"/></svg><span>Not one of the named bots<small>robots.txt checked before every request</small></span></li>
+      <li><svg class="ico gem" style="color:var(--gold)"><use href="#i-clock"/></svg><span><b>337</b> pages, once, ≤ 1 per second</span></li>
+      <li><svg class="ico gem" style="color:var(--gold)"><use href="#i-book"/></svg><span>Classroom use, credited<small>CC BY-SA attribution on every page</small></span></li>
+    </ul>
+  </div>
+  <p class="source">Excerpt of data/genshin/robots.snapshot.txt; crawl log in report 01 (337 requests over 59 minutes, minimum gap 1.000 s).</p>
+  <aside class="notes">VJ: the site's robots.txt names AI crawlers and blocks them; it allows the API for everyone else. We use the API, check robots.txt before each request, fetched each page once, slowly, and credit the wiki under its CC BY-SA licence. It is a one-time snapshot for a class, not a scraper that keeps coming back.</aside>
+</section>
+
+<section class="slide qa-bk" id="qa-sample" data-speaker="Sohyun" data-mod="Evaluation">
+  <a class="back" data-to="qa-hub">← Questions</a>
+  <h1>Enough to see the direction, not to prove small differences</h1>
+  <p class="sub" style="--sub-top:290px">Pass rate on 32 practice questions with 95% intervals; the other 21 are the final exam on Sunday</p>
+  <div class="content" style="top:430px">
+    <div class="chart" data-chart="bars" data-max="1" data-ticks="0,0.25,0.5,0.75,1" style="--lab:380px">
+      <script type="application/json">[
+        {"label":"From memory (B0)","v":0.375,"lo":0.22,"hi":0.53,"tone":"memory"},
+        {"label":"Keyword (B1)","v":0.750,"lo":0.59,"hi":0.88},
+        {"label":"Meaning (B2)","v":0.812,"lo":0.66,"hi":0.94},
+        {"label":"FanBot (B3)","v":0.844,"lo":0.72,"hi":0.97,"tone":"key"}
+      ]</script>
+    </div>
+  </div>
+  <p class="source">Report 06 §2, practice split, automatic scoring, 10,000 bootstrap resamples. One question moves a pass rate by 3 points.</p>
+  <aside class="notes">Sohyun: the intervals overlap for every retrieval setup, so we only claim what is significant: retrieval beats memory. Differences between B1, B2 and B3 are directions. The test split of 21 questions runs once, on Sunday, after we freeze the configuration.</aside>
+</section>
+
+<section class="slide qa-bk" id="qa-chinese" data-speaker="Yanwei" data-mod="Chat">
+  <a class="back" data-to="qa-hub">← Questions</a>
+  <style>
+    #qa-chinese .flow .node{font-size:34px;height:200px}
+    #qa-chinese .zh{font-family:"Noto Sans CJK SC","MiSans",sans-serif}
+    #qa-chinese .bad{border-color:#d9604c}
+    #qa-chinese .bad b{color:#f3b2a5}
+  </style>
+  <h1>Chinese questions work, but a character’s real name can be mistaken</h1>
+  <div class="content flow" style="top:330px">
+    <div class="node" id="zh1" style="left:0;top:20px;width:420px"><span class="zh">佩露薇利是什么元素</span><small>“What element is Peruere?” (Arlecchino’s real name)</small></div>
+    <div class="node bad" id="zh2" style="left:560px;top:20px;width:430px"><svg class="ico" style="color:#f08a76"><use href="#i-cross"/></svg> Rewritten as <b>“Lauma element”</b><small>then a well-cited answer about the wrong person</small></div>
+    <div class="node key step" id="zh3" style="left:1130px;top:20px;width:490px"><svg class="ico" style="color:var(--gold-hi)"><use href="#i-check"/></svg> Fix: a Chinese → English name map<small>from the wiki’s own “Other Languages” table, 389 names</small></div>
+    <svg class="wires"><path data-from="zh1" data-to="zh2"/><path class="step" data-from="zh2" data-to="zh3"/></svg>
+    <p class="say" style="position:absolute;left:0;top:300px"><b>9 of 10</b> real Chinese questions found the right character, including typos and titles.</p>
+  </div>
+  <p class="source">Issue #74 (14 Chinese test questions, glm-5.3-flash rewrite, hybrid + rerank; top rerank score 0.964 on the wrong page).</p>
+  <aside class="notes">Yanwei: the wiki is English, so the model translates the question before searching. Usually right, but once it turned Arlecchino's real name into Lauma and answered confidently, with valid citations. That is the most dangerous kind of error. The fix is a lookup table from the wiki's own Chinese page names, so the model only guesses when the name is not in it.</aside>
+</section>
+
+<section class="slide qa-bk" id="qa-update" data-speaker="Yanwei" data-mod="Data">
+  <a class="back" data-to="qa-hub">← Questions</a>
+  <style>#qa-update .flow .node{font-size:32px;height:200px}</style>
+  <h1>When the wiki updates: crawl again, cut again, and old cards go to zero</h1>
+  <div class="content flow" style="top:400px">
+    <div class="node" id="u1" style="left:0;top:20px;width:440px"><svg class="ico nico"><use href="#m-data"/></svg>Crawl the pages again<small>same rules: robots.txt, ≤ 1 request/s</small></div>
+    <div class="node" id="u2" style="left:580px;top:20px;width:440px"><svg class="ico nico"><use href="#m-indexing"/></svg>Re-cut into cards<small>from the saved copy, no network</small></div>
+    <div class="node key" id="u3" style="left:1160px;top:20px;width:460px"><svg class="ico nico"><use href="#i-check"/></svg>Remove the old cards<small>checked: 1,345 → 0 left, 0 orphans</small></div>
+    <svg class="wires"><path data-from="u1" data-to="u2"/><path data-from="u2" data-to="u3"/></svg>
+  </div>
+  <p class="source">Report 02 §5: re-chunk migration A → B on a copy of the store; 2,218 new cards indexed, 0 orphan IDs.</p>
+  <aside class="notes">Yanwei: the cleanup step is what usually goes wrong: old passages linger and get cited. We tested it by replacing every old card with new ones: all 1,345 old cards gone, nothing orphaned. Re-crawling uses the same polite crawler; we have not yet run a real update cycle against a new wiki version.</aside>
+</section>
+
+<section class="slide qa-bk" id="qa-model" data-speaker="Deep" data-mod="Generation & Guardrails">
+  <a class="back" data-to="qa-hub">← Questions</a>
+  <h1>GLM 5.3 Flash: fast, cheap, and the model we proposed</h1>
+  <div class="content" style="top:360px;display:grid;grid-template-columns:repeat(3,1fr);gap:80px;align-items:start">
+    <div class="big" style="font-size:130px">1.65 s<small>median time to write an answer</small></div>
+    <div class="big" style="font-size:130px">$0.15<small>per million input tokens, list price ($0.50 output)</small></div>
+    <div class="big" style="font-size:130px;color:var(--cream)">1<small>model for every configuration, including “from memory”</small></div>
+  </div>
+  <p class="source">Report 00 (proposal, model choice); report 06 §1 and §4 (B3 generation p50; OpenRouter list price for z-ai/glm-5.3-flash).</p>
+  <aside class="notes">Deep: we chose it in the proposal for speed and price, and kept it. Using one model everywhere means every difference between configurations comes from retrieval, not from the model. A bigger model might write better answers; most of our errors are retrieval misses, so that is not where we would spend first.</aside>
+</section>
+
+<script>
+(function () {
+  // Hub buttons and "← Questions" links: resolve slide ids to deck positions (#n; deck.js listens to hashchange).
+  const all = [...document.querySelectorAll(".slide")];
+  document.querySelectorAll("#qa-hub a[data-to], .slide.qa-bk a[data-to]").forEach(a => {
+    const n = all.findIndex(s => s.id === a.dataset.to);
+    if (n >= 0) a.setAttribute("href", `#${n + 1}`);
+  });
+  // Esc on a backup slide returns to the hub (ignored while comment mode is on).
+  const hub = all.findIndex(s => s.id === "qa-hub") + 1;
+  addEventListener("keydown", e => {
+    if (e.key !== "Escape" || document.body.classList.contains("cm-on")) return;
+    if (document.querySelector(".slide.qa-bk.on")) location.hash = `#${hub}`;
+  });
+})();
+</script>

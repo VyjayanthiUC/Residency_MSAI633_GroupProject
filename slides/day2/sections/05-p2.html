@@ -1,0 +1,122 @@
+<section class="slide" id="p2-diluc" data-speaker="Oyin" data-mod="Generation & Guardrails,Chat">
+  <style>
+    #p2-diluc .content{display:grid;grid-template-columns:720px 1fr;gap:90px;align-items:start;top:320px}
+    #p2-diluc .chat{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:40px 40px 44px;box-shadow:0 14px 40px rgba(4,6,24,.45)}
+    #p2-diluc .bubble{margin-left:auto;width:max-content;max-width:100%;background:rgba(236,229,216,.13);border-radius:34px;padding:18px 32px;font-size:34px}
+    #p2-diluc .who{display:flex;align-items:center;gap:12px;margin:40px 0 16px;font-size:22px;color:var(--muted)}
+    #p2-diluc .who .ico{width:30px;height:30px;color:var(--gold-hi)}
+    #p2-diluc .ans{border-left:4px solid var(--gold);padding:6px 0 6px 28px;font-size:34px;line-height:1.3;font-style:italic;font-weight:700;color:var(--gold-hi)}
+    #p2-diluc .ans small{display:block;margin-top:18px;font-size:22px;font-weight:500;color:var(--muted)}
+    #p2-diluc .cap{margin-top:22px;font-size:22px;color:var(--faint)}
+    #p2-diluc .facts{display:flex;flex-direction:column;gap:22px;font-size:31px;line-height:1.25}
+    #p2-diluc .facts div{display:grid;grid-template-columns:62px 1fr;align-items:center}
+    #p2-diluc .facts .ico{width:46px;height:46px;color:var(--gold)}
+    #p2-diluc .facts .no{color:#f08a76}
+    #p2-diluc .facts b{color:var(--gold-hi)}
+    #p2-diluc svg.gauge{display:block;margin-top:40px;width:800px;height:300px;overflow:visible}
+    #p2-diluc .gauge text{font-family:"MiSans",sans-serif;font-size:24px;fill:var(--muted)}
+    #p2-diluc .gauge text.big{font-family:var(--display);font-weight:700;font-size:40px;fill:var(--gold-hi)}
+    #p2-diluc .gauge text.zl{font-size:27px;font-weight:600}
+    #p2-diluc .gauge .dil{font-size:28px;font-weight:700;fill:var(--cream)}
+  </style>
+  <h1>When the wiki doesn't say, FanBot doesn't either</h1>
+  <div class="content">
+    <div class="chat">
+      <div class="bubble">When is Diluc's birthday?</div>
+      <div class="who"><svg class="ico"><use href="#m-chat"/></svg> FanBot</div>
+      <div class="ans">I don't have that information in the wiki snapshot.<small>Searched the snapshot for: “When is Diluc's birthday?”</small></div>
+      <p class="cap">Real exchange in the FanBot chat app</p>
+    </div>
+    <div>
+      <div class="facts step">
+        <div><svg class="ico"><use href="#i-memory"/></svg><span>Diluc is an older character: the model has <b>probably seen him</b></span></div>
+        <div><svg class="ico no"><use href="#i-cross"/></svg><span>He is <b>not in our 337 pages</b></span></div>
+      </div>
+      <svg class="gauge step" viewBox="0 0 800 300" aria-label="Refusal gate: best reranker score against the 0.52 line">
+        <text x="0" y="24">Best match score (reranker), 0 to 1</text>
+        <!-- scale: x = 20 + v * 760 ; 0.52 -> 415 -->
+        <rect x="20" y="120" width="395" height="54" rx="6" fill="var(--d-memory)" fill-opacity=".22"/>
+        <rect x="415" y="120" width="365" height="54" rx="6" fill="var(--d-ours)" fill-opacity=".28"/>
+        <text class="zl" x="217" y="156" text-anchor="middle" style="fill:#f3b2a5">Refuse, no LLM call</text>
+        <text class="zl" x="597" y="156" text-anchor="middle" style="fill:var(--gold-hi)">Answer with sources</text>
+        <line x1="415" y1="96" x2="415" y2="196" stroke="var(--gold-hi)" stroke-width="4"/>
+        <text class="big" x="415" y="86" text-anchor="middle">0.52</text>
+        <text x="20" y="222" text-anchor="middle">0</text><text x="780" y="222" text-anchor="middle">1</text>
+        <!-- Diluc: qualitative, a bracket over the whole refuse zone (no score shown) -->
+        <path d="M24 250 v14 H411 v-14" fill="none" stroke="var(--cream)" stroke-width="2.5"/>
+        <text class="dil" x="217" y="296" text-anchor="middle">Diluc's best match: below the line</text>
+      </svg>
+    </div>
+  </div>
+  <p class="source">Chat: FanBot app, 2026-10-10 (evidence 03_refusal_en). Gate: refuse when the top reranker score is below 0.52 (Reports 04 §4, 06). 337 pages: Report 01.</p>
+  <aside class="notes">Oyin (60 s): read the question, then the answer: a plain "I don't have that". Diluc is an older, well-known character, so the model has probably seen him, and a closed-book model would happily answer. But he is not one of our 337 pages. The reranker's best match for this question falls below the 0.52 line, so FanBot refuses before the LLM is ever called: nothing to make up from. We do not show his exact score; the point is which side of the line it lands on.</aside>
+</section>
+
+<section class="slide" id="p2-precision" data-speaker="Oyin" data-mod="Evaluation">
+  <style>
+    #p2-precision .content{top:330px}
+    #p2-precision .grid{display:grid;grid-template-columns:330px 1104px 1fr;column-gap:24px;row-gap:12px;align-items:center}
+    #p2-precision .row{grid-column:1/-1;display:grid;grid-template-columns:subgrid;row-gap:12px;align-items:center}
+    #p2-precision .gh{grid-column:1/-1;font-size:24px;color:var(--muted);border-bottom:1px solid var(--grid);padding-bottom:8px;margin-top:6px}
+    #p2-precision .gh .lg{float:right;color:var(--faint)}
+    #p2-precision .lab{text-align:right;font-size:30px;line-height:1.15}
+    #p2-precision .lab small{display:block;font-size:22px;color:var(--muted)}
+    #p2-precision .lab.ours{color:var(--gold-hi)}#p2-precision .lab.mem{color:#f08a76}
+    #p2-precision svg.dots{width:1104px;height:52px;display:block}
+    #p2-precision .n{font-family:var(--display);font-weight:700;font-size:46px;white-space:nowrap}
+    #p2-precision .n small{font-family:"MiSans",sans-serif;font-size:22px;font-weight:500;color:var(--muted);margin-left:6px}
+    #p2-precision .n.ours{color:var(--gold-hi)}#p2-precision .n.mem{color:#f08a76}
+    #p2-precision .cost{display:grid;grid-template-columns:auto 1fr 1fr;gap:34px;margin-top:40px;align-items:stretch}
+    #p2-precision .cost .k{font-family:var(--display);font-weight:600;font-size:40px;line-height:1.1;align-self:center;width:250px;color:var(--cream)}
+    #p2-precision .card{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:22px 28px;font-size:29px;line-height:1.3}
+    #p2-precision .card .id{display:inline-block;font-size:21px;font-weight:700;color:var(--night);background:var(--gold);border-radius:10px;padding:1px 10px;margin-right:10px;vertical-align:3px}
+    #p2-precision .card small{display:block;font-size:22px;color:var(--muted);margin-top:8px}
+  </style>
+  <h1>Refuse precisely, not nervously</h1>
+  <div class="content">
+    <div class="grid">
+      <div class="gh">Practice questions the wiki <b>can</b> answer (23): how many were refused? <span class="lg">● answered &nbsp; ○ refused</span></div>
+      <div class="row step">
+        <div class="lab mem">Same model, no wiki<small>closed book</small></div>
+        <svg class="dots" data-n="23" data-r="13" data-tone="mem"></svg>
+        <div class="n mem">13 / 23</div>
+      </div>
+      <div class="row step">
+        <div class="lab ours">FanBot<small>final system, B3</small></div>
+        <svg class="dots" data-n="23" data-r="1" data-tone="ours"></svg>
+        <div class="n ours">1 / 23</div>
+      </div>
+      <div class="row step">
+        <div class="gh">Practice questions the wiki <b>can't</b> answer (6)</div>
+        <div class="lab ours">FanBot</div>
+        <svg class="dots" data-n="6" data-r="6" data-tone="ours"></svg>
+        <div class="n ours">6 / 6<small>refused</small></div>
+      </div>
+    </div>
+    <div class="cost step">
+      <div class="k">Caution has a cost</div>
+      <div class="card"><span class="id">unans07</span>Asked about a “Pyro-Dendro Resonance”, which doesn't exist. It refused instead of correcting the mistake.</div>
+      <div class="card"><span class="id">mh04</span>Found the right weapon, then said its base ATK wasn't in the snapshot. It was: search missed that page.</div>
+    </div>
+  </div>
+  <p class="source">Practice (dev) split, automatic scoring: over-refusal 0.043 (B3) vs 0.565 (B0); correct refusal 1.000. Report 06 §2, §3, §5; Report 04 §4.</p>
+  <aside class="notes">Oyin (55 s): a bot that refuses everything is useless. The same model without the wiki refused 13 of 23 questions it could have answered; FanBot refused 1, and still refused all 6 questions the wiki can't answer. The price of a bar: unans07 is a trick question with a false premise, and FanBot played it safe instead of correcting it. mh04 is the other kind of miss: it passed the bar but search never found the second page, so it said "not in the snapshot". It did not guess, but it was wrong to say the page wasn't there.</aside>
+  <script>
+  (function () {
+    const s = document.getElementById("p2-precision");
+    s.querySelectorAll("svg.dots").forEach(svg => {
+      const n = +svg.dataset.n, r = +svg.dataset.r;
+      const col = svg.dataset.tone === "mem" ? "var(--d-memory)" : "var(--d-ours-hi)";
+      svg.setAttribute("viewBox", "0 0 1104 52");
+      let h = "";
+      for (let i = 0; i < n; i++) {
+        const cx = 24 + i * 48, refused = i >= n - r;  // refused dots at the right end of the row
+        h += refused
+          ? `<circle cx="${cx}" cy="26" r="17" fill="none" stroke="${col}" stroke-width="4"/>`
+          : `<circle cx="${cx}" cy="26" r="19" fill="${col}"/>`;
+      }
+      svg.innerHTML = h;
+    });
+  })();
+  </script>
+</section>

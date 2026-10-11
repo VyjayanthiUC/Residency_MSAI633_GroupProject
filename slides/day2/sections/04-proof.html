@@ -1,0 +1,130 @@
+<section class="slide" id="proof-headline" data-speaker="Sohyun" data-mod="Evaluation">
+  <style>
+    #proof-headline .content{top:400px;display:grid;grid-template-columns:1fr 470px;gap:90px;align-items:start}
+    #proof-headline .bars{gap:24px}
+    #proof-headline .bar .track{height:44px}
+    #proof-headline .fixed{margin-top:34px;display:flex;align-items:center;gap:28px;padding:20px 28px;border:1px solid var(--line);border-left:4px solid var(--gold-hi);border-radius:10px;background:var(--panel);font-size:30px;line-height:1.3}
+    #proof-headline .fixed b{color:var(--gold-hi);font-weight:700}
+    #proof-headline .fixed small{display:block;font-size:23px;color:var(--muted);margin-top:4px}
+    #proof-headline .fixed small .ico{width:30px;height:30px;vertical-align:-.3em;margin:0 4px 0 2px}
+    #proof-headline .verdict h2{font-size:26px;font-weight:700;color:var(--muted);padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:18px}
+    #proof-headline .verdict h2:not(:first-child){margin-top:36px}
+    #proof-headline .verdict p{display:grid;grid-template-columns:54px 1fr;align-items:start;font-size:30px;line-height:1.28;margin-bottom:18px}
+    #proof-headline .verdict p small{display:block;font-size:23px;color:var(--muted);margin-top:4px}
+    #proof-headline .verdict .ico{width:40px;height:40px;margin-top:-2px}
+    #proof-headline .ok{color:#9be05a}
+    #proof-headline .no{color:#f08a76}
+  </style>
+  <h1>Reading the wiki more than doubles the pass rate</h1>
+  <p class="sub">Pass rate on 32 practice questions, same model (GLM 5.3 Flash), 95% intervals</p>
+  <div class="content">
+    <div>
+      <div class="chart" data-chart="bars" data-max="1" data-ticks="0,0.25,0.5,0.75,1" style="--lab:360px" id="proof-pass">
+        <script type="application/json">[
+          {"label":"B0 from memory","note":"no wiki","v":0.375,"lo":0.22,"hi":0.53,"tone":"memory","text":".375"},
+          {"label":"B1 keyword search","v":0.750,"lo":0.59,"hi":0.88,"text":".750"},
+          {"label":"B2 meaning search","v":0.812,"lo":0.66,"hi":0.94,"text":".812"},
+          {"label":"B3 full system","note":"+ reranker, refusal gate","v":0.844,"lo":0.72,"hi":0.97,"tone":"key","text":".844"}
+        ]</script>
+      </div>
+      <div class="fixed step">
+        <div><b>Memory → full system: 16 fixed, 1 broken</b>
+          <small>Fixed include the opening's <svg class="ico"><use href="#r-mora"/></svg>talent materials and <svg class="ico"><use href="#r-primo"/></svg>banner questions</small></div>
+      </div>
+    </div>
+    <div class="verdict step">
+      <h2>Holds up</h2>
+      <p><svg class="ico ok"><use href="#i-check"/></svg><span>Memory → full system<small>p &lt; 0.001</small></span></p>
+      <h2>Not yet</h2>
+      <p><svg class="ico no"><use href="#i-cross"/></svg><span>B2 → B3: one question apart<small>p = 1.00</small></span></p>
+      <p><svg class="ico no"><use href="#i-cross"/></svg><span>Cited sources not always right<small>citation validity .773 (B3)</small></span></p>
+    </div>
+  </div>
+  <p class="source">Report 06 §2, automatic scoring, dev split; exact McNemar on paired items. Fixed items include syn01 and sh16. Human review (§5) leaves B3 at .844.</p>
+  <aside class="notes">Sohyun (70 s): the red bar is the same model without the wiki: .375. With the wiki, every version doubles it, and the full system reaches .844. The one claim we can prove: memory to full system, 16 questions fixed and 1 broken, p &lt; 0.001; the materials and banner questions from the opening are among them. Be honest about the rest: B2 and B3 differ by a single question, and the cited source is not always the right one (.773). Human review in Report 06 §5 leaves B3 at .844 but lifts keyword search to .844 too.</aside>
+</section>
+
+<section class="slide" id="proof-twohop" data-speaker="Sohyun" data-mod="Evaluation">
+  <style>
+    #proof-twohop .content{top:330px;display:grid;grid-template-columns:1040px 1fr;gap:80px;align-items:start}
+    #proof-twohop svg.hop{width:1040px;height:560px;overflow:visible}
+    #proof-twohop .box{fill:rgba(24,31,78,.92);stroke:rgba(211,188,142,.55);stroke-width:2}
+    #proof-twohop .box.lit{stroke:var(--gold-hi);stroke-width:3}
+    #proof-twohop .box.miss{fill:rgba(24,31,78,.35);stroke:var(--muted);stroke-dasharray:12 9}
+    #proof-twohop .w{fill:none;stroke:var(--gold-hi);stroke-width:3.5}
+    #proof-twohop .w.miss{stroke:var(--muted);stroke-dasharray:10 8}
+    #proof-twohop text{font-family:"MiSans",sans-serif;fill:var(--cream)}
+    #proof-twohop .t-q{font-size:30px;font-weight:600}
+    #proof-twohop .t-lab{font-size:24px;font-weight:700}
+    #proof-twohop .t-big{font-size:33px;font-weight:700}
+    #proof-twohop .t-sm{font-size:25px;fill:var(--muted)}
+    #proof-twohop .t-ans{font-size:29px;font-weight:600}
+    #proof-twohop .gold{fill:var(--gold-hi)}
+    #proof-twohop .dim{fill:var(--muted)}
+    #proof-twohop .red{fill:#f08a76}
+    #proof-twohop .ic-gold{color:var(--gold-hi)}
+    #proof-twohop .ic-ok{color:#9be05a}
+    #proof-twohop .ic-no{color:#f08a76}
+    #proof-twohop .stats{font-size:30px;line-height:1.3}
+    #proof-twohop .waffle{display:grid;grid-template-columns:repeat(7,50px);gap:10px;margin:6px 0 22px}
+    #proof-twohop .waffle i{height:50px;border-radius:6px;background:var(--m-retrieval)}
+    #proof-twohop .waffle i.o{background:var(--d-neutral);opacity:.55}
+    #proof-twohop .stats b{color:var(--gold-hi);font-weight:700}
+    #proof-twohop .stats .k{display:flex;align-items:center;gap:12px;font-size:25px;color:var(--muted);margin-bottom:6px}
+    #proof-twohop .stats .k i{width:22px;height:22px;border-radius:4px;background:var(--m-retrieval)}
+    #proof-twohop .stats .k i.o{background:var(--d-neutral);opacity:.55}
+    #proof-twohop .tie{margin-top:34px;padding-top:24px;border-top:1px solid var(--line)}
+    #proof-twohop .tie small{display:block;font-size:24px;color:var(--muted);margin-top:6px}
+  </style>
+  <h1>Where it still fails: the second page never shows up</h1>
+  <div class="content">
+    <svg class="hop" viewBox="0 0 1040 560" aria-label="Two-hop question mh04: hop 1 found, hop 2 never retrieved">
+      <!-- question -->
+      <rect class="box" x="0" y="0" width="1040" height="120" rx="12"/>
+      <svg x="26" y="31" width="58" height="58" class="ic-gold"><use href="#r-primo"/></svg>
+      <text class="t-q" x="108" y="50">Which weapon banner ran alongside Lauma's "Moonsong</text>
+      <text class="t-q" x="108" y="92">of the Groves", and what is its <tspan class="gold">base ATK at level 90</tspan>?</text>
+      <!-- hop 1 -->
+      <g class="step">
+        <path class="w" d="M250 120 V200"/>
+        <rect class="box lit" x="0" y="200" width="500" height="170" rx="12"/>
+        <text class="t-lab gold" x="28" y="243">Hop 1: found</text>
+        <svg x="440" y="216" width="40" height="40" class="ic-ok"><use href="#i-check"/></svg>
+        <text class="t-big" x="28" y="295">Event-wish page</text>
+        <text class="t-sm" x="28" y="337">names Nightweaver's Looking Glass</text>
+      </g>
+      <!-- hop 2 -->
+      <g class="step">
+        <path class="w miss" d="M500 285 H540"/>
+        <rect class="box miss" x="540" y="200" width="500" height="170" rx="12"/>
+        <text class="t-lab red" x="568" y="243">Hop 2: never retrieved</text>
+        <svg x="980" y="216" width="40" height="40" class="ic-no"><use href="#i-cross"/></svg>
+        <text class="t-big dim" x="568" y="295">Weapon page</text>
+        <text class="t-sm" x="568" y="337">base ATK 542 at level 90</text>
+        <path class="w miss" d="M790 370 V430"/>
+      </g>
+      <!-- answer -->
+      <g class="step">
+        <path class="w" d="M250 370 V430"/>
+        <rect class="box" x="0" y="430" width="1040" height="130" rx="12"/>
+        <svg x="26" y="466" width="58" height="58" class="ic-gold"><use href="#i-robot"/></svg>
+        <svg x="108" y="452" width="34" height="34" class="ic-ok"><use href="#i-check"/></svg>
+        <text class="t-ans" x="156" y="480">Nightweaver's Looking Glass <tspan class="dim" font-size="24">[S1]</tspan></text>
+        <svg x="108" y="504" width="34" height="34" class="ic-no"><use href="#i-cross"/></svg>
+        <text class="t-ans dim" x="156" y="532">"The snapshot doesn't include its base ATK."</text>
+      </g>
+    </svg>
+    <div class="stats step">
+      <div><b>28 failures</b> on just <b>6 questions</b></div>
+      <div class="waffle">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i>
+      </div>
+      <div class="k"><i></i>24 retrieval misses</div>
+      <div class="k"><i class="o"></i>4 other (refusals, ranking)</div>
+      <div class="tie">After human review, the full system <b>ties keyword search</b><small>.844 and .844, practice questions</small></div>
+    </div>
+  </div>
+  <p class="source">Item mh04, B3 answer (generation_dev.json). Failures over 5 RAG setups: failures_dev.jsonl, Report 06 §5.</p>
+  <aside class="notes">Sohyun (55 s): this is the banner question from the opening. Hop 1 works: FanBot finds the event-wish page and names the right weapon. Hop 2 never happens: the weapon page with ATK 542 is in our snapshot, but the question never names it, so it is never retrieved, and the model says the snapshot lacks it. That pattern is most of what is left: 28 failures across all five configurations, on only 6 questions, 24 of them retrieval misses. And after a person re-read every answer, B3 ties plain keyword search at .844.</aside>
+</section>

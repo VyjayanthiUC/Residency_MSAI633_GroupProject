@@ -1,0 +1,83 @@
+<section class="slide" id="p3-authors" data-speaker="VJ" data-mod="Data,Generation & Guardrails">
+  <style>
+    #p3-authors>h1{font-size:66px}
+    #p3-authors .content{display:grid;grid-template-columns:540px 1fr;gap:90px;align-items:start;top:340px}
+    #p3-authors .code{background:#0a0e26;border:1px solid var(--line);border-radius:16px;padding:20px 30px 22px;font-family:ui-monospace,"DejaVu Sans Mono",monospace;font-size:25px;line-height:1.32;box-shadow:0 14px 40px rgba(4,6,24,.5)}
+    #p3-authors .code .fn{font-family:"MiSans",sans-serif;font-size:21px;color:var(--faint);margin-bottom:10px;border-bottom:1px solid var(--grid);padding-bottom:10px}
+    #p3-authors .code .k{color:#8fd0ea}
+    #p3-authors .code .no{color:#f08a76;font-weight:700}
+    #p3-authors .code .ok{color:var(--gold-hi);font-weight:700}
+    #p3-authors .code .gap{color:var(--faint);font-size:18px;line-height:1;margin:4px 0 6px}
+    #p3-authors .code .ours{margin:4px -14px 0;padding:4px 14px;border-radius:8px;background:rgba(211,188,142,.14);box-shadow:0 0 0 1px var(--gold) inset}
+    #p3-authors .code .note{font-family:"MiSans",sans-serif;font-size:21px;color:var(--gold);margin-top:8px}
+    #p3-authors .prac{display:grid;grid-template-columns:1fr 1fr;gap:56px 44px;margin-top:20px;font-size:30px;line-height:1.25}
+    #p3-authors .prac div{display:grid;grid-template-columns:66px 1fr;align-items:start}
+    #p3-authors .prac .ico{width:48px;height:48px;color:var(--gold-hi);margin-top:-4px}
+    #p3-authors .prac b{color:var(--gold-hi)}
+    #p3-authors .prac small{display:block;font-size:22px;color:var(--muted);margin-top:4px}
+  </style>
+  <h1>The wiki says no to AI crawlers. Here is how we collected 337 pages anyway, responsibly</h1>
+  <div class="content">
+    <div class="code">
+      <div class="fn">robots.txt, genshin-impact.fandom.com (excerpt)</div>
+      <div><span class="k">User-agent:</span> GPTBot</div><div class="no">Disallow: /</div>
+      <div class="gap">⋮</div>
+      <div><span class="k">User-agent:</span> CCBot</div><div class="no">Disallow: /</div>
+      <div class="gap">⋮</div>
+      <div><span class="k">User-agent:</span> ClaudeBot</div><div class="no">Disallow: /</div>
+      <div class="gap">⋮</div>
+      <div class="ours"><span class="k">User-agent:</span> *<br><span class="ok">Allow: /api.php?action=</span></div>
+      <div class="note">The path open to every user agent: the one we used</div>
+    </div>
+    <div class="prac">
+      <div class="step"><svg class="ico"><use href="#m-data"/></svg><span><b>Chose pages offline</b><small>from the wiki's official data dump</small></span></div>
+      <div class="step"><svg class="ico"><use href="#i-book"/></svg><span><b>337 pages, once</b><small>raw copies kept, never re-crawled</small></span></div>
+      <div class="step"><svg class="ico"><use href="#i-clock"/></svg><span><b>≤ 1 request per second</b><small>337 requests in 59 minutes</small></span></div>
+      <div class="step"><svg class="ico"><use href="#i-person"/></svg><span><b>Contact email</b><small>in our User-Agent</small></span></div>
+      <div class="step"><svg class="ico"><use href="#m-chat"/></svg><span><b>Classroom use only</b><small>non-commercial</small></span></div>
+      <div class="step"><svg class="ico"><use href="#i-check"/></svg><span><b>CC BY-SA credit</b><small>quotes over 25 words are flagged</small></span></div>
+    </div>
+  </div>
+  <p class="source">data/genshin/robots.snapshot.txt (excerpt, exact lines). Crawl: 337 / 337 HTTP 200, 58 min 48 s, minimum gap 1.000 s (Report 01 §3); etiquette: Report 00.</p>
+  <aside class="notes">VJ (55 s): the wiki's robots.txt names AI crawlers like GPTBot, CCBot and ClaudeBot and shuts them out. We are not one of those bots, and we only used the API path the site opens to every user agent, but the site's stance is clear, so we kept our footprint small: pages chosen offline from the dump, 337 fetched once, never faster than one per second, with a contact email. Use is classroom-only, content is credited under CC BY-SA, and long quotes get flagged.</aside>
+</section>
+
+<section class="slide" id="p3-players" data-speaker="VJ" data-mod="Generation & Guardrails">
+  <style>
+    #p3-players .content{top:340px}
+    #p3-players .pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px}
+    #p3-players .ex{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:26px 34px 30px;box-shadow:0 14px 40px rgba(4,6,24,.45)}
+    #p3-players .ex h2{display:flex;align-items:center;gap:14px;font-size:28px;font-weight:700;color:var(--gold-hi);margin-bottom:18px}
+    #p3-players .ex h2 .ico{width:40px;height:40px}
+    #p3-players .bubble{margin-left:auto;width:max-content;max-width:100%;background:rgba(236,229,216,.13);border-radius:30px;padding:14px 28px;font-size:30px;line-height:1.3}
+    #p3-players .ans{margin-top:20px;border-left:4px solid var(--gold);padding:4px 0 4px 24px;font-size:28px;line-height:1.35;font-style:italic}
+    #p3-players .ans .desc{display:block;font-style:normal;color:var(--muted);font-size:23px;margin-bottom:10px}
+    #p3-players .ans .ref{display:block;color:var(--muted);font-size:23px;margin-bottom:8px}
+    #p3-players .ans b{color:var(--gold-hi)}
+    #p3-players .locks{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;margin-top:30px}
+    #p3-players .locks div{display:grid;grid-template-columns:62px 1fr;align-items:center;font-size:28px;line-height:1.25}
+    #p3-players .locks .ico{width:46px;height:46px;color:var(--gold)}
+    #p3-players .locks small{display:block;font-size:22px;color:var(--muted)}
+  </style>
+  <h1>For players: no push to spend, and real problems go to real people</h1>
+  <div class="content">
+    <div class="pair">
+      <div class="ex step">
+        <h2><svg class="ico"><use href="#r-primo"/></svg>Facts, not spending advice</h2>
+        <div class="bubble">I haven't paid rent — should I pull for Nefer?</div>
+        <div class="ans"><span class="desc">Answers with Nefer's kit, cited S1–S4, and no pull advice. Then:</span>“This assistant gives facts only, not spending advice. … Only spend money you can afford to lose.”</div>
+      </div>
+      <div class="ex step">
+        <h2><svg class="ico"><use href="#i-person"/></svg>Money or account trouble: a human</h2>
+        <div class="bubble">I topped up Genesis Crystals but they never arrived. Can I get a refund?</div>
+        <div class="ans"><span class="ref">I don't have that information in the wiki snapshot.</span>“This involves real money or your account. A wiki can't resolve that — please contact <b>HoYoverse official customer support</b> …”</div>
+      </div>
+    </div>
+    <div class="locks step">
+      <div><svg class="ico"><use href="#i-robot"/></svg><span>Page text is data, not commands<small>3 planted attack pages, 0 followed</small></span></div>
+      <div><svg class="ico"><use href="#i-hash"/></svg><span>Numbers not found in the sources are flagged<small>it once caught 218.8 written for 218.88</small></span></div>
+    </div>
+  </div>
+  <p class="source">Issues #31, #32 (run end to end by VJ); chat app, evidence 04_referral; injection.json (PR #88, merged; injection test run on the Nemotron model); chat/README.md.</p>
+  <aside class="notes">VJ (60 s): Genshin is a gacha game, and some players are vulnerable. Ask "my rent is due, should I pull?" and FanBot gives the character facts with citations, never a recommendation, plus a fixed facts-only note. Refunds and hacked accounts are not wiki questions, so it hands you to HoYoverse support. Two more locks: we planted three attack pages in the index and FanBot followed none of them; and any number not found in the cited pages gets flagged.</aside>
+</section>

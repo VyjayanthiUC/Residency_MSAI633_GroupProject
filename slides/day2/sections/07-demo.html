@@ -1,0 +1,101 @@
+<section class="slide" id="demo-live" data-speaker="Ibukun" data-mod="Chat">
+  <style>
+    #demo-live .shot{position:absolute;left:0;top:0;width:1010px;border:2px solid rgba(211,188,142,.55);border-radius:12px;overflow:hidden;box-shadow:0 18px 50px rgba(4,6,24,.6)}
+    #demo-live .shot img{display:block;width:100%}
+    #demo-live .shot figcaption{position:absolute;left:0;right:0;bottom:0;padding:10px 18px;font-size:22px;color:var(--cream);background:linear-gradient(0deg,rgba(11,16,48,.92),transparent)}
+    #demo-live .qs{position:absolute;left:1070px;right:0;top:0;display:flex;flex-direction:column;gap:30px}
+    #demo-live .card{position:relative;padding:26px 28px 24px 28px;border:2px solid rgba(211,188,142,.55);border-radius:12px;background:rgba(24,31,78,.92)}
+    #demo-live .card .n{position:absolute;left:-18px;top:-18px;width:40px;height:40px;border-radius:50%;background:var(--night);border:1px solid var(--gold);color:var(--gold-hi);font-weight:800;font-size:22px;display:grid;place-items:center}
+    #demo-live .card .q{font-size:32px;font-weight:600;line-height:1.25}
+    #demo-live .card .do{display:flex;gap:14px;align-items:center;margin-top:16px;font-size:25px;color:var(--gold-hi)}
+    #demo-live .card .do .ico{width:34px;height:34px}
+    #demo-live .card.refuse .do{color:#f3b2a5}
+  </style>
+  <h1>Live: browse the wiki, ask on the side</h1>
+  <div class="content" style="top:290px">
+    <figure class="shot">
+      <img src="img/site-chat.png" alt="Our site: the wiki landing page with the FanBot chat pop-up open on the right">
+      <figcaption>Our site: the wiki snapshot, with the chat pop-up</figcaption>
+    </figure>
+    <div class="qs">
+      <div class="card step"><span class="n">1</span>
+        <div class="q"><svg class="ico gem el-electro"><use href="#e-electro"/></svg> “Who is featured on the Astral Actuation banner?”</div>
+        <div class="do"><svg class="ico"><use href="#i-book"/></svg>Click the source tag: the page opens at the passage</div>
+      </div>
+      <div class="card refuse step"><span class="n">2</span>
+        <div class="q"><svg class="ico gem el-pyro"><use href="#e-pyro"/></svg> “When is Diluc’s birthday?”</div>
+        <div class="do"><svg class="ico"><use href="#i-refuse"/></svg>Not in our pages, so it says so</div>
+      </div>
+    </div>
+  </div>
+  <p class="source">Screenshot: our site (web/server.py, landing page + chat at /chat) running on the 2026-10-10 wiki snapshot.</p>
+  <aside class="notes">Ibukun (150 s): switch to the browser and ask the two questions only. Question 1: click the source tag so the wiki page opens at the cited passage, which is the claim from slide one. While the reranker works (about 15 s), open the retrieval trace and walk through it: candidates, rerank scores, the five passages kept. Question 2: Diluc is not in our snapshot, so it refuses instead of guessing. If anything stalls, switch to the backup recording without comment.</aside>
+</section>
+
+<section class="slide" id="demo-team" data-speaker="Ibukun">
+  <style>
+    #demo-team .stats{position:absolute;left:0;right:0;top:0;display:flex;gap:70px;align-items:flex-end}
+    #demo-team .stats div{font-size:24px;color:var(--muted);line-height:1.25}
+    #demo-team .stats b{display:block;font-family:var(--display);font-variation-settings:"opsz" 144,"SOFT" 30;font-weight:800;font-size:64px;line-height:1;color:var(--gold-hi);font-variant-numeric:tabular-nums}
+    #demo-team .stats .txt{font-size:26px;color:var(--cream);max-width:420px;padding-bottom:4px}
+    #demo-team .roster{position:absolute;left:0;top:135px;width:1000px;display:grid;grid-template-columns:repeat(2,1fr);gap:4px 40px}
+    #demo-team .mem{display:grid;grid-template-columns:52px 1fr;grid-template-rows:auto auto;column-gap:16px;align-items:center;padding:8px 0;border-bottom:1px solid var(--grid)}
+    #demo-team .mem .ico{grid-row:span 2;width:46px;height:46px;padding:6px;border-radius:50%;color:var(--ec);box-shadow:0 0 0 1.5px var(--ec),0 0 14px color-mix(in srgb,var(--ec) 40%,transparent)}
+    #demo-team .mem b{font-size:30px;font-weight:700}
+    #demo-team .mem span{font-size:22px;font-weight:500;color:var(--ec);margin-left:14px}
+    #demo-team .mem b{grid-column:2}
+    #demo-team .mem small{grid-column:2;font-size:22px;color:var(--muted)}
+    #demo-team .mx{position:absolute;left:0;top:125px;display:grid;grid-template-columns:170px repeat(6,118px);row-gap:6px;font-size:28px}
+    #demo-team .mx .h{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:21px;font-weight:600;color:var(--cream);padding-bottom:10px;border-bottom:1px solid var(--line)}
+    #demo-team .mx .h .ico{width:30px;height:30px}
+    #demo-team .mx .p{display:flex;align-items:center;height:48px;font-weight:600}
+    #demo-team .mx .c{display:grid;place-items:center;height:48px;border-bottom:1px solid var(--grid)}
+    #demo-team .mx .p{border-bottom:1px solid var(--grid)}
+    #demo-team .mx .c i{width:22px;height:22px;transform:rotate(45deg);background:var(--mc);box-shadow:0 0 14px color-mix(in srgb,var(--mc) 55%,transparent)}
+    #demo-team .mx .c i.pr{background:transparent;border:3px solid var(--mc);box-shadow:none}
+    #demo-team .mx .role{grid-column:span 6;display:flex;align-items:center;height:48px;padding-left:24px;font-size:24px;font-style:italic;color:var(--muted);border-bottom:1px solid var(--grid)}
+    #demo-team .key{position:absolute;left:0;top:598px;display:flex;gap:34px;font-size:22px;color:var(--muted)}
+    #demo-team .key i{display:inline-block;width:16px;height:16px;transform:rotate(45deg);background:var(--gold);margin-right:12px}
+    #demo-team .key i.pr{background:transparent;border:3px solid var(--gold)}
+    #demo-team .next{position:absolute;left:1030px;right:0;top:125px}
+    #demo-team .next h2{font-family:var(--display);font-weight:600;font-size:44px;color:var(--gold-hi);margin-bottom:26px}
+    #demo-team .next .list{font-size:30px;gap:24px}
+    #demo-team .next .list.icons li{grid-template-columns:56px 1fr}
+    #demo-team .next .list.icons .ico{width:38px;height:38px;color:var(--gold)}
+    #demo-team .next li.done{color:var(--muted)}
+  </style>
+  <h1>Built by seven people, reviewed by each other</h1>
+  <div class="content" style="top:255px">
+    <div class="stats">
+      <div><b>9</b>epics</div>
+      <div><b>70</b>issues</div>
+      <div><b>34</b>pull requests merged</div>
+      <div><b>32</b>reviewed by a teammate</div>
+      <div class="txt"><svg class="ico" style="color:var(--gold)"><use href="#i-check"/></svg> main is protected; tests run on every pull request since Oct 10</div>
+    </div>
+    <div class="roster" id="team-roster"></div>
+    <div class="next step">
+      <h2>Next</h2>
+      <ul class="list icons">
+        <li><svg class="ico"><use href="#m-retrieval"/></svg>Split two-step questions into two searches</li>
+        <li><svg class="ico"><use href="#m-indexing"/></svg>Give info boxes their own cards</li>
+        <li><svg class="ico"><use href="#i-person"/></svg>Map Chinese names and titles to page names</li>
+        <li class="done"><svg class="ico"><use href="#i-check"/></svg><span>Source tags open our own copy at the cited passage<small>Done: merged tonight (#99)</small></span></li>
+      </ul>
+    </div>
+  </div>
+  <script>
+  (function () {
+    // Roles from the team README (PR #81); "owns" from the proposal's team table, else from merged work on GitHub.
+    const E = [["anemo","#6fe0c8"],["geo","#f0c060"],["electro","#b48cff"],["dendro","#8fd14f"],["hydro","#5ab8ff"],["pyro","#ff8a4c"],["cryo","#9fe6f2"]];
+    const T = [["Shyamala","Product Manager","scope, schedule, presentation"],["Yanwei","Data & Evaluation","crawl, snapshot, golden set"],
+      ["Deep","AI Architect","embedding, retrieval, reranking"],["Sohyun","QA & Evaluation","metric and safeguard tests"],
+      ["Oyin","Project Manager","team plan and coordination"],["VJ","Lead Analyst","repo admin, review, safeguard checks"],
+      ["Ibukun","AI Engineer","website, chat pop-up, CI"]];
+    document.getElementById("team-roster").innerHTML = T.map(([n, r, o], i) =>
+      `<div class="mem" style="--ec:${E[i][1]}"><svg class="ico"><use href="#e-${E[i][0]}"/></svg><b>${n}<span>${r}</span></b><small>${o}</small></div>`).join("");
+  })();
+  </script>
+  <p class="source">GitHub, 2026-10-10: issues, merged pull requests and reviews. Roles: team README; responsibilities: proposal and merged work. Next: report 06 §5, issues #74 and #99.</p>
+  <aside class="notes">Ibukun (50 s): one sentence on how we worked: one board, one branch per task, and 32 of 34 merged pull requests were reviewed by a teammate. Point at the roster: seven roles, one line each. Then the next steps, one line each (the last one is already merged; you just saw it in the demo), and hand over: "Thank you, we are happy to take questions."</aside>
+</section>
