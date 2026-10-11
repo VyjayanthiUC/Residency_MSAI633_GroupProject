@@ -15,7 +15,10 @@ python3 build.py             # sections/*.html + template.html -> index.html (gi
 python3 serve.py             # http://127.0.0.1:8820/   (← → or Space to step, Home / End)
 ```
 
-Export (needs the server running and a Chromium-family browser; set `BROWSER=/path/to/chrome` if it isn't found):
+On Windows, where `python3` usually isn't on PATH, run the same scripts with `uv run --no-project python <script>.py`.
+
+Export (needs the server running and a Chromium-family browser; Chrome or Edge is found automatically, including their
+default Windows install paths; otherwise set `BROWSER=/path/to/chrome`):
 
 ```bash
 uv run --with python-pptx python export.py FanBot_Day2_Presentation.pptx

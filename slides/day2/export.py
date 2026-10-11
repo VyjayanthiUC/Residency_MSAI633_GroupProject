@@ -23,11 +23,16 @@ SHOTS = HERE / "shots" / "export"
 SHOTS.mkdir(parents=True, exist_ok=True)
 URL = os.environ.get("DECK_URL", "http://127.0.0.1:8820/")
 BROWSER = os.environ.get("BROWSER") or next((b for b in ("chromium", "chromium-browser", "google-chrome", "google-chrome-stable",
-                                                         "brave", "brave-browser", "microsoft-edge") if shutil.which(b)), None)
+                                                         "brave", "brave-browser", "microsoft-edge", "chrome", "msedge")
+                                              if shutil.which(b)), None)
+# Windows installs Chrome and Edge outside PATH
+WINDOWS = [Path(os.environ.get(v, "")) / p for v in ("PROGRAMFILES", "PROGRAMFILES(X86)", "LOCALAPPDATA")
+           for p in ("Google/Chrome/Application/chrome.exe", "Microsoft/Edge/Application/msedge.exe")]
+BROWSER = BROWSER or next((str(p) for p in WINDOWS if p.is_file()), None)
 if not BROWSER:
     sys.exit("No Chromium-family browser found: set BROWSER=/path/to/chrome")
 
-page = (HERE / "index.html").read_text()
+page = (HERE / "index.html").read_text(encoding="utf-8")
 slides = re.findall(r'<section class="slide[^"]*"[^>]*>(.*?)</section>', page, re.S)
 text = lambda s: html.unescape(re.sub(r"<[^>]+>", "", s or "")).strip()
 

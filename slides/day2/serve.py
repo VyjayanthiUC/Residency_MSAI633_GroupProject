@@ -27,7 +27,7 @@ def head():
 
 def load(doc="slides"):
     f = store(doc)
-    return json.loads(f.read_text()) if f.exists() else {"comments": []}
+    return json.loads(f.read_text(encoding="utf-8")) if f.exists() else {"comments": []}
 
 
 def doc_of(path):
@@ -68,7 +68,7 @@ class Handler(SimpleHTTPRequestHandler):
         body = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))) or b"{}")
         if not isinstance(body.get("comments"), list):
             return self.reply(400, {"error": "comments must be a list"})
-        store(doc).write_text(json.dumps({"comments": body["comments"]}, ensure_ascii=False, indent=1))
+        store(doc).write_text(json.dumps({"comments": body["comments"]}, ensure_ascii=False, indent=1), encoding="utf-8")
         self.reply(200, {"ok": True, "n": len(body["comments"])})
 
     def log_message(self, *a):
