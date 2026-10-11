@@ -50,6 +50,8 @@ reports 01–06 and `evaluation/results/`; the test split runs once on Sunday.
 
 - Headlines use Fraunces, body text MiSans when it is installed locally, otherwise Inter. MiSans is not redistributed.
 - Character portraits, the weapon icon and the version key art are HoYoverse game art shown by the Genshin Impact
-  Fandom wiki under fair use. They are not committed; `fetch_images.py` downloads them from the wiki's image server
-  (the same URLs the team website uses, `web/images.py`). Slides that show them credit HoYoverse in the source line.
+  Fandom wiki under fair use. The image files are not committed; `fetch_images.py` downloads them from the wiki's image
+  server (the same URLs the team website uses, `web/images.py`). Slides that show them credit HoYoverse in the source
+  line. The submitted export, `FanBot_Day2_Presentation.pptx` at the repository root, contains them as part of the
+  slide screenshots.
 - `img/site-chat.png` is a screenshot of our own website with the chat pop-up open.
