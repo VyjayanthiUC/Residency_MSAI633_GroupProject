@@ -1,0 +1,237 @@
+<section class="slide" id="engine-pipeline" data-speaker="Deep" data-mod="all">
+  <style>
+    #engine-pipeline .eng{position:absolute;left:150px;top:250px;width:1620px;height:650px;overflow:visible}
+    #engine-pipeline text{font-family:"MiSans",sans-serif;fill:var(--cream);font-weight:500}
+    #engine-pipeline text.h{font-size:29px;font-weight:700}
+    #engine-pipeline text.s{font-size:22px;fill:var(--muted)}
+    #engine-pipeline text.q{font-size:30px;font-weight:600}
+    #engine-pipeline text.n{font-family:var(--display);font-variation-settings:"opsz" 144,"SOFT" 30;font-size:58px;font-weight:800;fill:var(--gold-hi)}
+    #engine-pipeline .box{fill:rgba(24,31,78,.92);stroke-width:2.5}
+    #engine-pipeline .wire{fill:none;stroke:var(--gold);stroke-width:3}
+    #engine-pipeline .wire.no{stroke:var(--m-generation);stroke-dasharray:8 7}
+    /* system map */
+    #engine-pipeline .pill rect.bg{fill:color-mix(in srgb,var(--mc) 16%,rgba(20,26,66,.9));stroke:color-mix(in srgb,var(--mc) 70%,transparent);stroke-width:2;transition:fill .4s,filter .4s}
+    #engine-pipeline .pill rect.bar{fill:var(--mc)}
+    #engine-pipeline .pill use{color:var(--mc)}
+    #engine-pipeline .pill text{font-size:23px;font-weight:600}
+    #engine-pipeline .pill.cur rect.bg{fill:color-mix(in srgb,var(--mc) 55%,rgba(20,26,66,.9));filter:drop-shadow(0 0 14px var(--mc))}
+    /* cards */
+    #engine-pipeline .fc{fill:var(--m-indexing);fill-opacity:.32;transition:fill .5s,fill-opacity .5s}
+    #engine-pipeline .shown .fc.k{fill:var(--d-alt);fill-opacity:1}
+    #engine-pipeline .shown .fc.m{fill:var(--d-neutral);fill-opacity:1}
+    #engine-pipeline .fly{transform-box:fill-box;transform-origin:0 0;transition:transform 1s var(--ease);transition-delay:var(--d,0s)}
+    #engine-pipeline .step:not(.shown) .fly{transform:var(--from)}
+    #engine-pipeline .pb{fill:var(--m-retrieval);transition:fill .4s}
+    #engine-pipeline .s4on .pb.pick{fill:var(--gold-hi)}
+    #engine-pipeline .t5 rect{fill:color-mix(in srgb,var(--m-retrieval) 55%,#151c4e);stroke:var(--m-retrieval);stroke-width:2}
+    #engine-pipeline .t5.first rect{fill:var(--gold-hi);stroke:var(--gold-hi)}
+    #engine-pipeline .t5 text{font-size:23px;font-weight:700}
+    #engine-pipeline .t5.first text{fill:var(--night)}
+    #engine-pipeline .cite-s{fill:var(--gold)}
+  </style>
+  <h1>From a question to a cited answer</h1>
+  <svg class="eng" viewBox="0 0 1620 650" aria-label="FanBot pipeline: question, two searches over 2,218 section cards, merge, rerank to 5, answer with sources or refuse">
+    <defs>
+      <marker id="eng-ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#d3bc8e"/></marker>
+      <marker id="eng-ahr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#d6608f"/></marker>
+    </defs>
+
+    <!-- step 0: system map (always visible) -->
+    <g id="eng-map"></g>
+    <line x1="248" y1="10" x2="248" y2="630" stroke="var(--line)" stroke-width="1.5"/>
+
+    <!-- step 1: question in, rewritten for search -->
+    <g class="step" data-mod="Chat">
+      <rect class="box" x="282" y="8" width="476" height="108" rx="22" stroke="var(--m-chat)"/>
+      <use href="#i-person" x="302" y="30" width="38" height="38" style="color:var(--m-chat)"/>
+      <text class="q" x="356" y="54">Who is featured on the</text>
+      <text class="q" x="356" y="94">Astral Actuation banner?</text>
+      <path class="wire" d="M758 62 H800" marker-end="url(#eng-ah)"/>
+      <rect class="box" x="808" y="20" width="290" height="84" rx="14" stroke="var(--m-chat)"/>
+      <text class="h" x="830" y="56">Rewrite for search</text>
+      <text class="s" x="830" y="88">follow-ups and Chinese</text>
+      <path class="wire" d="M860 104 V128 Q860 140 848 140 H584 Q572 140 572 152 V376 Q572 392 586 392" marker-end="url(#eng-ah)"/>
+      <path class="wire" d="M572 214 Q572 226 586 226" marker-end="url(#eng-ah)"/>
+    </g>
+
+    <!-- step 2: the card field and two searches -->
+    <g class="step" id="eng-s2" data-mod="Indexing,Retrieval">
+      <g id="eng-field"></g>
+      <text class="n" x="410" y="548" text-anchor="middle">2,218</text>
+      <text class="s" x="410" y="584" text-anchor="middle">section cards</text>
+      <rect class="box" x="592" y="160" width="262" height="132" rx="14" stroke="var(--m-retrieval)"/>
+      <text class="h" x="612" y="198">Keyword search</text>
+      <text class="s" x="612" y="228">BM25 · exact names</text>
+      <rect class="box" x="592" y="326" width="262" height="132" rx="14" stroke="var(--m-retrieval)"/>
+      <text class="h" x="612" y="364">Meaning search</text>
+      <text class="s" x="612" y="394">bge-m3 · paraphrases</text>
+      <g id="eng-lanes"></g>
+      <text class="n" x="723" y="548" text-anchor="middle">30 + 30</text>
+      <text class="s" x="723" y="584" text-anchor="middle">top results per search</text>
+    </g>
+
+    <!-- step 3: merge into one pool of 20 -->
+    <g class="step" id="eng-s3" data-mod="Retrieval">
+      <path class="wire" d="M854 226 Q890 226 890 262 V300 Q890 312 902 312" marker-end="url(#eng-ah)"/>
+      <path class="wire" d="M854 392 Q890 392 890 356 V324 Q890 312 902 312"/>
+      <text class="h" x="912" y="182">Merge</text>
+      <text class="s" x="912" y="210">one list</text>
+      <g id="eng-pool"></g>
+      <text class="n" x="990" y="548" text-anchor="middle">20</text>
+      <text class="s" x="990" y="584" text-anchor="middle">in one pool</text>
+    </g>
+
+    <!-- step 4: reranker keeps the best 5 -->
+    <g class="step" id="eng-s4" data-mod="Retrieval">
+      <path class="wire" d="M1074 340 H1112" marker-end="url(#eng-ah)"/>
+      <text class="h" x="1124" y="182">Rerank</text>
+      <text class="s" x="1124" y="210">cross-encoder</text>
+      <g id="eng-top5"></g>
+      <text class="n" x="1210" y="548" text-anchor="middle">5</text>
+      <text class="s" x="1210" y="584" text-anchor="middle">kept</text>
+    </g>
+
+    <!-- step 5: the LLM reads only those 5 and cites them -->
+    <g class="step" data-mod="Generation &amp; Guardrails,Chat">
+      <path class="wire" d="M1298 360 H1342" />
+      <path d="M1384 318 L1426 360 L1384 402 L1342 360 Z" fill="rgba(24,31,78,.95)" stroke="var(--m-generation)" stroke-width="2.5"/>
+      <text class="s" x="1384" y="300" text-anchor="middle" style="fill:var(--cream)">score ≥ 0.52</text>
+      <path class="wire" d="M1426 360 H1452" marker-end="url(#eng-ah)"/>
+      <rect class="box" x="1460" y="286" width="160" height="148" rx="14" stroke="var(--m-generation)"/>
+      <use href="#i-robot" x="1478" y="302" width="40" height="40" style="color:var(--m-generation)"/>
+      <text class="h" x="1526" y="332">LLM</text>
+      <text class="s" x="1478" y="378">reads only</text>
+      <text class="s" x="1478" y="408">these 5</text>
+      <path class="wire" d="M1540 286 V124" marker-end="url(#eng-ah)"/>
+      <rect class="box" x="1130" y="8" width="490" height="108" rx="22" stroke="var(--gold-hi)" stroke-width="3"/>
+      <text class="q" x="1154" y="56" style="fill:var(--gold-hi)">Ineffa, an Electro character</text>
+      <rect class="cite-s" x="1552" y="32" width="46" height="30" rx="12"/>
+      <text x="1575" y="55" text-anchor="middle" style="font-size:21px;font-weight:700;fill:var(--night)">S1</text>
+      <text class="s" x="1154" y="96">S1 = the banner's wiki page</text>
+    </g>
+
+    <!-- step 6: refusal gate -->
+    <g class="step" data-mod="Generation &amp; Guardrails">
+      <path class="wire no" d="M1384 402 V492" marker-end="url(#eng-ahr)"/>
+      <text class="s" x="1374" y="456" text-anchor="end" style="fill:#f0a3c0">below</text>
+      <rect class="box" x="1300" y="500" width="320" height="140" rx="22" stroke="var(--m-generation)" stroke-dasharray="0"/>
+      <use href="#i-refuse" x="1320" y="518" width="36" height="36" style="color:var(--m-generation)"/>
+      <text class="q" x="1366" y="546">I don't have</text>
+      <text class="q" x="1320" y="586">that information.</text>
+      <text class="s" x="1320" y="622">no LLM call</text>
+    </g>
+  </svg>
+  <script>
+  (function () {
+    const NS = "http://www.w3.org/2000/svg";
+    const $ = id => document.getElementById(id);
+    // system map: the six modules (= project board epics), in the order data flows; Evaluation measures every step
+    const MODS = [["Data", "m-data", "--m-data"], ["Indexing", "m-indexing", "--m-indexing"], ["Retrieval", "m-retrieval", "--m-retrieval"],
+      ["Generation &|Guardrails", "m-generation", "--m-generation"], ["Chat", "m-chat", "--m-chat"]];
+    let m = "";
+    MODS.forEach(([name, ico, v], i) => {
+      const y = 12 + i * 92, [a, b] = name.split("|"), key = name.replace("|", " ");
+      m += `<g class="pill" data-m="${key}" style="--mc:var(${v})"><rect class="bg" x="0" y="${y}" width="222" height="66" rx="10"/>
+        <rect class="bar" x="0" y="${y}" width="7" height="66" rx="3"/><use href="#${ico}" x="18" y="${y + 17}" width="32" height="32"/>
+        ${b ? `<text x="62" y="${y + 29}">${a}</text><text x="62" y="${y + 56}">${b}</text>` : `<text x="62" y="${y + 41}">${a}</text>`}</g>`;
+      if (i < MODS.length - 1) m += `<path d="M111 ${y + 68} V${y + 88}" stroke="var(--gold)" stroke-width="2.5" marker-end="url(#eng-ah)"/>`;
+    });
+    m += `<g class="pill" data-m="Evaluation" style="--mc:var(--m-evaluation)"><rect class="bg" x="0" y="520" width="222" height="66" rx="10" stroke-dasharray="7 5"/>
+      <rect class="bar" x="0" y="520" width="7" height="66" rx="3"/><use href="#m-evaluation" x="18" y="537" width="32" height="32"/>
+      <text x="62" y="561">Evaluation</text></g><text class="s" x="111" y="622" text-anchor="middle">checks every step</text>`;
+    $("eng-map").innerHTML = m;
+
+    // card field: a grid standing for the 2,218 section cards; some cards are pulled out by each search
+    const COLS = 17, ROWS = 25, fx = i => 282 + (i % COLS) * 15, fy = i => 168 + Math.floor(i / COLS) * 12.6;
+    let seed = 633; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const pick = new Set(), kw = [], mn = [];
+    while (kw.length < 8) { const i = Math.floor(rnd() * COLS * ROWS); if (!pick.has(i)) { pick.add(i); kw.push(i); } }
+    while (mn.length < 8) { const i = Math.floor(rnd() * COLS * ROWS); if (!pick.has(i)) { pick.add(i); mn.push(i); } }
+    let f = "";
+    for (let i = 0; i < COLS * ROWS; i++) f += `<rect class="fc${kw.includes(i) ? " k" : mn.includes(i) ? " m" : ""}" x="${fx(i)}" y="${fy(i)}" width="12" height="8.5" rx="1.5"/>`;
+    $("eng-field").innerHTML = f;
+    // lane cards fly out of the field into each search box
+    let l = "";
+    [[kw, 246, "var(--d-alt)"], [mn, 412, "var(--d-neutral)"]].forEach(([src, ly, col]) => src.forEach((c, j) => {
+      const x = 612 + j * 28, dx = fx(c) - x, dy = fy(c) - ly;
+      l += `<rect class="fly" x="${x}" y="${ly}" width="22" height="30" rx="3" fill="${col}" stroke="#ece5d8" stroke-opacity=".5"
+        style="--from:translate(${dx}px,${dy}px) scale(.55,.28);--d:${(j * .06).toFixed(2)}s"/>`;
+    }));
+    $("eng-lanes").innerHTML = l;
+
+    // pool of 20 (fused ranking), thin bars; five of them are the reranker's picks
+    const PICK = [6, 0, 11, 2, 15];   // pool rank (0-based) of S1..S5 after reranking: order changes
+    let p = "";
+    for (let i = 0; i < 20; i++) p += `<rect class="pb fly${PICK.includes(i) ? " pick" : ""}" x="912" y="${226 + i * 12}" width="150" height="8" rx="2"
+      style="--from:translate(-40px,0) scale(.2,1);--d:${(i * .03).toFixed(2)}s"/>`;
+    $("eng-pool").innerHTML = p;
+
+    // top 5: each slides from its pool position into its new rank
+    let t = "";
+    PICK.forEach((pi, j) => {
+      const x = 1124, y = 232 + j * 46, dx = 912 - x, dy = 226 + pi * 12 - y;
+      t += `<g class="t5 fly${j ? "" : " first"}" style="--from:translate(${dx}px,${dy}px) scale(.86,.24);--d:${(j * .12).toFixed(2)}s">
+        <rect x="${x}" y="${y}" width="174" height="36" rx="5"/><text x="${x + 14}" y="${y + 27}">S${j + 1}</text>
+        </g>`;
+    });
+    $("eng-top5").innerHTML = t;
+  })();
+  (window.SLIDE_HOOKS = window.SLIDE_HOOKS || {})["engine-pipeline"] = (slide, shown) => {
+    const steps = [...slide.querySelectorAll(".eng .step")];
+    const last = steps[shown - 1];
+    const cur = shown > 0 && shown < steps.length && !document.body.classList.contains("export") ? (last.dataset.mod || "").split(",") : [];
+    slide.querySelectorAll(".pill").forEach(p => p.classList.toggle("cur", cur.includes(p.dataset.m)));
+    // the reranker's picks turn gold in the pool
+    slide.querySelector(".eng").classList.toggle("s4on", slide.querySelector("#eng-s4").classList.contains("shown"));
+  };
+  </script>
+  <p class="source">rag/config.py, report 04 §1: each search ranks 30, fused (RRF) into 20; reranker bge-reranker-v2-m3 keeps 5. Example: golden item sh16.</p>
+  <aside class="notes">Deep (80 s): one press per stage. The six modules on the left are the project board's epics; the box lit up is the one we are in. Keyword search catches exact game names, meaning search catches paraphrases; together they put the right card in the pool more often. The reranker reads question and card together and picks the best 5; the LLM only ever sees those 5 and must tag each fact with its source. Last press: if even the best card scores below 0.52, we refuse before the LLM is called.</aside>
+</section>
+
+<section class="slide" id="engine-tradeoffs" data-speaker="Deep" data-mod="Indexing,Retrieval">
+  <style>
+    #engine-tradeoffs .content{display:grid;grid-template-columns:700px 1fr;gap:120px;top:280px;align-items:start}
+    #engine-tradeoffs h2{font-size:32px;font-weight:700;color:var(--cream);margin-bottom:26px;line-height:1.25}
+    #engine-tradeoffs h2 small{display:block;font-size:23px;font-weight:500;color:var(--muted);margin-top:4px}
+    #engine-tradeoffs .bar{font-size:29px}
+    #engine-tradeoffs .bars{gap:16px}
+    #engine-tradeoffs .repro{margin-top:40px;font-size:27px;color:var(--cream);display:flex;gap:14px;align-items:flex-start;line-height:1.3}
+    #engine-tradeoffs .repro .ico{width:36px;height:36px;color:var(--m-chat);margin-top:-2px}
+    #engine-tradeoffs .cost{margin-top:26px;display:flex;gap:16px;align-items:flex-start;font-size:30px;line-height:1.25;
+      padding:16px 22px;border:2px solid var(--d-memory);border-radius:12px;background:rgba(40,22,46,.85)}
+    #engine-tradeoffs .cost b{color:#f08a76}
+    #engine-tradeoffs .cost small{display:block;font-size:22px;color:var(--muted);margin-top:4px}
+    #engine-tradeoffs .cost .ico{width:40px;height:40px;color:#f08a76;margin-top:2px}
+  </style>
+  <h1>Two design choices, both measured</h1>
+  <div class="content">
+    <div>
+      <h2>Re-chunking without re-crawling<small>fixed-length cards A → section cards B</small></h2>
+      <div class="chart" data-chart="bars" data-max="2218" style="--lab:270px" id="rechunk">
+        <script type="application/json">[
+          {"label":"A cards, before","v":1345,"text":"1,345"},
+          {"label":"A cards, after","v":0,"text":"0"},
+          {"label":"B cards, after","v":2218,"text":"2,218","tone":"key"},
+          {"label":"Orphaned cards","v":0,"text":"0"}
+        ]</script>
+      </div>
+      <p class="repro"><svg class="ico"><use href="#i-check"/></svg><span>A teammate re-ran it: identical counts.</span></p>
+    </div>
+    <div class="step" style="position:relative">
+      <h2>Finding the right page in the top 5<small>Recall@5 with 95% intervals, one change at a time</small></h2>
+      <div class="chart" data-chart="bars" data-max="1" data-ticks="0,0.5,1" style="--lab:250px" id="ablation">
+        <script type="application/json">[
+          {"label":"B1 keyword","v":0.663,"lo":0.48,"hi":0.83},
+          {"label":"B2 meaning","v":0.707,"lo":0.54,"hi":0.85},
+          {"label":"+ section cards","v":0.652,"lo":0.48,"hi":0.83},
+          {"label":"+ both searches","v":0.717,"lo":0.54,"hi":0.87},
+          {"label":"B3 + reranker","v":0.761,"lo":0.59,"hi":0.91,"tone":"key"}
+        ]</script>
+      </div>
+      <div class="cost step"><svg class="ico"><use href="#i-clock"/></svg><span>The reranker costs <b>+15 s</b> per question<small>retrieval p50 on CPU: 0.14 s → 15.14 s</small></span></div>
+    </div>
+  </div>
+  <p class="source">Left: report 02 §5 (rechunk run, 2026-10-10). Right: 23 answerable practice questions; no step significant (McNemar, all p ≥ 0.5). Reports 02, 04.</p>
+  <aside class="notes">Deep (80 s): left, the assignment's before/after. We switched from fixed-length cards to section cards from the saved pages, no re-crawl: all 1,345 old cards gone, 2,218 new ones, zero orphans, and a teammate reproduced it. Press: the ablation. Each step points the right way, but the intervals overlap; on 23 questions none is proven. Press: the reranker is the best part and the most expensive, about 15 seconds per question on a CPU.</aside>
+</section>
