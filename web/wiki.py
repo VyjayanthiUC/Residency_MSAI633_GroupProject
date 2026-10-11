@@ -19,6 +19,7 @@ from pathlib import Path
 
 from rag import config
 from web.images import clips, images
+from web.talents import tables_for
 
 MD_DIR = config.DOCS_PATH.parent / "md"
 _HEADER = re.compile(r"<!--\s*(\S+)\s*\|\s*type=(\S+)\s*\|\s*effective=(\S*)\s*-->")
@@ -96,6 +97,18 @@ def pages() -> dict[str, Page]:
 
 # ---------- rendering ----------
 
+def section_id(path: list[str] | tuple[str, ...]) -> str:
+    """Element id of a page section, from its heading path (a chunk's heading_path, or a Markdown "## A › B" heading
+    split on " › "). The chat links each citation to /wiki/<doc_id>#<section_id>, so it opens the cited section here."""
+    slug = re.sub(r"[^a-z0-9]+", "-", " ".join(path).lower()).strip("-")
+    return "sec-" + slug if slug else ""
+
+
+def page_href(doc_id: str, path: list[str] | tuple[str, ...]) -> str:
+    sid = section_id(path)
+    return f"/wiki/{doc_id}" + (f"#{sid}" if sid else "")
+
+
 def render_block(heading: str, body: str) -> str:
     """Markdown subset used by the snapshot: Key: Value lines, pipe tables, paragraphs."""
     out, lines, i = [], body.splitlines(), 0
@@ -168,7 +181,9 @@ def card(p: Page, version_titles: dict[str, str]) -> str:
     meta_html = " · ".join(e(m) for m in meta if m)
     title = p.title.removeprefix("Version/")
     style = f' style="--el: var(--{e(el)})"' if el else ""
-    return (f'<li class="card" data-search="{e((p.title + " " + " ".join(meta)).lower())}"{style}>'
+    q = i.get("Quality", "")
+    rarity = f' data-q="{q[0]}"' if q[:1] in ("4", "5") else ""   # the picture's backdrop follows rarity, as in the game
+    return (f'<li class="card" data-search="{e((p.title + " " + " ".join(meta)).lower())}"{style}{rarity}>'
             f'{img(p, "thumb", "thumb")}{stars(i)}<h3><a href="/wiki/{e(p.slug)}">{e(title)}</a></h3>'
             f'<span class="meta">{meta_html}</span>'
             f'<button type="button" class="ask" data-q="Tell me about {e(ask_name(p))}.">Ask about {e(title)}</button></li>')
@@ -337,17 +352,51 @@ def home_body() -> str:
              f'<button type="button" class="bgtoggle" aria-pressed="false" hidden>Pause background</button>' if reel else "")
     return (f'<section class="hero"><div class="banner">{art}{video}<div class="bannertext">'
             f'<h1>Genshin Impact: Nod-Krai and Snezhnaya</h1><p class="counts">{e(counts)}</p>'
-            f'<label class="search"><span class="sr">Search pages</span><input type="search" id="q" placeholder="Search {len(all_pages)} pages: characters, weapons, versions…" autocomplete="off"></label>'
+            f'<label class="search"><span class="sr">Search pages</span><input type="search" id="q" placeholder="Search {len(all_pages)} pages: characters, weapons, versions…" autocomplete="off" enterkeyhint="go"></label>'
+            f'<p class="resultcount" id="results" role="status" aria-live="polite"></p>'
             f'</div>{credit}</div>'
             f'<nav class="jump" aria-label="Sections">{nav}</nav><div class="regions">{hero_regions}</div></section>'
-            + "".join(sections) + '<p class="empty" id="empty" hidden>No pages match your search.</p>'
-            '<p class="sr" id="results" role="status" aria-live="polite"></p>')
+            + "".join(sections) + '<p class="empty" id="empty" hidden>No pages match your search.</p>')
+
+
+# Character-page sections whose wiki table nests tabs inside rows (flattened by the extractor): shown from the raw crawl
+NESTED = {"Gameplay Info › Talents": "Type", "Gameplay Info › Constellation": "Level"}
+
+
+def nested_table(p: Page, heading: str, flat: str) -> str:
+    """The talent / constellation table rebuilt from the raw crawl (web/talents.py), one card per row with the wiki's
+    tabs, followed by the flattened text the chatbot retrieves from, so a citation still finds its words here."""
+    rows = tables_for(p.slug).get(NESTED.get(heading, ""), []) if p.type in ("character", "character_upcoming") else []
+    if not rows:
+        return flat
+    slugs = {q.title: q.slug for q in pages().values()}
+    base = section_id(heading.split(" › "))
+    cards = []
+    for i, r in enumerate(rows):
+        name = (f'<a href="/wiki/{e(slugs[r.name])}">{e(r.name)}</a>' if r.name in slugs else e(r.name))
+        kind = f"C{r.kind}" if r.kind.isdigit() else r.kind
+        tabs, panels = [], []
+        for j, (label, body) in enumerate(r.tabs):
+            tid, pid = f"tab-{base}-{i}-{j}", f"panel-{base}-{i}-{j}"
+            tabs.append(f'<button type="button" role="tab" id="{tid}" aria-controls="{pid}" '
+                        f'aria-selected="{"true" if j == 0 else "false"}"{"" if j == 0 else " tabindex=\"-1\""}>{e(label)}</button>')
+            panels.append(f'<div class="tabpanel" role="tabpanel" id="{pid}" aria-labelledby="{tid}"{"" if j == 0 else " hidden"}>'
+                          f'{body}</div>')
+        tablist = f'<div class="tabs" role="tablist" aria-label="{e(r.name)}">{"".join(tabs)}</div>' if len(tabs) > 1 else ""
+        cards.append(f'<div class="tt"><div class="tthead"><h3>{name}</h3><span class="ttkind">{e(kind)}</span></div>'
+                     f'{tablist}{"".join(panels)}</div>')
+    return (f'<div class="tts">{"".join(cards)}</div>'
+            f'<details class="asbot"><summary>As the chatbot sees it</summary>'
+            f'<p class="meta">The extractor flattened this table into the text below; it is what retrieval searches '
+            f'and what a citation of this section quotes.</p>{flat}</details>')
 
 
 def page_body(p: Page) -> str:
     parts = []
     for heading, body in p.sections:
         content = render_block(heading, body)
+        if heading in NESTED and content:
+            content = nested_table(p, heading, content)
         if not content:
             continue
         if not heading:
@@ -356,7 +405,8 @@ def page_body(p: Page) -> str:
             parts.append(f'<div class="lead">{content}</div>')
         else:
             open_attr = "" if heading.split(" › ")[0] in COLLAPSED else " open"
-            parts.append(f"<details{open_attr}><summary><h2>{e(heading)}</h2></summary>{content}</details>")
+            sid = section_id(heading.split(" › "))
+            parts.append(f'<details id="{sid}"{open_attr}><summary><h2>{e(heading)}</h2></summary>{content}</details>')
     if p.type in ("character", "character_upcoming"):
         talents, cons = abilities_of(p.title)
         if talents or cons:
@@ -374,7 +424,9 @@ def page_body(p: Page) -> str:
         top = f'<div class="banner pagebanner">{banner}<div class="bannertext">{head}</div></div>'
     else:
         top = img(p, "hero", "pageimg") + head
-    return f"<article class=\"page\">{top}{''.join(parts)}</article>"
+    el = p.info.get("Element", "") if p.type in ("character", "character_upcoming") else ""
+    data_el = f' data-el="{e(el)}"' if el else ""   # tints the page's night sky with the character's element
+    return f"<article class=\"page\"{data_el}>{top}{''.join(parts)}</article>"
 
 
 TEMPLATE = Path(__file__).parent / "templates" / "base.html"

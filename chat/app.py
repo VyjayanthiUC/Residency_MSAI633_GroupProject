@@ -21,6 +21,7 @@ from rag.contract import Chunk
 from rag.grounding import (MAX_QUOTE_WORDS, REFERRAL_TEXT, SPEND_PROMPT_NOTE, SPEND_TEXT, cited_indices, is_chinese,
                        is_refusal, is_spend_question, long_quotes, needs_referral, normalize_citations,
                        recommends_spending, refusal_for, strip_citations, unsupported_numbers)
+from web.wiki import page_href
 
 DB_URL = init_db(config.THREADS_DB)
 K_POOL, K_FINAL = config.K_POOL, config.K_FINAL
@@ -61,8 +62,13 @@ def trace_table(chunks: list[Chunk], final_ids: set[str]) -> str:
     return "\n".join(rows)
 
 
+def snapshot_link(c: Chunk) -> str:
+    """The cited section on the site's own copy of the snapshot (web/wiki.py): the exact text the answer came from."""
+    return page_href(c.doc_id, c.heading_path)
+
+
 def source_element(i: int, c: Chunk) -> cl.Text:
-    body = (f"**{where(c)}**\n\n[{c.url}]({c.url})\n\n_Snapshot: {c.crawled_at[:10] or 'unknown'} · "
+    body = (f"**{where(c)}**\n\n[Snapshot copy]({snapshot_link(c)}) · [{c.url}]({c.url})\n\n_Snapshot: {c.crawled_at[:10] or 'unknown'} · "
             f"applies to game version dated {c.effective_date or 'undated'}_\n\n---\n\n{c.text}")
     return cl.Text(name=f"S{i}", content=body, display="side")
 
@@ -173,7 +179,10 @@ async def on_message(message: cl.Message):
         # Chainlit turns a bare "S3" into a clickable badge; "[S3]" would render as "[ S3 ]"
         msg.content = re.sub(r"\[(S\d+)\]", r" \1", answer)
         if used:
-            links = " · ".join(f"S{i} [{final[i - 1].title}]({final[i - 1].url})" for i in used)
+            # The title opens the cited section of the snapshot (in the site's pop-up: in the main page); ↗ is the live
+            # wiki. "Sn" stays outside the link: Chainlit turns it into a badge before rendering Markdown.
+            links = " · ".join(f"S{i} [{final[i - 1].title}]({snapshot_link(final[i - 1])}) [↗]({final[i - 1].url})"
+                               for i in used)
             msg.content += f"\n\n---\n**Sources:** {links}\n\n_Wiki snapshot {SNAPSHOT}_"
         else:
             msg.content += "\n\n---\n⚠️ _This answer cites no source — treat it as unverified._"
