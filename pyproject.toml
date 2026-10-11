@@ -24,7 +24,7 @@ build-backend = "hatchling.build"
 
 # Installed in editable mode by `uv sync`, so `import rag` works from any directory (no sys.path hacks)
 [tool.hatch.build.targets.wheel]
-packages = ["rag", "ingest", "evaluation", "chat"]
+packages = ["rag", "ingest", "evaluation", "chat", "web"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
